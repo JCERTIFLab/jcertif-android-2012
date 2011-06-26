@@ -2,4 +2,10 @@
 <resources>
     <string name="hello">Hello World, JCertifMobileActivity!</string>
     <string name="app_name">JCertif Mobile</string>
+    <string name="search_description">Search patient</string>
+    <string name="search_hint">A patient</string>
+    <string name="speakerFirstNameLabel">Prénom : </string>
+    <string name="speakerLastNameLabel">Nom : </string>
+    <string name="speakerBioLabel">Biographie</string>
+    <string name="speakerCompanyLabel">Compagnie : </string>
 </resources>

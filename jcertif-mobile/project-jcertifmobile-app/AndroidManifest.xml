@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.jcertif.android.mobile"
+      package="com.jcertif.android.view"
       android:versionCode="1"
       android:versionName="1.0">
-    <uses-sdk android:minSdkVersion="10" />
+      
+    <uses-sdk android:minSdkVersion="8" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
 
     <application android:icon="@drawable/icon" android:label="@string/app_name">
-        <activity android:name="com.jcertif.android.app.JCertifMobileActivity"
-                  android:label="@string/app_name">
+    	<!-- Main Activity -->
+        <activity 	android:name="com.jcertif.android.view.MenuView"
+        			android:theme="@android:style/Theme.NoTitleBar"
+                  	android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+		<!-- Other activities -->
+		<activity android:name="SpeakersListActivity"/>
+		<activity android:name="SpeakerActivity"/>
+		<!-- Service -->	
+		<service android:name ="com.jcertif.android.service.JCertifLocalService"/>	
     </application>
+    <uses-permission android:name="android.permission.INTERNET" /> 
 </manifest>

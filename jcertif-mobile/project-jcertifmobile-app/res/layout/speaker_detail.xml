@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:orientation="vertical" android:background="#000000">
+	<include layout="@layout/jcertif_header" />
+	<ImageView android:id="@+id/speakerImg" android:layout_width="80dp"
+		android:layout_height="100dp" />
+	<ScrollView android:id="@+id/scrollView"
+		android:layout_height="wrap_content" android:layout_width="wrap_content">
+		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			android:orientation="vertical" android:layout_width="fill_parent"
+			android:layout_height="fill_parent">
+			<TableLayout android:id="@+id/tableLayout1"
+				android:layout_height="wrap_content" android:layout_width="wrap_content">
+
+				<TableRow android:layout_width="wrap_content" android:id="@+id/linearLayoutFirstName"
+					android:layout_height="wrap_content">
+					<TextView android:layout_width="wrap_content"
+						android:id="@+id/speakerFirstNameLabel" android:layout_height="wrap_content"
+						android:text="@string/speakerFirstNameLabel" android:textSize="20dp"
+						android:textStyle="bold" />
+					<TextView android:layout_width="wrap_content" android:id="@+id/speakerFirstName"
+						android:layout_height="wrap_content" android:textSize="20dp"
+						android:textStyle="italic" />
+				</TableRow>
+				<TableRow android:layout_width="wrap_content" android:id="@+id/linearLayoutLastName"
+					android:layout_height="wrap_content">
+					<TextView android:layout_width="wrap_content" android:id="@+id/speakerLastNameLabel"
+						android:layout_height="wrap_content" android:text="@string/speakerLastNameLabel"
+						android:textSize="20dp" android:textStyle="bold" />
+					<TextView android:layout_width="wrap_content" android:id="@+id/speakerLastName"
+						android:layout_height="wrap_content" android:textSize="20dp"
+						android:textStyle="italic" />
+				</TableRow>
+				<TableRow android:layout_width="wrap_content" android:id="@+id/linearLayoutCompany"
+					android:layout_height="wrap_content">
+					<TextView android:id="@+id/speakerCampanyLabel"
+						android:layout_height="wrap_content" android:text="@string/speakerCompanyLabel"
+						android:textSize="20dp" android:textStyle="bold"
+						android:layout_width="wrap_content" />
+					<TextView android:layout_width="wrap_content" android:id="@+id/speakerCompany"
+						android:layout_height="wrap_content" android:textSize="20dp"
+						android:textStyle="italic"/>
+				</TableRow>
+			</TableLayout>
+			<TextView android:layout_width="wrap_content" android:id="@+id/speakerBio"
+				android:layout_height="wrap_content" android:textSize="20dp"
+				android:textStyle="bold" />
+		</LinearLayout>
+	</ScrollView>
+</LinearLayout>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:gravity="center">
+
+	<include layout="@layout/jcertif_header" />
+
+	<TableLayout android:id="@+id/titleTableLayout"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_margin="5dip">
+
+		<TableRow android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+
+			<Button android:id="@+id/btnCalendrier" android:text="Calendrier"
+				android:layout_width="120dip" android:layout_height="wrap_content" />
+
+			<Button android:id="@+id/btnAgenda" android:text="Agenda"
+				android:layout_width="120dip" android:layout_height="wrap_content" />
+
+		</TableRow>
+
+		<TableRow android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+
+			<Button android:id="@+id/btnSpeaker" android:text="Speaker"
+				android:layout_width="120dip" android:layout_height="wrap_content" />
+
+			<Button android:id="@+id/btnSession" android:text="Session"
+				android:layout_width="120dip" android:layout_height="wrap_content" />
+
+		</TableRow>
+
+		<TableRow android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+
+			<View android:text=" " android:layout_width="120dip"
+				android:layout_height="wrap_content" />
+
+			<Button android:id="@+id/btnInfo" android:text="Info"
+				android:layout_width="120dip" android:layout_height="wrap_content" />
+
+		</TableRow>
+	</TableLayout>
+
+	<ListView android:id="@android:id/list" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" />
+</LinearLayout>
