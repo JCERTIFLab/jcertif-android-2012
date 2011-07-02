@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- General -->
     <string name="hello">Hello World, JCertifMobileActivity!</string>
     <string name="app_name">JCertif Mobile</string>
     <string name="search_description">Search patient</string>
     <string name="search_hint">A patient</string>
+
+    <!-- Speakers -->
+    <string name="speaker_list_header_title">Présentateurs</string>
     <string name="speakerFirstNameLabel">Prénom : </string>
     <string name="speakerLastNameLabel">Nom : </string>
     <string name="speakerBioLabel">Biographie</string>

@@ -19,8 +19,10 @@
         </activity>
 
 		<!-- Other activities -->
-		<activity android:name="SpeakersListActivity"/>
-		<activity android:name="SpeakerActivity"/>
+		<activity android:name="SpeakersListActivity"
+                  android:theme="@android:style/Theme.NoTitleBar"/>
+		<activity android:name="SpeakerActivity"
+                  android:theme="@android:style/Theme.NoTitleBar"/>
 		<!-- Service -->	
 		<service android:name ="com.jcertif.android.service.JCertifLocalService"/>	
     </application>

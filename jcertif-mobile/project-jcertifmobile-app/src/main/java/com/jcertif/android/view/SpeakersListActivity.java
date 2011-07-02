@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jcertif.android.data.SpeakerProvider;
@@ -45,6 +46,12 @@ public class SpeakersListActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		setContentView(R.layout.speaker);
+
+        // Define header title
+        TextView headerTitle = (TextView) findViewById(R.id.header_title);
+        headerTitle.setText(R.string.speaker_list_header_title);
+
+
 
         Intent intent = new Intent(this, JCertifLocalService.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
