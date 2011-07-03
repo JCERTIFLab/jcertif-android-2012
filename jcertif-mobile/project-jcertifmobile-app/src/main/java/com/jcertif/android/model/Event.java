@@ -14,7 +14,7 @@ import java.util.Date;
 @DatabaseTable(tableName = "events")
 public class Event {
     @DatabaseField(id = true)
-    public Long id;
+    public Integer id;
     @DatabaseField
     public String name;
     @DatabaseField

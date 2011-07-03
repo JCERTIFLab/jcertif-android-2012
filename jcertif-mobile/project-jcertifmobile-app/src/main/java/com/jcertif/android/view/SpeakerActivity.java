@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -13,6 +15,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -100,12 +103,21 @@ public class SpeakerActivity extends Activity {
     private void buildSpeakerEventLayout(List<Event> speakerEvents) {
         LinearLayout layout = (LinearLayout) findViewById(R.id.speakerEvents);
 
-        for (Event ev : speakerEvents) {
+        for (final Event ev : speakerEvents) {
             LinearLayout newLayout = new LinearLayout(this);
             LayoutInflater inflater = ((LayoutInflater) getSystemService(Activity.LAYOUT_INFLATER_SERVICE));
             View detailEventView = inflater.inflate(R.layout.speaker_detail_event, newLayout);
             TextView nameView = (TextView) detailEventView.findViewById(R.id.eventName);
             nameView.setText(ev.name);
+            final Intent intentForDisplay = new Intent(getApplicationContext(), SessionDetailActivity.class);
+            newLayout.setOnClickListener(new View.OnClickListener(){
+
+
+                public void onClick(View view) {
+                      intentForDisplay.putExtra("sessionId", ev.id);
+    				  startActivity(intentForDisplay);
+                }
+            });
             TextView roomView = (TextView) detailEventView.findViewById(R.id.eventRoom);
             roomView.setText(ev.room);
             TextView dateView = (TextView) detailEventView.findViewById(R.id.eventDate);

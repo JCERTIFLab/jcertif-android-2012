@@ -84,7 +84,7 @@ public class JSONHelper {
 
                 Event event = new Event();
 
-                event.id = jsonData.getLong(ID);
+                event.id = jsonData.getInt(ID);
                 event.name = jsonData.getString(NOM);
                 event.description = jsonData.getString(DESCRIPTION);
                 event.keyWord = jsonData.getString(KEY_WORD);

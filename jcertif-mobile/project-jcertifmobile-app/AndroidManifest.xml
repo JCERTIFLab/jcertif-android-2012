@@ -23,6 +23,8 @@
                   android:theme="@android:style/Theme.NoTitleBar"/>
 		<activity android:name="SpeakerActivity"
                   android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name="SessionDetailActivity"
+                  android:theme="@android:style/Theme.NoTitleBar"/>
 		<!-- Service -->	
 		<service android:name ="com.jcertif.android.service.JCertifLocalService"/>	
     </application>
