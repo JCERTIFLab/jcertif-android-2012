@@ -11,6 +11,7 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import com.jcertif.android.model.Event;
 import com.jcertif.android.model.Speaker;
 
 /**
@@ -25,6 +26,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	private static final int DATABASE_VERSION = 1;
 
 	private Dao<Speaker, Integer> speakerDao;
+    private Dao<Event, Integer> eventDao;
 
 	public DatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -35,6 +37,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	public void onCreate(SQLiteDatabase sqliteDatabase, ConnectionSource connectionSource) {
 		try {
 			TableUtils.createTable(connectionSource, Speaker.class);
+            TableUtils.createTable(connectionSource, Event.class);
 		} catch (SQLException e) {
 			Log.e(DatabaseHelper.class.getName(), "Unable to create datbases", e);
 		}
@@ -44,6 +47,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	public void onUpgrade(SQLiteDatabase sqliteDatabase, ConnectionSource connectionSource, int oldVer, int newVer) {
 		try {
 			TableUtils.dropTable(connectionSource, Speaker.class, true);
+            TableUtils.dropTable(connectionSource, Event.class, true);
 			onCreate(sqliteDatabase, connectionSource);
 		} catch (SQLException e) {
 			Log.e(DatabaseHelper.class.getName(), "Unable to upgrade database from version " + oldVer + " to new "
@@ -56,5 +60,12 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			speakerDao = getDao(Speaker.class);
 		}
 		return speakerDao;
+	}
+
+    public Dao<Event, Integer> getEventDao() throws SQLException {
+		if (eventDao == null) {
+			eventDao = getDao(Event.class);
+		}
+		return eventDao;
 	}
 }

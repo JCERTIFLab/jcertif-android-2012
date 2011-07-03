@@ -1,6 +1,8 @@
 package com.jcertif.android.view;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -13,7 +15,10 @@ import android.widget.TextView;
 
 import com.j256.ormlite.dao.Dao;
 import com.jcertif.android.data.DatabaseHelper;
+import com.jcertif.android.data.EventProvider;
+import com.jcertif.android.model.Event;
 import com.jcertif.android.model.Speaker;
+import com.jcertif.android.service.JCertifLocalService;
 
 /**
  * Display details of a selected speaker
@@ -33,10 +38,28 @@ public class SpeakerActivity extends Activity {
 
         TextView speakerBioPart1 = (TextView) findViewById(R.id.speakerBioPart1);
         TextView speakerBioPart2 = (TextView) findViewById(R.id.speakerBioPart2);
+        TextView speakerEvent = (TextView) findViewById(R.id.speakerEvent);
 
         DatabaseHelper dbHelper = new DatabaseHelper(getBaseContext());
         Dao<Speaker, Integer> speakerDao;
+        Dao<Event, Integer> eventDao;
         try {
+
+            // Searching speaker's event
+            eventDao = dbHelper.getEventDao();
+            EventProvider eventProvider = new EventProvider(new JCertifLocalService());
+
+            List<Event> allEvent = eventProvider.getAllEvents();
+            List<Event> speakerEvents = new ArrayList<Event>();
+            for (Event event : allEvent) {
+                 String[] idsSpeaker = event.speakersId.split(",");
+                for(String idSp : idsSpeaker){
+                     if(Integer.valueOf(idSp).equals(speakerId)){
+                          speakerEvents.add(event);
+                     }
+                }
+            }
+             Log.e("SpeakerDisplayActivity","count event = " + speakerEvents.size());
             speakerDao = dbHelper.getSpeakerDao();
             Speaker speaker = speakerDao.queryForId(speakerId);
 
@@ -55,7 +78,17 @@ public class SpeakerActivity extends Activity {
             speakerBioPart1.setText(splittedBio[0]);
             speakerBioPart2.setText(splittedBio[1]);
 
+            StringBuilder evs = new StringBuilder();
+            for(Event ev : speakerEvents)  {
+                evs.append(ev.name +",");
+            }
+            speakerEvent.setText(evs.toString());
+
+
         } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            Log.e("SpeakerDisplayActivity", e.getMessage());
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             Log.e("SpeakerDisplayActivity", e.getMessage());
         }
@@ -64,7 +97,8 @@ public class SpeakerActivity extends Activity {
 
     /**
      * Spliting bio.
-     * @param bio  a bio
+     *
+     * @param bio a bio
      * @return String array (2 elements) with two parts
      */
     private String[] splitBio(String bio) {
@@ -73,11 +107,11 @@ public class SpeakerActivity extends Activity {
         String[] spaceSplitBio = bio.split(" ");
 
         for (String word : spaceSplitBio) {
-                 if(part1.length() <= BIO_PART1_MAX_LENGTH){
-                     part1.append(word + " ");
-                 } else {
-                     part2.append(word + " ");
-                 }
+            if (part1.length() <= BIO_PART1_MAX_LENGTH) {
+                part1.append(word + " ");
+            } else {
+                part2.append(word + " ");
+            }
         }
 
         return new String[]{part1.toString(), part2.toString()};

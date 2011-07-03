@@ -10,4 +10,5 @@ public class Application {
 	public static final String BASE_URL = "http://jcertif.baamtu.com/jcertif-facade/api";
 	public static final String BASE_PICTURE_URL = "http://jcertif.baamtu.com/jcertif-pics/Speaker";
 	public static final String SPEAKER_URL = BASE_URL + "/speaker/list";
+    public static final String EVENT_URL = BASE_URL + "/event/list";
 }

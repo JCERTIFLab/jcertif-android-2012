@@ -41,23 +41,26 @@ public class JCertifLocalService extends Service {
 	}
 
 	public String getSpeakersData() throws Exception {
-		String responseString = null;
-
-		String url = Application.SPEAKER_URL;
-
-		RestClient client = new RestClient();
-
-		try {
-			client.execute(url).get(180, TimeUnit.SECONDS);
-			responseString = client.getResponse();
-			Log.i(Application.NAME, responseString);
-		} catch (Exception e) {
-			Log.e(Application.NAME, "LocalService : " + e.getMessage());
-			throw e;
-		}
-
-		return responseString;
+        return callFacade(Application.SPEAKER_URL);
 	}
-	
-	
+
+    public String getEventsData() throws Exception {
+        return callFacade(Application.EVENT_URL);
+	}
+
+    private String callFacade(String url) throws Exception {
+        String responseString;RestClient client = new RestClient();
+
+        try {
+            client.execute(url).get(180, TimeUnit.SECONDS);
+            responseString = client.getResponse();
+            Log.i(Application.NAME, responseString);
+        } catch (Exception e) {
+            Log.e(Application.NAME, "LocalService : " + e.getMessage());
+            throw e;
+        }
+        return responseString;
+    }
+
+
 }
