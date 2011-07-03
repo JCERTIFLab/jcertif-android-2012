@@ -1,16 +1,21 @@
 package com.jcertif.android.view;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.j256.ormlite.dao.Dao;
@@ -38,28 +43,14 @@ public class SpeakerActivity extends Activity {
 
         TextView speakerBioPart1 = (TextView) findViewById(R.id.speakerBioPart1);
         TextView speakerBioPart2 = (TextView) findViewById(R.id.speakerBioPart2);
-        TextView speakerEvent = (TextView) findViewById(R.id.speakerEvent);
+
 
         DatabaseHelper dbHelper = new DatabaseHelper(getBaseContext());
         Dao<Speaker, Integer> speakerDao;
-        Dao<Event, Integer> eventDao;
         try {
 
             // Searching speaker's event
-            eventDao = dbHelper.getEventDao();
-            EventProvider eventProvider = new EventProvider(new JCertifLocalService());
-
-            List<Event> allEvent = eventProvider.getAllEvents();
-            List<Event> speakerEvents = new ArrayList<Event>();
-            for (Event event : allEvent) {
-                 String[] idsSpeaker = event.speakersId.split(",");
-                for(String idSp : idsSpeaker){
-                     if(Integer.valueOf(idSp).equals(speakerId)){
-                          speakerEvents.add(event);
-                     }
-                }
-            }
-             Log.e("SpeakerDisplayActivity","count event = " + speakerEvents.size());
+            List<Event> speakerEvents = findSpeakerEvents(speakerId);
             speakerDao = dbHelper.getSpeakerDao();
             Speaker speaker = speakerDao.queryForId(speakerId);
 
@@ -74,16 +65,11 @@ public class SpeakerActivity extends Activity {
                     + speaker.urlPhoto);
             i11.setImageBitmap(speakerBitmap);
 
-            String[] splittedBio = splitBio(speaker.bio);
-            speakerBioPart1.setText(splittedBio[0]);
-            speakerBioPart2.setText(splittedBio[1]);
+            String[] splitedBio = splitBio(speaker.bio);
+            speakerBioPart1.setText(splitedBio[0]);
+            speakerBioPart2.setText(splitedBio[1]);
 
-            StringBuilder evs = new StringBuilder();
-            for(Event ev : speakerEvents)  {
-                evs.append(ev.name +",");
-            }
-            speakerEvent.setText(evs.toString());
-
+            buildSpeakerEventLayout(speakerEvents);
 
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -91,6 +77,40 @@ public class SpeakerActivity extends Activity {
         } catch (Exception e) {
             // TODO Auto-generated catch block
             Log.e("SpeakerDisplayActivity", e.getMessage());
+        }
+
+    }
+
+    private List<Event> findSpeakerEvents(int speakerId) throws Exception {
+        EventProvider eventProvider = new EventProvider(new JCertifLocalService());
+
+        List<Event> allEvent = eventProvider.getAllEvents();
+        List<Event> speakerEvents = new ArrayList<Event>();
+        for (Event event : allEvent) {
+            String[] idsSpeaker = event.speakersId.split(",");
+            for (String idSp : idsSpeaker) {
+                if (Integer.valueOf(idSp).equals(speakerId)) {
+                    speakerEvents.add(event);
+                }
+            }
+        }
+        return speakerEvents;
+    }
+
+    private void buildSpeakerEventLayout(List<Event> speakerEvents) {
+        LinearLayout layout = (LinearLayout) findViewById(R.id.speakerEvents);
+
+        for (Event ev : speakerEvents) {
+            LinearLayout newLayout = new LinearLayout(this);
+            LayoutInflater inflater = ((LayoutInflater) getSystemService(Activity.LAYOUT_INFLATER_SERVICE));
+            View detailEventView = inflater.inflate(R.layout.speaker_detail_event, newLayout);
+            TextView nameView = (TextView) detailEventView.findViewById(R.id.eventName);
+            nameView.setText(ev.name);
+            TextView roomView = (TextView) detailEventView.findViewById(R.id.eventRoom);
+            roomView.setText(ev.room);
+            TextView dateView = (TextView) detailEventView.findViewById(R.id.eventDate);
+            dateView.setText(new SimpleDateFormat("EEE").format(ev.startDate) + " " + new SimpleDateFormat("HH:mm").format(ev.startDate) + " à " + new SimpleDateFormat("HH:mm").format(ev.endDate));
+            layout.addView(newLayout);
         }
 
     }
