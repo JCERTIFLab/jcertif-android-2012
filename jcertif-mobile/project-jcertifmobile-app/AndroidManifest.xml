@@ -9,7 +9,7 @@
 
     <application android:icon="@drawable/icon" android:label="@string/app_name">
     	<!-- Main Activity -->
-        <activity 	android:name="com.jcertif.android.view.MenuView"
+        <activity 	android:name="com.jcertif.android.view.ConnectionActivity"
         			android:theme="@android:style/Theme.NoTitleBar"
                   	android:label="@string/app_name">
             <intent-filter>
@@ -24,7 +24,9 @@
 		<activity android:name="SpeakerActivity"
                   android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:name="SessionDetailActivity"
-                  android:theme="@android:style/Theme.NoTitleBar"/>
+                  android:theme="@android:style/Theme.NoTitleBar"/>	
+		<activity android:name="MenuView"
+                  android:theme="@android:style/Theme.NoTitleBar"/>                  
 		<!-- Service -->	
 		<service android:name ="com.jcertif.android.service.JCertifLocalService"/>	
     </application>
