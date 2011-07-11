@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:gravity="center_horizontal"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="#CCCCFF">
+		
+		<Spinner
+			android:id="@+id/spnCivility"
+			android:layout_width="220dip"
+   			android:layout_height="wrap_content"/>			
+   			
+		<EditText
+			android:id="@+id/txtFirstName"	
+			android:hint="@string/firstNameLabel"	
+			android:textSize="15dip"	
+			android:layout_width="220dip"
+    		android:layout_height="wrap_content"/>
+
+		<EditText
+			android:id="@+id/txtLastName"	
+			android:hint="@string/lastNameLabel"
+			android:textSize="15dip"	
+			android:layout_width="220dip"
+    		android:layout_height="wrap_content"/>
+
+		<Spinner
+			android:id="@+id/spnRole"
+			android:layout_width="220dip"
+   			android:layout_height="wrap_content"/>
+
+		<Spinner
+			android:id="@+id/spnType"
+			android:layout_width="220dip"
+   			android:layout_height="wrap_content"/>
+   			
+	<LinearLayout 
+		android:orientation="horizontal" 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center_horizontal"
+		>
+			<Button
+				android:id="@+id/btnCancel" 
+				android:text="@string/cancelButtonLabel"
+				android:textSize="15dip"	
+				android:layout_width="100dip"
+    			android:layout_height="40dip"
+    			android:layout_marginTop="5dip"
+    			android:layout_marginRight="20dip"
+			/>
+			
+			<Button
+				android:id="@+id/btnSave" 
+				android:text="@string/saveButtonLabel"
+				android:textSize="15dip"	
+				android:layout_width="100dip"
+    			android:layout_height="40dip"
+    			android:layout_marginTop="5dip"
+			/>
+	</LinearLayout>    		
+    		
+</LinearLayout>

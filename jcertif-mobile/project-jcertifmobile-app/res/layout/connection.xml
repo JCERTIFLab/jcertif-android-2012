@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" 
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="#CCCCFF">
+	
+    <include layout="@layout/jcertif_header" />
+	
+	<LinearLayout 
+		android:orientation="horizontal" 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center_horizontal"
+		>
+			<Button
+				android:id="@+id/btnConnect" 
+				android:text="@string/connectButtonLabel"
+				android:layout_width="120dip"
+    			android:layout_height="wrap_content"
+    			android:layout_marginTop="5dip"
+    			android:layout_marginBottom="30dip"
+    			android:layout_marginRight="40dip"/>
+			
+			<Button
+				android:id="@+id/btnQuit" 
+				android:text="@string/quitButtonLabel"
+				android:layout_width="120dip"
+    			android:layout_height="wrap_content"
+    			android:layout_marginTop="5dip"
+    			android:layout_marginBottom="30dip"/>
+    			
+	</LinearLayout>	
+	
+	<LinearLayout 
+		android:orientation="vertical" 
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:gravity="center_horizontal"
+		>
+		
+		<EditText
+			android:id="@+id/txtEmail"	
+			android:hint="@string/emailLabel"	
+			android:layout_width="200dip"
+    		android:layout_height="wrap_content"			
+			/>
+		
+		<EditText
+			android:id="@+id/txtPassword"
+			android:hint="@string/passwordLabel"
+			android:layout_width="200dip"
+    		android:layout_height="wrap_content"
+    		android:password="true"
+			/>
+				
+		<Button
+			android:id="@+id/btnSubscribe" 
+			android:text="@string/subscriptionLabel"
+			android:layout_width="200dip"
+    		android:layout_height="wrap_content"
+    		android:layout_marginTop="100dip"
+		/>		
+	</LinearLayout>
+</LinearLayout>

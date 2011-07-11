@@ -17,4 +17,42 @@
     <!-- Session detail -->
     <string name="session_detail_speaker_title">Présentateur</string>
 
+	<!-- Connection -->    
+	<string name="emailLabel">Email</string>
+	<string name="emailConfirmationLabel">Confirmation Email</string>
+    <string name="passwordLabel">Mot de passe </string>
+    <string name="passwordConfirmationLabel">Confirmation Mot de passe </string>
+    <string name="subscriptionLabel">S\'ENREGISTRER</string>
+    
+    <!-- Account profile dialogs -->
+    <string name="accountProfileLabel">Creation compte [profile] </string>
+    <string name="accountInformationLabel">Creation compte [information] </string>
+
+	<!-- Buttons -->
+	<string name="quitButtonLabel">QUITTER</string>
+    <string name="connectButtonLabel">CONNECTER</string>
+    <string name="saveButtonLabel">Enregistrer</string>
+    <string name="cancelButtonLabel">Annuler</string>
+    <string name="nextButtonLabel">Next >> </string>
+    
+    <!-- Account information dialogs -->
+    <string name="firstNameLabel">Prénom </string>
+    <string name="lastNameLabel">Nom </string>
+    
+    <!-- Spinners -->    
+    <string-array name="civility_array">
+        <item>Mr</item>
+        <item>M</item>
+        <item>Mlle</item>
+    </string-array>
+    
+    <string-array name="role_array">
+        <item>Role 1</item>
+        <item>Role 2</item>
+    </string-array>
+    
+	<string-array name="type_array">
+        <item>Type 1</item>
+        <item>Type 2</item>
+    </string-array>
 </resources>
