@@ -103,7 +103,7 @@ public class ConnectionActivity extends Activity{
         
         Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
         btnCancel.setOnClickListener(new OnClickListener() {
-        @Override
+        
             public void onClick(View v) {
         		dialog.cancel();
             }
@@ -111,7 +111,7 @@ public class ConnectionActivity extends Activity{
         
         Button btnNext = (Button) dialog.findViewById(R.id.btnNext);
         btnNext.setOnClickListener(new OnClickListener() {
-        @Override
+        
             public void onClick(View v) {
         		displayAccountInformationDialog();
         		dialog.cancel();
@@ -151,7 +151,7 @@ public class ConnectionActivity extends Activity{
 	        
 	        Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
 	        btnCancel.setOnClickListener(new OnClickListener() {
-	        @Override
+	        
 	            public void onClick(View v) {
 	        		dialog.cancel();
 	            }
@@ -159,7 +159,7 @@ public class ConnectionActivity extends Activity{
 	        
 	        Button btnSave = (Button) dialog.findViewById(R.id.btnSave);
 	        btnSave.setOnClickListener(new OnClickListener() {
-	        @Override
+	    
 	            public void onClick(View v) {
 	        		// TODO call web service to save data
 	            }

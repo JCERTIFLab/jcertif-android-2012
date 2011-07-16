@@ -7,6 +7,7 @@
         <groupId>com.jcertif.android</groupId>
         <artifactId>jcertif-mobile</artifactId>
         <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <groupId>com.jcertif.android</groupId>
     <artifactId>project-jcertifmobile-test</artifactId>
