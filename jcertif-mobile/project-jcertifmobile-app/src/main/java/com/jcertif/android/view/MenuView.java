@@ -7,6 +7,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+/**
+ * 
+ * @author Yakhya DABO
+ *
+ */
 public class MenuView extends Activity{
 
     /** Called when the activity is first created. */

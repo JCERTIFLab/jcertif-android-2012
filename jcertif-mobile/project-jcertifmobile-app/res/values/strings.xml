@@ -39,6 +39,10 @@
     <string name="firstNameLabel">Prénom </string>
     <string name="lastNameLabel">Nom </string>
     
+	<!-- Error Message -->
+	<string name ="alertDialogTitle">JCertif Mobile Error</string>
+	<string name="authenticationErrorMessage">Authentication failed !</string>
+	    
     <!-- Spinners -->    
     <string-array name="civility_array">
         <item>Mr</item>

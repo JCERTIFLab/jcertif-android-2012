@@ -15,7 +15,11 @@ import android.util.Log;
 
 import com.jcertif.android.model.Speaker;
 
-
+/**
+ * 
+ * @author Yakhya DABO
+ *
+ */
 public class JSONHelper {
 
     private static final String ID = "id";
@@ -69,7 +73,6 @@ public class JSONHelper {
         return speakers;
     }
 
-
     public static List<Event> getEvents(String data) {
         List<Event> events = new ArrayList<Event>();
 
@@ -94,7 +97,6 @@ public class JSONHelper {
                 event.speakersId = jsonData.getString(SPEAKERS_ID);
                 event.startDate = getDate(jsonData.getString(START_DATE));
                 event.endDate = getDate(jsonData.getString(END_DATE));
-
 
                 events.add(event);
                 Log.i(Application.NAME, "Event name : " + event.name);

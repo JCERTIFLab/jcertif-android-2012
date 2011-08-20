@@ -9,7 +9,9 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.jcertif.android.Application;
+import com.jcertif.android.model.User;
 import com.jcertif.android.net.RestClient;
+import com.jcertif.android.net.RestClient.RequestMethod;
 
 /**
  * The localService
@@ -41,18 +43,29 @@ public class JCertifLocalService extends Service {
 	}
 
 	public String getSpeakersData() throws Exception {
-        return callFacade(Application.SPEAKER_URL);
+        return callFacadeWithGET(Application.SPEAKER_URL);
 	}
 
     public String getEventsData() throws Exception {
-        return callFacade(Application.EVENT_URL);
+        return callFacadeWithGET(Application.EVENT_URL);
 	}
 
-    private String callFacade(String url) throws Exception {
-        String responseString;RestClient client = new RestClient();
+    public String authenticateUser() throws Exception{
+    	String authURL = Application.AUTHENTICATION_URL + "/" + Application.EMAIL + "/" + Application.PASSWORD;
+    	return callFacadeWithGET(authURL).trim();
+    } 
+    
+    public String registerUser(User user) throws Exception{
+    	String registerURL = Application.REGISTER_URL + "/" + user + "/" + "create";
+    	return callFacadeWithPOST(registerURL);
+    } 
+    
+    private String callFacadeWithGET(String url) throws Exception {
+        String responseString;
+        RestClient client = new RestClient(url);
 
         try {
-            client.execute(url).get(180, TimeUnit.SECONDS);
+            client.execute().get(180, TimeUnit.SECONDS);
             responseString = client.getResponse();
             Log.i(Application.NAME, responseString);
         } catch (Exception e) {
@@ -62,5 +75,19 @@ public class JCertifLocalService extends Service {
         return responseString;
     }
 
-
+    
+    private String callFacadeWithPOST(String url) throws Exception {
+        String responseString;
+        RestClient client = new RestClient(url);
+        client.setRequestMethod(RequestMethod.POST);
+        try {
+        	client.execute().get(180, TimeUnit.SECONDS);
+            responseString = client.getResponse();
+            Log.i(Application.NAME, responseString);
+        } catch (Exception e) {
+            Log.e(Application.NAME, "LocalService : " + e.getMessage());
+            throw e;
+        }
+        return responseString;
+    }
 }
