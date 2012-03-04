@@ -29,5 +29,13 @@ public class MenuView extends Activity{
 			}
 		});
         
+        Button btnSession = (Button) findViewById(R.id.btnSession);
+        btnSession.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				Intent intent = new Intent(getApplicationContext(), EventListActivity.class);					
+				startActivityForResult(intent, 0);				
+			}
+		});
+        
     }
 }

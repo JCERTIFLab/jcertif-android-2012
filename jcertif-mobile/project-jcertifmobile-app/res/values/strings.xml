@@ -14,8 +14,11 @@
     <string name="speakerBioLabel">Biographie</string>
     <string name="speakerCompanyLabel">Compagnie : </string>
 
+        <!-- Session List -->
+    <string name="session_list_title">Présentations</string>    
+    
     <!-- Session detail -->
-    <string name="session_detail_speaker_title">Présentateur</string>
+    <string name="session_detail_speaker_title">Présentateur</string>        
 
 	<!-- Connection -->    
 	<string name="emailLabel">Email</string>

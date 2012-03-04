@@ -20,7 +20,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.jcertif.android.Application;
+import com.jcertif.android.app.Application;
 import com.jcertif.android.model.User;
 import com.jcertif.android.service.JCertifLocalService;
 import com.jcertif.android.service.JCertifLocalService.LocalBinder;
@@ -96,15 +96,15 @@ public class ConnectionActivity extends Activity {
 		// Web service call
 		try {
 			String data = mService.authenticateUser();
-			Log.i(Application.NAME, "auth length : " + data.length());
-			if (!"null".equalsIgnoreCase(data)) {
+			Log.i(Application.NAME, "auth length : " + data.length() );
+			if ("null".equalsIgnoreCase(data)) {
 				saveCredentials();
 				displayMenuView();
-			} else {
-				AlertDialog.Builder builder = new AlertDialog.Builder(ConnectionActivity.this);
-				builder.setTitle(R.string.alertDialogTitle)
-						.setMessage(R.string.authenticationErrorMessage)
-						.setPositiveButton("OK", null).show();
+//			} else {
+//				AlertDialog.Builder builder = new AlertDialog.Builder(ConnectionActivity.this);
+//				builder.setTitle(R.string.alertDialogTitle)
+//						.setMessage(R.string.authenticationErrorMessage)
+//						.setPositiveButton("OK", null).show();
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

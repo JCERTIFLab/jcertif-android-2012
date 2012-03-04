@@ -1,4 +1,4 @@
-package com.jcertif.android;
+package com.jcertif.android.app;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -117,7 +117,7 @@ public class JSONHelper {
      * @param facadeStringDate facade string date (eg. 2011-09-03T17:30:00+02:00)
      * @return
      */
-    private static Date getDate(String facadeStringDate) throws ParseException {
+    public static Date getDate(String facadeStringDate) throws ParseException {
         String[] splitedDateTime = facadeStringDate.split("T");
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(splitedDateTime[0] + " " + splitedDateTime[1].substring(0, 8));
     }

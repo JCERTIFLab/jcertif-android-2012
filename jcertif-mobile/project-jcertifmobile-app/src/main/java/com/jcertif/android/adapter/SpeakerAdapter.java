@@ -1,4 +1,4 @@
-package com.jcertif.android.view;
+package com.jcertif.android.adapter;
 
 import java.util.List;
 
@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jcertif.android.model.Speaker;
+import com.jcertif.android.view.R;
 
 /**
  * This adaptateur is responsible of how to display items in speaker's list

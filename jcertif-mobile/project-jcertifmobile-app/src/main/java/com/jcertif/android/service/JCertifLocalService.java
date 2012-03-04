@@ -8,10 +8,10 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.jcertif.android.Application;
+import com.jcertif.android.app.Application;
 import com.jcertif.android.model.User;
-import com.jcertif.android.net.RestClient;
-import com.jcertif.android.net.RestClient.RequestMethod;
+import com.jcertif.android.net.RestClient1;
+import com.jcertif.android.net.RestClient1.RequestMethod;
 
 /**
  * The localService
@@ -56,13 +56,13 @@ public class JCertifLocalService extends Service {
     } 
     
     public String registerUser(User user) throws Exception{
-    	String registerURL = Application.REGISTER_URL + "/" + user + "/" + "create";
+    	String registerURL = Application.REGISTER_URL;
     	return callFacadeWithPOST(registerURL);
     } 
     
     private String callFacadeWithGET(String url) throws Exception {
         String responseString;
-        RestClient client = new RestClient(url);
+        RestClient1 client = new RestClient1(url);
 
         try {
             client.execute().get(180, TimeUnit.SECONDS);
@@ -78,8 +78,10 @@ public class JCertifLocalService extends Service {
     
     private String callFacadeWithPOST(String url) throws Exception {
         String responseString;
-        RestClient client = new RestClient(url);
+        RestClient1 client = new RestClient1(url);
         client.setRequestMethod(RequestMethod.POST);
+        
+        
         try {
         	client.execute().get(180, TimeUnit.SECONDS);
             responseString = client.getResponse();

@@ -17,8 +17,8 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
-import com.jcertif.android.Application;
-import com.jcertif.android.JSONHelper;
+import com.jcertif.android.app.Application;
+import com.jcertif.android.app.JSONHelper;
 import com.jcertif.android.model.Speaker;
 import com.jcertif.android.service.JCertifLocalService;
 

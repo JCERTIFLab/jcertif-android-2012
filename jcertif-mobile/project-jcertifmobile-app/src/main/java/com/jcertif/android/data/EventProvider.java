@@ -2,7 +2,7 @@ package com.jcertif.android.data;
 
 import android.util.Log;
 import com.j256.ormlite.dao.Dao;
-import com.jcertif.android.JSONHelper;
+import com.jcertif.android.app.JSONHelper;
 import com.jcertif.android.model.Event;
 import com.jcertif.android.service.JCertifLocalService;
 

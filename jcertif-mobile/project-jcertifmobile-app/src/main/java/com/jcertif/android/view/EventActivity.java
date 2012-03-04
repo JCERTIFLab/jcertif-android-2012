@@ -11,12 +11,12 @@ import com.jcertif.android.model.Speaker;
  *
  * @author: rossi.oddet
  */
-public class SessionDetailActivity extends Activity {
+public class EventActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.session_detail);
+        setContentView(R.layout.event_detail);
 
         Event ev = findEvent();
         Speaker sp = findSpeaker();

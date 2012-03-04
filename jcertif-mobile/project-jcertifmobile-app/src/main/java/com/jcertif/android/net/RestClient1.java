@@ -17,22 +17,26 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
-import org.apache.http.protocol.HttpContext;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.jcertif.android.app.Application;
 
+
 /**
- * REST client encapsulation
+ * 
+ * REST client encapsulation.
+ * The execution is done in a new thread
  * from : http://lukencode.com/2010/04/27/calling-web-services-in-android-using-httpclient/
+ * 
  * @author Yakhya DABO
  *
  */
-public class RestClient 
+public class RestClient1 extends AsyncTask<Void, Void, String>
 {
+ 
 	//----
 	// Enum
 	//----
@@ -42,78 +46,42 @@ public class RestClient
 		POST
 	}
 	
-	//----
-	// Attributes
-	//----
-	
     private ArrayList <NameValuePair> params;
     private ArrayList <NameValuePair> headers;
-
-    private String url;
-
+    
     private int responseCode;
     private String message;
-
+    private String url;
     private String response;
+    private RequestMethod requestMethod = RequestMethod.GET;   
 
-    private HttpContext localContext;
-    
-    /**
-     * Constructor
-     * @param url
-     */
-	public RestClient(String url){
+	public RestClient1(String url){
     	params = new ArrayList<NameValuePair>();
     	headers = new ArrayList<NameValuePair>();
     	this.url = url;
 	}
-
-    public String getUrl() {
-		return url;
+	
+	public RequestMethod getRequestMethod() {
+		return requestMethod;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setRequestMethod(RequestMethod requestMethod) {
+		this.requestMethod = requestMethod;
 	}
 	
-	//-------------------------------------------------------------------------
-    //
-    // Public interface
-    //
-    //-------------------------------------------------------------------------
-	
-    public void AddParam(String name, String value){
-        params.add(new BasicNameValuePair(name, value));
-    }
-
-
-    
-    public void AddHeader(String name, String value){
-        headers.add(new BasicNameValuePair(name, value));
-    }
-    
-    /**
-     * added by Yakhya.DABO to allow url extension
-     * @param path
-     */
-    
-    public void appendPath(String path){
-    	url +="/"+path;
-    }
-    
     public String getResponse() {
         return response;
     }
-
+ 
     public String getErrorMessage() {
         return message;
     }
-
+ 
     public int getResponseCode() {
         return responseCode;
     }
-    
-    public void Execute(RequestMethod method) throws Exception
+ 
+    public void Execute() throws Exception
     {
     	//add parameters
         String combinedParams = "";
@@ -133,7 +101,7 @@ public class RestClient
             }
         }
         
-        switch(method) {
+        switch(requestMethod) {
             case GET:
             {
                 HttpGet request = new HttpGet(url + combinedParams);
@@ -166,52 +134,41 @@ public class RestClient
             }
         }
     }
-
-    //-------------------------------------------------------------------------
-    //
-    // Internal methods
-    //
-    //-------------------------------------------------------------------------
+    
     private void executeRequest(HttpUriRequest request, String url)
     {
-    	Log.d(this.getClass().getSimpleName(), "Calling WS : " + request.getURI());
-       
-    	 HttpClient client = new DefaultHttpClient();
-         //force JSON format
-         request.addHeader("Accept", "application/json");
-         request.addHeader("Content-type", "application/json");
-         
+        HttpClient client = new DefaultHttpClient();
+        //force JSON format
+        request.addHeader("Accept", "application/json");
+        request.addHeader("Content-type", "application/json");
+ 
         HttpResponse httpResponse;
-
+ 
         try {
-            
-        	
-            httpResponse = client.execute(request,localContext);
-            
+            httpResponse = client.execute(request);
             responseCode = httpResponse.getStatusLine().getStatusCode();
             message = httpResponse.getStatusLine().getReasonPhrase();
-
-            Log.i(Application.NAME, "http Status : " + responseCode);
-            
+ 
             HttpEntity entity = httpResponse.getEntity();
-
+ 
             if (entity != null) {
-
+ 
                 InputStream instream = entity.getContent();
                 response = convertStreamToString(instream);
-                
+ 
                 // Closing the input stream will trigger connection release
                 instream.close();
             }
-            
+ 
         } catch (ClientProtocolException e)  {
             client.getConnectionManager().shutdown();
-            throw new RuntimeException(e);
+            e.printStackTrace();
         } catch (IOException e) {
             client.getConnectionManager().shutdown();
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
+
 
     private static String convertStreamToString(InputStream is) {
 
@@ -237,4 +194,17 @@ public class RestClient
         }
         return sb.toString();
     }
+
+	@Override
+	protected String doInBackground(Void... url) {
+		//HttpGet request = new HttpGet(url[0]);
+        // executeRequest(request, url[0]);
+		try {
+			Execute();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return response;
+	}
 }
