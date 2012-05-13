@@ -2,128 +2,158 @@ package com.jcertif.android.view;
 
 import java.util.List;
 
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jcertif.android.adapter.SpeakerAdapter;
-import com.jcertif.android.data.SpeakerProvider;
+import com.jcertif.android.app.Application;
+import com.jcertif.android.data.ormlight.SpeakerProvider;
 import com.jcertif.android.model.Speaker;
-import com.jcertif.android.service.JCertifLocalService;
-import com.jcertif.android.service.JCertifLocalService.LocalBinder;
+import com.jcertif.android.parsing.jackson.service.SpeakersController;
+import com.jcertif.android.service.JCertifService;
+import com.jcertif.android.service.State;
+import com.jcertif.android.service.StateAdapter;
+import com.jcertif.android.service.StateListener;
 
 /**
- * This activity is responsible for displaying list of speakers
+ * This activity displays the list of speakers
  * @author mouhamed_diouf
  *
  */
 public class SpeakersListActivity extends ListActivity {
-	
+
+	private State<List<Speaker>> state = null;
 	/**
-	 * Contains speakers data 
+	 * The view configuration state (changed or not)
 	 */
-	private List<Speaker> speakers;
-	private SpeakerAdapter adapter;
-	private Speaker selectedSpeaker;
+	private boolean isConfigurationChanging = false;
+	public boolean OK_WEB = true;
 	
-	private JCertifLocalService mService;
-    boolean mBound = false;
+	private Speaker selectedSpeaker;
+	private List<Speaker> speakers;
+	
+	/** Called when the activity is first created. */
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.speaker_list);
 
-	private LayoutInflater mInflater;
-	protected SpeakerProvider provider;
+		initState();
+		
+      // Define header title
+		TextView headerTitle = (TextView) findViewById(R.id.header_title);
+		headerTitle.setText(R.string.speaker_list_header_title);					
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-		setContentView(R.layout.speaker);
+	}
+	
+	private void initState(){
+		state = (SpeakerState) getLastNonConfigurationInstance();
 
-        // Define header title
-        TextView headerTitle = (TextView) findViewById(R.id.header_title);
-        headerTitle.setText(R.string.speaker_list_header_title);
+		if (state == null) {
+			state = new SpeakerState();
+			getApplicationContext().bindService(
+					new Intent(this, JCertifService.class), state.getConn(),
+					BIND_AUTO_CREATE);
+		} 
 
-        Intent intent = new Intent(this, JCertifLocalService.class);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-		mInflater = (LayoutInflater) getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-    }
+		stateAdapter.setContext(SpeakersListActivity.this);
+		state.attach(stateAdapter);
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // Bind to LocalService
+		if (!isConfigurationChanging) {
+			getApplicationContext().unbindService(state.getConn());
+		}
+	}
 
-        
-    }
+	@Override
+	public Object onRetainNonConfigurationInstance() {
+		isConfigurationChanging = true;
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        // Unbind from the service
-        if (mBound) {
-            unbindService(mConnection);
-            mBound = false;
-        }
-    }
+		return (state);
+	}
 
-    /** Called when a button is clicked (the button in the layout file attaches to
-      * this method with the android:onClick attribute) */
-    public void onButtonClick(View v) {
-        if (mBound) {
-            Toast.makeText(this, "number: ", Toast.LENGTH_SHORT).show();
-        }
-    }
+	private void setData(final List<Speaker> speakers) {
+		
+		this.setListAdapter(new SpeakerAdapter(this, speakers));
+		
+		getListView().setTextFilterEnabled(true);
+		final Intent intentForDisplay = new Intent(getApplicationContext(), SpeakerActivity.class);
+		getListView().setOnItemClickListener(new OnItemClickListener() {
 
-    /** Defines callbacks for service binding, passed to bindService() */
-    private ServiceConnection mConnection = new ServiceConnection() {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int _index,
+					long arg3) {
 
-		public void onServiceConnected(ComponentName arg0, IBinder service) {
-			// We've bound to LocalService, cast the IBinder and get LocalService instance
-            LocalBinder binder = (LocalBinder) service;
-            mService = binder.getService();
-            mBound = true;
-            
-            provider = new SpeakerProvider(mService);
-            try {
-    			speakers = provider.getAllSpeakers();
-    			adapter = new SpeakerAdapter(binder.getService().getBaseContext(), R.layout.speakerslist, speakers,
-    					mInflater);
-    			setListAdapter(adapter);
-    			getListView().setTextFilterEnabled(true);
-    			final Intent intentForDisplay = new Intent(getApplicationContext(), SpeakerActivity.class);
-    			getListView().setOnItemClickListener(new OnItemClickListener() {
-
-    				public void onItemClick(AdapterView<?> arg0, View arg1, int _index,
-    						long arg3) {
-
-    					selectedSpeaker = speakers.get(_index);
-    					intentForDisplay.putExtra("speakerId", selectedSpeaker.id);
-    					startActivity(intentForDisplay);
-    					
-    				}
-    				
-    			});
-    		} catch (Exception e) {
-    			// TODO Handle Exception
-    			e.printStackTrace();
-    		}
+				selectedSpeaker = speakers.get(_index);
+				intentForDisplay.putExtra("speakerId", selectedSpeaker.id);
+				startActivity(intentForDisplay);
+				Log.i(Application.NAME + this.getClass(), "Selected Speaker : " + selectedSpeaker.id);
+			}
 			
+		});
+	}
+
+	public class SpeakerState extends State<List<Speaker>> {
+
+		@Override
+		public List<Speaker> getData() throws Exception {
+			List<Speaker> speakers = null;
+			SpeakerProvider speakersProvider =  new SpeakerProvider(getBinder().getService().getBaseContext());
+			
+			if (OK_WEB) {
+				OK_WEB = false;
+				Log.i(Application.NAME, "SpeakerListActivity : getting data from WS ");
+				
+				String json = getBinder().getSpeakerList();
+				SpeakersController speakersController = new SpeakersController(json);
+				speakersController.init();
+				speakers = speakersController.findAll();
+				speakersProvider.saveAll(speakers);
+				
+				Log.i(Application.NAME, "SpeakerListActivity : " + speakers.toString());
+			}else{
+				Log.e(Application.NAME, "SpeakerListActivity : getting data from DB");
+				speakers = speakersProvider.findAll();
+				Log.i(Application.NAME, "SpeakerListActivity : " + speakers.toString());
+			}
+			Log.i(Application.NAME, "SpeakerListActivity : " + speakers.toString());
+			
+			return speakers;
+		}
+	}
+
+	private StateListener<List<Speaker>> stateAdapter = new StateAdapter<List<Speaker>>() {
+
+		@Override
+		public void onServiceConnected() {
+			state.getBinder().getWebServiceData(state, SpeakersListActivity.this);
 		}
 
-		public void onServiceDisconnected(ComponentName arg0) {
-			mBound = false;
+		@Override
+		public void onDataAvailable(List<Speaker> speakers) {
+			setData(speakers);
 		}
-    	
-    };
+
+		@Override
+		public void onError(Throwable t) {
+			Log.e(Application.NAME, t.getMessage());
+			AlertDialog.Builder builder = new AlertDialog.Builder(
+					SpeakersListActivity.this);
+			builder.setTitle(R.string.alertDialogTitle)
+					.setMessage(getMessageToDisplay(t.getMessage().trim()))
+					.setPositiveButton("OK", null).show();
+		}
+
+	};
+
 }
     
-//}

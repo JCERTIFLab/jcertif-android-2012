@@ -1,10 +1,8 @@
-package com.jcertif.android.data;
+package com.jcertif.android.data.ormlight;
 
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -18,9 +16,7 @@ import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.jcertif.android.app.Application;
-import com.jcertif.android.app.JSONHelper;
 import com.jcertif.android.model.Speaker;
-import com.jcertif.android.service.JCertifLocalService;
 
 /**
  * Provider for Speaker Do persistence and parsing stuff
@@ -29,32 +25,36 @@ import com.jcertif.android.service.JCertifLocalService;
  * 
  */
 public class SpeakerProvider {
-	private JCertifLocalService service;
-	private Context context;
+//	private JCertifLocalService service;
+//	private Context context;
 
-	public SpeakerProvider(JCertifLocalService service) {
-		this.service = service;
+	private Context mContext;
+	private DatabaseHelper mDbHelper;
+	private Dao<Speaker, Integer> mSpeakerDao;
+	
+	public SpeakerProvider(Context context) throws SQLException{
+		mContext = context;
+        mDbHelper = new DatabaseHelper(mContext); 
+        mSpeakerDao = mDbHelper.getSpeakerDao();	
 	}
 
-	public List<Speaker> getAllSpeakers() throws Exception {
-		String data = service.getSpeakersData();
-		List<Speaker> speakers = JSONHelper.getSpeaker(data);
-		// let's save now in db
-		DatabaseHelper dbHelper = new DatabaseHelper(service.getBaseContext());
-		Dao<Speaker, Integer> speakerDao = dbHelper.getSpeakerDao();
-		;
+	public Speaker findById(int speakerId) throws SQLException {
+		return mSpeakerDao.queryForId(speakerId);
+	}
+	
+	public List<Speaker> findAll() throws SQLException {
+		return mSpeakerDao.queryForAll();
+	}
+	
+	public Speaker getEventById(Integer speakerId) throws SQLException {
+		return mSpeakerDao.queryForId(speakerId);
+	}
+	
+	public void saveAll(List<Speaker> speakers) throws SQLException{
 		for (Speaker speaker : speakers) {
-			try {
-				speakerDao.createOrUpdate(speaker);
-				saveSpeakerPicture(Application.BASE_PICTURE_URL,
-						speaker.urlPhoto);
-
-			} catch (SQLException e) {
-				// TODO Handle exception
-				Log.e("SpeakerDisplayActivity", e.getMessage());
-			}
+			mSpeakerDao.createOrUpdate(speaker);
+			saveSpeakerPicture(Application.BASE_PICTURE_URL,speaker.urlPhoto);			
 		}
-		return speakers;
 	}
 
 	Bitmap bmImg;

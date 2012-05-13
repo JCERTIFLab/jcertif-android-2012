@@ -14,13 +14,13 @@ import android.util.Log;
  */
 public class JCertifService<T> extends Service {
 
-	private final LocalServiceBinder<T> binder= new LocalServiceBinder<T>();
+	private LocalServiceBinder<T> binder;
 	
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		Log.i(this.getClass().getSimpleName(),"on create");
-		binder.onCreate(this);
+		binder = new LocalServiceBinder<T>(this);
 	}
 	
 	@Override

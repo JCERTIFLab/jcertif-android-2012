@@ -6,6 +6,7 @@ import android.os.Binder;
 import android.util.Log;
 
 import com.jcertif.android.app.Application;
+import com.jcertif.android.model.User;
 import com.jcertif.android.net.RestClient;
 import com.jcertif.android.net.RestClient.RequestMethod;
 import com.jcertif.android.service.State.Operation;
@@ -20,6 +21,12 @@ import com.jcertif.android.view.JCertifDialog;
  */
 public class LocalServiceBinder<T> extends Binder {
 
+	private JCertifService<T> service = null; 
+	
+	public LocalServiceBinder(JCertifService<T> service){
+		this.setService(service);
+	}
+	
 	void onCreate(Context ctxt) {
 		// client=new DefaultHttpClient();
 		// format=ctxt.getString(R.string.url);
@@ -90,6 +97,44 @@ public class LocalServiceBinder<T> extends Binder {
 		}
 	}
 
+	// Web services call
+	
+    public String authenticateUser() throws Exception{
+    	String responseString = null;
+		String url = Application.AUTHENTICATION_URL + "/" + Application.EMAIL + "/" + Application.PASSWORD + "/2";
+		RestClient client = new RestClient(url);
+		try {
+			client.Execute(RequestMethod.GET);
+			responseString = client.getResponse();
+			Log.i(this.getClass().getSimpleName(), responseString);
+		} catch (Exception e) {
+			Log.e(this.getClass().getSimpleName(), "LocalServiceBinder : json " + responseString);
+			throw e;
+		}
+		return responseString;
+    } 
+    
+    public String registerUser(User user) throws Exception{
+		String responseString = null;
+		String url = Application.REGISTER_URL;
+
+		RestClient client = new RestClient(url);
+		try {
+			client.Execute(RequestMethod.POST);
+			responseString = client.getResponse();
+			Log.i(this.getClass().getSimpleName(), responseString);
+		} catch (Exception e) {
+			Log.e(this.getClass().getSimpleName(), "LocalServiceBinder : json " + responseString);
+			throw e;
+		}
+		return responseString;
+    } 
+    
+	/**
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	public String getEventList() throws Exception {
 		String responseString = null;
 		String url = Application.EVENT_URL;
@@ -105,231 +150,34 @@ public class LocalServiceBinder<T> extends Binder {
 		}
 		return responseString;
 	}
+
+	/**
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public String getSpeakerList() throws Exception {
+		String responseString = null;
+		String url = Application.SPEAKER_URL;
+
+		RestClient client = new RestClient(url);
+		try {
+			client.Execute(RequestMethod.GET);
+			responseString = client.getResponse();
+			Log.i(this.getClass().getSimpleName(), responseString);
+		} catch (Exception e) {
+			Log.e(this.getClass().getSimpleName(), "LocalServiceBinder : json " + responseString);
+			throw e;
+		}
+		return responseString;
+	}
 	
-	// private final RestClient client = new RestClient();
-	//
-	// public String getProjectDetail(String projectName) throws Exception{
-	// String responseString = null;
-	// String url = Application.PROJECT_DETAIL;
-	//
-	// RestClient client = new RestClient(url);
-	// client.AddParam("projectName", projectName);
-	//
-	// try {
-	// client.Execute(RequestMethod.GET);
-	// responseString = client.getResponse();
-	// Log.i(this.getClass().getSimpleName(), responseString);
-	// } catch (Exception e) {
-	// Log.e(this.getClass().getSimpleName(), "LocalServiceBinder : " +
-	// e.getMessage());
-	// throw e;
-	// }
-	//
-	// return responseString;
-	// }
-	//
-	// public String addInMyProject(String projectName) throws Exception{
-	// String responseString = null;
-	// String url = Application.MY_PROJECT_ADD;
-	//
-	// RestClient client = new RestClient(url);
-	// client.AddParam("projectName", projectName);
-	//
-	// try {
-	// client.Execute(RequestMethod.POST);
-	// responseString = client.getResponse();
-	// Log.i(this.getClass().getSimpleName(), responseString);
-	// } catch (Exception e) {
-	// Log.e(this.getClass().getSimpleName(),
-	// "LocalServiceBinder : "+e.getMessage());
-	// throw e;
-	// }
-	//
-	// return responseString;
-	// }
-	//
-	// public String removeFromMyProject(String projectName) throws Exception{
-	// String responseString = null;
-	// String url = Application.MY_PROJECT_REMOVE;
-	//
-	// RestClient client = new RestClient(url);
-	// client.AddParam("projectName", projectName);
-	//
-	// try {
-	// client.Execute(RequestMethod.POST);
-	// responseString = client.getResponse();
-	//
-	//
-	// Log.i(this.getClass().getSimpleName(),"Removing project, " + projectName
-	// + " " + responseString);
-	// } catch (Exception e) {
-	// Log.e(this.getClass().getSimpleName(),
-	// "LocalServiceBinder : "+e.getMessage());
-	// throw e;
-	// }
-	//
-	// return responseString;
-	// }
-	//
-	// public String getPerformanceData() throws Exception{
-	// String url = Application.PERFORMANCE_URL ;
-	// String responseString = getDataFromURL(url);
-	// return responseString;
-	// }
-	//
-	// public String getMainFactData() throws Exception{
-	// String url = Application.MAIN_FACT_URL ;
-	// String responseString = getDataFromURL(url);
-	// return responseString;
-	// }
-	//
-	// public String getClosedProjectData() throws Exception{
-	// String url = Application.CLOSED_PROJECT_URL ;
-	// String responseString = getDataFromURL(url);
-	// return responseString;
-	// }
-	//
-	// public String getNewProjectData() throws Exception{
-	// String url = Application.NEW_PROJECT_URL ;
-	// String responseString = getDataFromURL(url);
-	// return responseString;
-	// }
-	//
-	// public String getCurrentRAOData() throws Exception{
-	// String url = Application.CURRENT_RAO;
-	// String responseString = getDataFromURL(url);
-	// return responseString;
-	// }
-	//
-	// private String getDataFromURL(String url) throws Exception{
-	// String responseString = null;
-	//
-	// RestClient client = new RestClient(url);
-	//
-	// if (!Application.zoneName.equalsIgnoreCase(Application.WORLD)){
-	// client.appendPath(Application.zonePath);
-	// client.AddParam(Application.zoneParam , Application.zoneName);
-	// }
-	//
-	// Log.i(Application.NAME, "Service.getDataFromURL : zoneParam : " +
-	// Application.zoneParam);
-	// Log.i(Application.NAME, "Service.getDataFromURL : zonePath : " +
-	// Application.zonePath);
-	//
-	// try {
-	// client.Execute(RequestMethod.GET);
-	// responseString = client.getResponse();
-	// Log.i(this.getClass().getSimpleName(), responseString);
-	// } catch (Exception e) {
-	// Log.e(this.getClass().getSimpleName(), "LocalServiceBinder : "+
-	// e.getMessage());
-	// throw e;
-	// }
-	//
-	// return responseString;
-	// }
-	//
-	// public String getWorldProjectData() throws Exception{
-	// String responseString = null;
-	//
-	// String url = Application.WORLD_PROJECT;
-	//
-	// RestClient client = new RestClient(url);
-	//
-	// try {
-	// client.Execute(RequestMethod.GET);
-	// responseString = client.getResponse();
-	// Log.i(this.getClass().getSimpleName(), responseString);
-	// } catch (Exception e) {
-	// Log.e(this.getClass().getSimpleName(),
-	// "LocalServiceBinder : "+e.getMessage());
-	// throw e;
-	// }
-	//
-	// return responseString;
-	// }
-	//
-	// public String getSearchData(String searchParam) throws Exception{
-	// String responseString = null;
-	//
-	// String url = Application.SEARCH;
-	//
-	// RestClient client = new RestClient(url);
-	//
-	// client.AddParam("searchParam", searchParam);
-	//
-	// try {
-	// client.Execute(RequestMethod.GET);
-	// responseString = client.getResponse();
-	// Log.i(this.getClass().getSimpleName(), responseString);
-	// } catch (Exception e) {
-	// Log.e(this.getClass().getSimpleName(),
-	// "LocalServiceBinder : "+e.getMessage());
-	// throw e;
-	// }
-	//
-	// return responseString;
-	// }
-	//
-	// public String getMyProjectData() throws Exception{
-	// String responseString = null;
-	//
-	// String url = Application.MY_PROJECT_LIST;
-	//
-	// RestClient client = new RestClient(url);
-	//
-	// try {
-	// client.Execute(RequestMethod.GET);
-	// responseString = client.getResponse();
-	// Log.i(this.getClass().getSimpleName(), responseString);
-	// } catch (Exception e) {
-	// Log.e(this.getClass().getSimpleName(),
-	// "LocalServiceBinder : "+e.getMessage());
-	// throw e;
-	// }
-	//
-	// return responseString;
-	// }
-	//
-	// public String getGeographicZoneData() throws Exception{
-	// String responseString = null;
-	//
-	// String url = Application.GEOGRAPHIC_ZONE_URL;
-	//
-	// RestClient client = new RestClient(url);
-	//
-	// try {
-	// client.Execute(RequestMethod.GET);
-	// responseString = client.getResponse();
-	// Log.i(this.getClass().getSimpleName(), responseString);
-	// } catch (Exception e) {
-	// Log.e(this.getClass().getSimpleName(),
-	// "LocalServiceBinder : "+e.getMessage());
-	// throw e;
-	// }
-	//
-	// return responseString;
-	// }
-	//
-	//
-	//
-	// public String authenticateUser() throws Exception{
-	// String responseString = null;
-	//
-	// String url = Application.LOGIN_URL;
-	//
-	// RestClient client = new RestClient(url);
-	//
-	// try {
-	// client.Execute(RequestMethod.GET);
-	// responseString = client.getResponse();
-	// Log.i(this.getClass().getSimpleName(), responseString);
-	// } catch (Exception e) {
-	// Log.e(this.getClass().getSimpleName(),
-	// "LocalServiceBinder : "+e.getMessage());
-	// throw e;
-	// }
-	//
-	// return responseString.trim();
-	// }
+	public JCertifService<T> getService() {
+		return service;
+	}
+
+	public void setService(JCertifService<T> service) {
+		this.service = service;
+	}
+	
 }

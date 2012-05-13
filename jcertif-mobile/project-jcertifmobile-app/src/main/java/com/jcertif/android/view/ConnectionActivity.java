@@ -3,14 +3,10 @@ package com.jcertif.android.view;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,8 +18,11 @@ import android.widget.TextView;
 
 import com.jcertif.android.app.Application;
 import com.jcertif.android.model.User;
-import com.jcertif.android.service.JCertifLocalService;
-import com.jcertif.android.service.JCertifLocalService.LocalBinder;
+import com.jcertif.android.service.JCertifService;
+import com.jcertif.android.service.State;
+import com.jcertif.android.service.StateAdapter;
+import com.jcertif.android.service.StateListener;
+
 
 /**
  * 
@@ -35,28 +34,39 @@ public class ConnectionActivity extends Activity {
 	 * Login key for user preferences.
 	 */
 	private static final String EMAIL = "email";
-
 	/**
 	 * Password key for user preferences.
 	 */
 	private static final String PASSWORD = "password";
 
-	private JCertifLocalService mService;
+	private State<String> state = null;
+	
 	boolean mBound = false;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.connection);
-
-		Intent intent = new Intent(this, JCertifLocalService.class);
-		bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-
+		
+		initState();
 		initGUI();
 	}
 
+	private void initState(){
+		state = (LoginState) getLastNonConfigurationInstance();
+
+		if (state == null) {
+			state = new LoginState();
+			getApplicationContext().bindService(
+					new Intent(this, JCertifService.class), state.getConn(),
+					BIND_AUTO_CREATE);
+		} 
+
+		stateAdapter.setContext(ConnectionActivity.this);
+		state.attach(stateAdapter);
+	}
+	
 	/**
 	 * Displays buttons, editText, ...
 	 */
@@ -76,7 +86,10 @@ public class ConnectionActivity extends Activity {
 				if ((txtEmail.getText().length() > 0) && ((txtPassword.getText().length() > 0))) {
 					Application.EMAIL = txtEmail.getText().toString();
 					Application.PASSWORD = txtPassword.getText().toString();
-					authenticateUser();
+					
+					// ProgressDialog doesn't like getApplicationContext(). 
+					// That's why we use LoginView.this as the context parameter
+					state.getBinder().getWebServiceData(state, ConnectionActivity.this);
 				}
 			}
 
@@ -90,26 +103,6 @@ public class ConnectionActivity extends Activity {
 		});
 
 		loadCredentials();
-	}
-
-	private void authenticateUser() {
-		// Web service call
-		try {
-			String data = mService.authenticateUser();
-			Log.i(Application.NAME, "auth length : " + data.length() );
-			if ("null".equalsIgnoreCase(data)) {
-				saveCredentials();
-				displayMenuView();
-//			} else {
-//				AlertDialog.Builder builder = new AlertDialog.Builder(ConnectionActivity.this);
-//				builder.setTitle(R.string.alertDialogTitle)
-//						.setMessage(R.string.authenticationErrorMessage)
-//						.setPositiveButton("OK", null).show();
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	private void displayMenuView() {
@@ -226,9 +219,9 @@ public class ConnectionActivity extends Activity {
 	private void registerUser(User user) {
 		// Web service call
 		try {
-			String data = mService.registerUser(user);
-
-			Log.i(Application.NAME, "User data : " + data);
+//			String data = mService.registerUser(user);
+//
+//			Log.i(Application.NAME, "User data : " + data);
 
 			/*
 			 * if (!"null".equalsIgnoreCase(data)){ saveCredentials();
@@ -289,20 +282,34 @@ public class ConnectionActivity extends Activity {
 
 	}
 
-	/** Defines callbacks for service binding, passed to bindService() */
-	private ServiceConnection mConnection = new ServiceConnection() {
+	public class LoginState extends State<String> {
 
-		public void onServiceConnected(ComponentName arg0, IBinder service) {
-			// We've bound to LocalService, cast the IBinder and get
-			// LocalService instance
-			LocalBinder binder = (LocalBinder) service;
-			mService = binder.getService();
-			mBound = true;
+		@Override
+		public String getData() throws Exception {
+			String data = getBinder().authenticateUser();
+			Log.i(Application.NAME,"Login : " +  data);
+			return data;
 		}
+	}
+	
+	
+	private StateListener<String> stateAdapter = new StateAdapter<String> (){
+        
+        @Override
+        public void onDataAvailable(String data) {
+        	Log.i(Application.NAME, "Login result : [" + data +"]");
 
-		public void onServiceDisconnected(ComponentName arg0) {
-			mBound = false;
-		}
-
-	};
+        	if  (!"null".equalsIgnoreCase(data)){
+        		saveCredentials();
+        		displayMenuView();
+        	}else{
+        		AlertDialog.Builder builder = new AlertDialog.Builder(ConnectionActivity.this);
+        		builder.setTitle(R.string.alertDialogTitle)
+        				.setMessage(R.string.authenticationErrorMessage)
+        				.setPositiveButton("OK", null)
+        				.show();  
+        	}
+        }
+    };    	
+    
 }

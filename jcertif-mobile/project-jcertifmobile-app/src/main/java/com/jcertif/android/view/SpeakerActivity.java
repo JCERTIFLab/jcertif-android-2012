@@ -18,12 +18,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.j256.ormlite.dao.Dao;
-import com.jcertif.android.data.DatabaseHelper;
-import com.jcertif.android.data.EventProvider;
+import com.jcertif.android.data.ormlight.EventProvider;
+import com.jcertif.android.data.ormlight.SpeakerProvider;
 import com.jcertif.android.model.Event;
 import com.jcertif.android.model.Speaker;
-import com.jcertif.android.service.JCertifLocalService;
 
 /**
  * Display details of a selected speaker
@@ -33,7 +31,9 @@ import com.jcertif.android.service.JCertifLocalService;
 public class SpeakerActivity extends Activity {
 
     public static final int BIO_PART1_MAX_LENGTH = 100;
-
+    private SpeakerProvider speakersProvider;
+    private EventProvider eventProvider;
+    		
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,16 +43,16 @@ public class SpeakerActivity extends Activity {
 
         TextView speakerBioPart1 = (TextView) findViewById(R.id.speakerBioPart1);
         TextView speakerBioPart2 = (TextView) findViewById(R.id.speakerBioPart2);
-
-
-        DatabaseHelper dbHelper = new DatabaseHelper(getBaseContext());
-        Dao<Speaker, Integer> speakerDao;
+        
+//        DatabaseHelper dbHelper = new DatabaseHelper(getBaseContext());
+//        Dao<Speaker, Integer> speakerDao;
         try {
-
+        	speakersProvider =  new SpeakerProvider(getBaseContext());
+        	
             // Searching speaker's event
             List<Event> speakerEvents = findSpeakerEvents(speakerId);
-            speakerDao = dbHelper.getSpeakerDao();
-            Speaker speaker = speakerDao.queryForId(speakerId);
+            //speakerDao = dbHelper.getSpeakerDao();
+            Speaker speaker = speakersProvider.findById(speakerId);//speakerDao.queryForId(speakerId);
 
             // Define header title
             TextView headerTitle = (TextView) findViewById(R.id.header_title);
@@ -82,7 +82,7 @@ public class SpeakerActivity extends Activity {
     }
 
     private List<Event> findSpeakerEvents(int speakerId) throws Exception {
-        EventProvider eventProvider = new EventProvider(new JCertifLocalService());
+        eventProvider = new EventProvider(getBaseContext());
 
         List<Event> allEvent = eventProvider.getAllEvents();
         List<Event> speakerEvents = new ArrayList<Event>();
@@ -103,7 +103,7 @@ public class SpeakerActivity extends Activity {
         for (final Event ev : speakerEvents) {
             LinearLayout newLayout = new LinearLayout(this);
             LayoutInflater inflater = ((LayoutInflater) getSystemService(Activity.LAYOUT_INFLATER_SERVICE));
-            View detailEventView = inflater.inflate(R.layout.speaker_detail_event, newLayout);
+            View detailEventView = inflater.inflate(R.layout.speaker_event_detail, newLayout);
             TextView nameView = (TextView) detailEventView.findViewById(R.id.eventName);
             nameView.setText(ev.name);
             final Intent intentForDisplay = new Intent(getApplicationContext(), EventActivity.class);

@@ -2,7 +2,7 @@ package com.jcertif.android.adapter;
 
 import java.util.List;
 
-import android.content.Context;
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
@@ -22,17 +22,14 @@ import com.jcertif.android.view.R;
  *
  */
 public class SpeakerAdapter extends ArrayAdapter<Speaker> {
-	private int resource;
-	private LayoutInflater mInflater;
 
-	public SpeakerAdapter(Context context, int resource,
-			List<Speaker> patients, LayoutInflater mInflater) {
-		super(context, resource, patients);
-		this.resource = resource;
-		this.mInflater = mInflater;
-
+	private Activity context;
+	
+	public SpeakerAdapter(Activity context, List<Speaker> speakers) {
+		super(context, R.layout.speaker_list_item, speakers);
+		this.context = context;
 	}
-
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder = null;
@@ -41,7 +38,8 @@ public class SpeakerAdapter extends ArrayAdapter<Speaker> {
 		ImageView i11 = null;
 		Speaker speaker = getItem(position);
 		if (null == convertView) {
-			convertView = mInflater.inflate(R.layout.speakerslist, null);
+			LayoutInflater inflater = context.getLayoutInflater();
+			convertView = inflater.inflate(R.layout.speaker_list_item, null);
 			holder = new ViewHolder(convertView);
 			convertView.setTag(holder);
 		}
@@ -50,7 +48,7 @@ public class SpeakerAdapter extends ArrayAdapter<Speaker> {
 		title.setText(speaker.firstName + " " + speaker.lastName + "("
 				+ speaker.company + ")");
 		detail = holder.getDetail();
-		detail.setText(speaker.bio.substring(0, 100) + " ...");
+		detail.setText(speaker.bio);
 		i11 = holder.getImage();
 		Bitmap speakerBitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/"
 				+ speaker.urlPhoto);

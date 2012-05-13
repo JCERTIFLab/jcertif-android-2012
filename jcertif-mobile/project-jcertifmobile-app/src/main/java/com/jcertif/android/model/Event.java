@@ -14,27 +14,6 @@ import org.codehaus.jackson.annotate.JsonProperty;
  */
 @DatabaseTable(tableName = "events")
 public class Event {
-//    @DatabaseField(id = true)
-//    public Integer id;
-//    @DatabaseField
-//    public String name;
-//    @DatabaseField
-//    public Date startDate;
-//    @DatabaseField
-//    public Date endDate;
-//    @DatabaseField
-//    public String room;
-//    @DatabaseField
-//    public String summary;
-//    @DatabaseField
-//    public String description;
-//    @DatabaseField
-//    public String speakersId;
-//    @DatabaseField
-//    public String keyWord;
-//    @DatabaseField
-//    public String subjects;
-	
 	@DatabaseField(id = true)
 	public Integer id;
 	@DatabaseField
