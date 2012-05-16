@@ -1,0 +1,113 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                      http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+	<pluginGroups>
+		<pluginGroup>
+     		com.jayway.maven.plugins.android.generation2
+   		</pluginGroup>
+	</pluginGroups>
+	<!-- **********************************************************	-->
+	<!--
+		The definition of all the properties to set for android projects
+	-->
+	<!-- **********************************************************	-->
+
+	<activeProfiles>
+		<activeProfile>android-project</activeProfile>
+		<activeProfile>Google2Dot2Level8</activeProfile>
+	</activeProfiles>
+	<profiles>
+		<!--The profile that must be active for all Android project-->
+		<profile>
+			<id>android-project</id>
+			<activation>
+				<!--Just set the variable android-project to true-->
+				<property>
+					<name>android-project</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<properties>
+				<!-- RT and JSSE jar path-->
+				<!-- ******************* -->
+				<!-- For linux/Unix-->
+				<!-- <rt.jar.path>${java.home}/jre/lib/rt.jar</rt.jar.path>-->
+				<!-- <jsse.jar.path>${java.home}/jre/lib/jsse.jar</jsse.jar.path>-->
+				<!-- For Mac-->
+				<!-- <rt.jar.path>${java.home}/../Classes/classes.jar</rt.jar.path>-->
+				<!-- <jsse.jar.path>${java.home}/../Classes/jsse.jar</jsse.jar.path>-->
+				<!-- For Windows-->
+				<rt.jar.path>${java.home}/lib/rt.jar</rt.jar.path>
+				<jsse.jar.path>${java.home}/lib/jsse.jar</jsse.jar.path>
+				
+				<!--The path to the Android SDK-->
+				<!-- ******************* -->
+				<android.sdk.path>D:\Eclipse\eclipsex64_indigo_Android\android-sdk</android.sdk.path>
+				<!--D:\Eclipse\eclipsex64_Android_Custo\android-sdk_r10-windows\android-sdk-windows-->
+         <!--C:\Program Files (x86)\Android\android-sdk-windows  -->
+				<!--version of the plugin defined in the setting file (here so)-->
+				<!-- *******************2.8.4************************************** -->
+				<jayway.plugin.version>3.2.0</jayway.plugin.version>
+				<proguard.plugin.version>2.0.4</proguard.plugin.version>
+				<proguard.version>4.4</proguard.version>
+				<jarsigner.plugin.version>1.2</jarsigner.plugin.version>
+				<build.helper.plugin.version>1.5</build.helper.plugin.version>
+			</properties>
+		</profile>
+
+		<!-- **********************************************************	-->
+		<!--
+			The definition of all the avaiable AVD : ensure one is active by
+			default
+		-->
+		<!-- **********************************************************	-->
+		<profile>
+			<id>Google2Dot2Level8</id>
+			<activation>
+				<!--Just set the variable release to true-->
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<!--The path to the Android SDK-->
+				<avd-name>Google2Dot2Level8</avd-name>
+			</properties>
+		</profile>
+		<profile>
+			<id>Google2Dot3Level9</id>
+			<properties>
+				<!--The path to the Android SDK-->
+				<avd-name>Google2Dot3Level9</avd-name>
+			</properties>
+		</profile>
+
+		<!-- **********************************************************	-->
+		<!--
+			The definition of all the properties for the release mode's profil
+		-->
+		<!-- **********************************************************	-->
+
+		<!--The profile to use for the release android mode-->
+		<profile>
+			<id>android-release</id>
+			<activation>
+				<!--Just set the variable release to true-->
+				<property>
+					<name>android-release</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<!--Needed properties to sign the application using the good key-->
+			<properties>
+				<sign.keystore>D:\EclipseWorkspaceTutoAndroid\AndroidKeyStoreSTI\KeyStore\androidKeyStore</sign.keystore>
+				<sign.alias>tutoSti</sign.alias>
+				<sign.storepass>sti4admin</sign.storepass>
+				<sign.keypass>sti4admin</sign.keypass>
+			</properties>
+
+		</profile>
+	</profiles>
+	
+	
+</settings>

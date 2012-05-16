@@ -7,63 +7,293 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Jcertif Mobile</name>
+	<!-- *********************** -->
+	<!-- Meta data of the project -->
+	<!-- *********************** -->
+	<inceptionYear>2012</inceptionYear>
+	<developers>
+		<developer>
+			<id>MSE</id>
+			<name>Seguy Mathias</name>
+			<email>mathias.seguy.it@gmail.com</email>
+			<roles>
+				<role>developper</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>ROD</id>
+			<name>Oddet Rossi</name>
+			<email>rossi.oddet@gmail.com</email>
+			<roles>
+				<role>developper</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>DYA</id>
+			<name>Dabo Yakhya</name>
+			<email>yakhyadabo@gmail.com</email>
+			<roles>
+				<role>developper</role>
+			</roles>
+		</developer>
+	</developers>
+	<organization>
+		<name>JCertif Africa</name>
+		<url>http://68.169.48.10:8080/jcertif-web/faces/home/home.jsf</url>
+	</organization>
 
+	<!-- ************************* -->
+	<!-- Properties of the project -->
+	<!-- ************************* -->
+	<properties>
+		<!-- La variable STI -->
+		<jcertif>JCertif</jcertif>
+		<!-- L'encoding du projet -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- JUnit version -->
+		<junit.version>4.8.1</junit.version>
+		<!-- JDK version -->
+		<jdk.version>1.6</jdk.version>
+		<java.source.version>1.6</java.source.version>
+		<java.target.version>1.6</java.target.version>
+		<!-- Android SDK version -->
+		<android.sdk.version>15</android.sdk.version>
+		<!-- Android jar dependency -->
+		<google.com.android.version>2.3.1</google.com.android.version>
+		<!-- AkquinetVersion -->
+		<de.akquinet.android.androlog.version>2.3.1</de.akquinet.android.androlog.version>
+		<!-- ORMLite -->
+		<ormLite.version>4.23</ormLite.version>
+		<!-- Jackson -->
+		<jackson-mapper-asl.version>1.9.5</jackson-mapper-asl.version>
+		<!-- For Proguard dependence to joda-time -->
+		<joda-time-1.6.2.jar.path>${project.basedir}/../libforproguard/joda-time-1.6.2.jar</joda-time-1.6.2.jar.path>
+	</properties>
+
+
+	<!-- ******************************************************** -->
+	<!-- The following Properties have to be set set in the setting.xml files -->
+	<!--********************************************************* -->
+	<!--<properties> -->
+	<!--The path to the Android SDK -->
+	<!-- <android.sdk.path>D:\android-sdk_r08-windows\android-sdk-windows</android.sdk.path> -->
+	<!--version of the plugin defined in the setting file (here so) -->
+	<!--<jayway.plugin.version>2.8.3</jayway.plugin.version> -->
+	<!--<proguard.plugin.version>2.0.4</proguard.plugin.version> -->
+	<!--<sf.proguard.version>4.4</sf.proguard.version> -->
+	<!--<jarsigner.plugin.version>1.2</jarsigner.plugin.version> -->
+	<!--<build.helper.plugin.version>1.5</build.helper.plugin.version> -->
+	<!--</properties> -->
+
+	<!-- ******************************************************** -->
+	<!-- The list of AVD has to be done in the setting.xml file -->
+	<!--********************************************************* -->
+
+	<modules>
+		<module>project-jcertifmobile-app</module>
+		<module>project-jcertifmobile-test</module>
+	</modules>
+
+	<!--Dependencies inherited -->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>com.google.android</groupId>
 				<artifactId>android</artifactId>
-				<version>
-                 2.1.2
-                                </version>
+				<version>${google.com.android.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.google.android</groupId>
 				<artifactId>android-test</artifactId>
-				<version>
-                 2.1.2
-                                </version>
-				<scope>provided</scope>
+				<version>${google.com.android.version}</version>
 			</dependency>
-
 			<!-- Androlog is a logging and reporting library for Android -->
 			<dependency>
 				<groupId>de.akquinet.android.androlog</groupId>
 				<artifactId>androlog</artifactId>
 				<version>1.0.4</version>
 			</dependency>
-
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.8.1</version>
-				<scope>provided</scope>
-			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<build>
+		<!-- Plugins (those that add task in the maven's process life) inherited -->
 		<pluginManagement>
 			<plugins>
+				<!-- Plugin de la compilation Android du projet -->
 				<plugin>
 					<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 					<artifactId>android-maven-plugin</artifactId>
-					<version>3.1.0</version>
+					<version>${jayway.plugin.version}</version>
+					<inherited>true</inherited>
+					<configuration>
+						<androidManifestFile>${project.basedir}/AndroidManifest.xml
+						</androidManifestFile>
+						<assetsDirectory>${project.basedir}/assets</assetsDirectory>
+						<resourceDirectory>${project.basedir}/res</resourceDirectory>
+						<nativeLibrariesDirectory>${project.basedir}/src/main/native
+						</nativeLibrariesDirectory>
+						<sdk>
+							<platform>${android.sdk.version}</platform>
+						</sdk>
+						<deleteConflictingFiles>true</deleteConflictingFiles>
+						<undeployBeforeDeploy>true</undeployBeforeDeploy>
+					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>net.sf.proguard</groupId>
+							<artifactId>proguard-base</artifactId>
+							<version>${proguard.version}</version>
+						</dependency>
+					</dependencies>
 				</plugin>
+				<!-- Plugin de la compilation Java du projet -->
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>2.3.2</version>
+					<inherited>true</inherited>
 					<configuration>
-						<source>1.6</source>
-						<target>1.6</target>
+						<source>${java.source.version}</source>
+						<target>${java.target.version}</target>
 					</configuration>
+				</plugin>
+
+				<!-- Plugin utiliser pour effectuer une release d'un projet avec maven -->
+				<plugin>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>2.1</version>
+					<configuration>
+						<autoVersionSubmodules>true</autoVersionSubmodules>
+					</configuration>
+				</plugin>
+				<!-- Plugin pour la signature Android du projet -->
+				<plugin>
+					<artifactId>maven-jarsigner-plugin</artifactId>
+					<version>${jarsigner.plugin.version}</version>
+					<inherited>true</inherited>
+					<configuration>
+						<removeExistingSignatures>true</removeExistingSignatures>
+						<archiveDirectory />
+						<archive>${project.build.directory}/${project.build.finalName}.${project.packaging}
+						</archive>
+						<verbose>true</verbose>
+						<certs>true</certs>
+						<keystore>${sign.keystore}</keystore>
+						<alias>${sign.alias}</alias>
+						<storepass>${sign.storepass}</storepass>
+						<keypass>${sign.keypass}</keypass>
+					</configuration>
+				</plugin>
+				<!-- Plugin de l'optimisation Android du projet -->
+				<plugin>
+					<groupId>com.pyx4me</groupId>
+					<artifactId>proguard-maven-plugin</artifactId>
+					<version>${proguard.plugin.version}</version>
+					<dependencies>
+						<dependency>
+							<groupId>net.sf.proguard</groupId>
+							<artifactId>proguard</artifactId>
+							<version>${proguard.version}</version>
+							<scope>runtime</scope>
+						</dependency>
+					</dependencies>
+					<configuration>
+						<proguardVersion>${proguard.version}</proguardVersion>
+					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-enforcer-plugin</artifactId>
+					<version>1.0</version>
+					<executions>
+						<execution>
+							<id>enforce-signing-properties</id>
+							<phase>install:install</phase>
+							<goals>
+								<goal>enforce</goal>
+							</goals>
+							<configuration>
+								<rules>
+									<requireProperty>
+										<property>jarsigner.plugin.version</property>
+										<message>The jarsigner.plugin.version property is missing. It
+											must
+											contain the path to the keystore used to sign the
+											application.</message>
+									</requireProperty>
+								</rules>
+							</configuration>
+						</execution>
+					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
-	<modules>
-		<module>project-jcertifmobile-app</module>
-		<module>project-jcertifmobile-test</module>
-	</modules>
+
+	<profiles>
+		<profile>
+			<id>android-release</id>
+			<activation>
+				<property>
+					<name>android-release</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-enforcer-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>enforce-signing-properties</id>
+								<goals>
+									<goal>enforce</goal>
+								</goals>
+								<configuration>
+									<rules>
+										<requireProperty>
+											<property>sign.keystore</property>
+											<message>The 'sign.keystore' property is missing. It must
+												contain the path to the keystore used to sign the
+												application.</message>
+										</requireProperty>
+										<requireFilesExist>
+											<files>
+												<file>${sign.keystore}</file>
+											</files>
+											<message>The 'sign.keystore' property does not point to a
+												file. It must contain the path to the keystore used to sign
+												the application.</message>
+										</requireFilesExist>
+										<requireProperty>
+											<property>sign.alias</property>
+											<message>The 'sign.alias' property is missing. It must
+												contain the key alias used to sign the application.
+											</message>
+										</requireProperty>
+										<requireProperty>
+											<property>sign.storepass</property>
+											<message>The 'sign.storepass' property is missing. It must
+												contain the password of the keystore used to sign the
+												application.
+											</message>
+										</requireProperty>
+										<requireProperty>
+											<property>sign.keypass</property>
+											<message>The 'sign.keypass' property is missing. It must
+												contain the password of the key used to sign the
+												application.</message>
+										</requireProperty>
+									</rules>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+				</plugins>
+			</build>
+		</profile>
+
+	</profiles>
+
 </project>
