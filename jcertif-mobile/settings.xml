@@ -16,7 +16,6 @@
 
 	<activeProfiles>
 		<activeProfile>android-project</activeProfile>
-		<activeProfile>Google2Dot2Level8</activeProfile>
 	</activeProfiles>
 	<profiles>
 		<!--The profile that must be active for all Android project-->
@@ -48,7 +47,7 @@
 				<!--D:\Eclipse\eclipsex64_Android_Custo\android-sdk_r10-windows\android-sdk-windows-->
          <!--C:\Program Files (x86)\Android\android-sdk-windows  -->
 				<!--version of the plugin defined in the setting file (here so)-->
-				<!-- *******************2.8.4************************************** -->
+				<!-- ********************************************************* -->
 				<jayway.plugin.version>3.2.0</jayway.plugin.version>
 				<proguard.plugin.version>2.0.4</proguard.plugin.version>
 				<proguard.version>4.4</proguard.version>
@@ -64,22 +63,11 @@
 		-->
 		<!-- **********************************************************	-->
 		<profile>
-			<id>Google2Dot2Level8</id>
+			<id>WithEmulator</id>
 			<activation>
 				<!--Just set the variable release to true-->
 				<activeByDefault>true</activeByDefault>
 			</activation>
-			<properties>
-				<!--The path to the Android SDK-->
-				<avd-name>Google2Dot2Level8</avd-name>
-			</properties>
-		</profile>
-		<profile>
-			<id>Google2Dot3Level9</id>
-			<properties>
-				<!--The path to the Android SDK-->
-				<avd-name>Google2Dot3Level9</avd-name>
-			</properties>
 		</profile>
 
 		<!-- **********************************************************	-->
@@ -100,10 +88,10 @@
 			</activation>
 			<!--Needed properties to sign the application using the good key-->
 			<properties>
-				<sign.keystore>D:\EclipseWorkspaceTutoAndroid\AndroidKeyStoreSTI\KeyStore\androidKeyStore</sign.keystore>
-				<sign.alias>tutoSti</sign.alias>
-				<sign.storepass>sti4admin</sign.storepass>
-				<sign.keypass>sti4admin</sign.keypass>
+				<sign.keystore>Path to JavaKeyStore</sign.keystore>
+				<sign.alias>Name of the Key</sign.alias>
+				<sign.storepass>Password of the store</sign.storepass>
+				<sign.keypass>Password of the key</sign.keypass>
 			</properties>
 
 		</profile>

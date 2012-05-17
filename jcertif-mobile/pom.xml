@@ -68,6 +68,10 @@
 		<jackson-mapper-asl.version>1.9.5</jackson-mapper-asl.version>
 		<!-- For Proguard dependence to joda-time -->
 		<joda-time-1.6.2.jar.path>${project.basedir}/../libforproguard/joda-time-1.6.2.jar</joda-time-1.6.2.jar.path>
+		<!--The path to the Android SDK when the profile WithEmulator is defined -->
+		<!-- You should not use the profile WithEmulator with Jenkins, You must -->
+		<!-- define the emulator on which the test are ran directly in Jenkins -->
+		<avd-name>Google2Dot3Dot3</avd-name>
 	</properties>
 
 
@@ -231,6 +235,65 @@
 	</build>
 
 	<profiles>
+		<profile>
+			<id>WithEmulator</id>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<!-- Plugin de la compilation Android du projet -->
+						<plugin>
+							<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+							<artifactId>android-maven-plugin</artifactId>
+							<version>${jayway.plugin.version}</version>
+							<inherited>true</inherited>
+							<configuration>
+								<androidManifestFile>${project.basedir}/AndroidManifest.xml
+								</androidManifestFile>
+								<assetsDirectory>${project.basedir}/assets</assetsDirectory>
+								<resourceDirectory>${project.basedir}/res</resourceDirectory>
+								<nativeLibrariesDirectory>${project.basedir}/src/main/native
+								</nativeLibrariesDirectory>
+								<sdk>
+									<platform>${android.sdk.version}</platform>
+								</sdk>
+								<emulator>
+									<avd>${avd-name}</avd>
+									<wait>10000</wait>
+									<options>-no-skin</options>
+								</emulator>
+								<deleteConflictingFiles>true</deleteConflictingFiles>
+								<undeployBeforeDeploy>true</undeployBeforeDeploy>
+
+							</configuration>
+							<executions>
+								<execution>
+									<id>startEmulator</id>
+									<phase>initialize</phase>
+									<goals>
+										<goal>emulator-start</goal>
+									</goals>
+								</execution>
+								<!-- If you want to stop emulator please uncomment that line -->
+								<!-- <execution> -->
+								<!-- <id>stopemulator</id> -->
+								<!-- <phase>install</phase> -->
+								<!-- <goals> -->
+								<!-- <goal>emulator-stop</goal> -->
+								<!-- </goals> -->
+								<!-- </execution> -->
+							</executions>
+							<dependencies>
+								<dependency>
+									<groupId>net.sf.proguard</groupId>
+									<artifactId>proguard-base</artifactId>
+									<version>${proguard.version}</version>
+								</dependency>
+							</dependencies>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
 		<profile>
 			<id>android-release</id>
 			<activation>
