@@ -11,7 +11,7 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import com.jcertif.android.Application;
+import com.jcertif.android.JCApplication;
 import com.jcertif.android.transverse.model.Event;
 import com.jcertif.android.transverse.model.Speaker;
 
@@ -36,7 +36,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase sqliteDatabase,
 			ConnectionSource connectionSource) {
-		Log.i(Application.NAME, "Trying to create tables ... ");
+		Log.i(JCApplication.NAME, "Trying to create tables ... ");
 
 		try {
 			// eventDao.isTableExists() is not supported on Android

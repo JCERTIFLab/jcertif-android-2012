@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Margins -->
+    <dimen name="marginLeft">5dp</dimen>
+    <dimen name="marginRight">5dp</dimen>
+    <dimen name="marginTop">5dp</dimen>
+    <dimen name="marginBottom">5dp</dimen>
+    <dimen name="marginLeftLarge">15dp</dimen>
+    <dimen name="marginRightLarge">15dp</dimen>
+    <dimen name="marginTopLarge">15dp</dimen>
+    <dimen name="marginBottomLarge">15dp</dimen>
+
+    <!-- Padding -->
+    <dimen name="paddingLeft">5dp</dimen>
+    <dimen name="paddingRight">5dp</dimen>
+    <dimen name="paddingTop">5dp</dimen>
+    <dimen name="paddingBottom">5dp</dimen>
+
+    <!-- Text Size -->
+    <dimen name="textSize">15sp</dimen>
+    <dimen name="textSizeLarge">18sp</dimen>
+    <dimen name="textSizeXLarge">24sp</dimen>
+
+    <!-- Button Dimsension -->
+    <dimen name="buttonHeight">40dip</dimen>
+    <dimen name="buttonWidth">120dip</dimen>
+
+    <!-- Shape dimensions -->
+    <dimen name="corner_button_Size">150dp</dimen>
+    <dimen name="stroke_buttonSize">8dp</dimen>
+    <dimen name="shape_stroke_Size">1dp</dimen>
+    <dimen name="shape_corner_Size">10dp</dimen>
+
+</resources>

@@ -125,38 +125,22 @@ public class User {
 		this.pays = pays;
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 *
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("User [civilite=");
-		builder.append(civilite);
-		builder.append(", nom=");
-		builder.append(nom);
-		builder.append(", prenom=");
-		builder.append(prenom);
-		builder.append(", email=");
-		builder.append(email);
-		builder.append(", password=");
-		builder.append(password);
-		builder.append(", role=");
-		builder.append(role);
-		builder.append(", type=");
-		builder.append(typeUser);
-		builder.append(", compagnie=");
-		builder.append(compagnie);
-		builder.append(", siteWeb=");
-		builder.append(siteWeb);
-		builder.append(", telephoneFixe=");
-		builder.append(telFixe);
-		builder.append(", telephoneMobile=");
-		builder.append(telMobile);
-		builder.append(", ville=");
-		builder.append(ville);
-		builder.append(", pays=");
-		builder.append(pays);
-		return builder.toString();
-	}*/
+	
+	/**
+	 * This method should be used to the user's parameters in SharedPreference
+	 * @return he key to use
+	 */
+	public int getUserKey() {
+		if(email!=null&&password!=null) {
+			return (email.hashCode()+password.hashCode())/2;
+		}else if(email!=null||password!=null) {
+			if(email!=null) {
+				return email.hashCode();
+			}else {
+				return password.hashCode();
+			}
+		}else {
+			return 0;
+		}
+	}
 }

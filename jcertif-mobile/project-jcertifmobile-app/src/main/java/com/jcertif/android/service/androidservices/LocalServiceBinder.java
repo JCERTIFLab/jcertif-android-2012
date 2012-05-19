@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import android.os.Binder;
 import android.util.Log;
 
-import com.jcertif.android.Application;
+import com.jcertif.android.JCApplication;
 import com.jcertif.android.com.net.RestClient;
 import com.jcertif.android.com.net.RestClient.RequestMethod;
 import com.jcertif.android.service.androidservices.State.Operation;
@@ -54,11 +54,11 @@ public class LocalServiceBinder<T> extends Binder {
 
 		@Override
 		protected void onPreExecute() {
-			Log.i(Application.NAME, this.getClass().getSimpleName()
+			Log.i(JCApplication.NAME, this.getClass().getSimpleName()
 					+ " : pre executing ...");
 			if (state.getOperation().equals(Operation.LOAD)) {
 				this.jCertifDialog = JCertifDialog.show(applicationContext,
-						Application.NAME, "Getting data...", true);
+						JCApplication.NAME, "Getting data...", true);
 			}
 		}
 
@@ -101,8 +101,14 @@ public class LocalServiceBinder<T> extends Binder {
 	
     public String authenticateUser() throws Exception{
     	String responseString = null;
-		String url = Application.AUTHENTICATION_URL + "/" + Application.EMAIL + "/" + Application.PASSWORD + "/2";
-		RestClient client = new RestClient(url);
+    	StringBuilder url=new StringBuilder( JCApplication.getInstance().getUrlFactory().getAuthenticationUrl());
+		 url.append( "/");
+		 url.append( JCApplication.getInstance().getUser().getEmail());
+		 url.append( "/" );
+		 url.append( "/");
+		 url.append( JCApplication.getInstance().getUser().getPassword());
+		 url.append( "/2");
+		RestClient client = new RestClient(url.toString());
 		try {
 			client.Execute(RequestMethod.GET);
 			responseString = client.getResponse();
@@ -115,9 +121,9 @@ public class LocalServiceBinder<T> extends Binder {
     } 
     
     public String registerUser(User user) throws Exception{
+    	//TODO Pas de parametre ? J'ai raté quelque chose ou il manque un truc ?
 		String responseString = null;
-		String url = Application.REGISTER_URL;
-
+		String url = JCApplication.getInstance().getUrlFactory().getRegisterUrl();
 		RestClient client = new RestClient(url);
 		try {
 			client.Execute(RequestMethod.POST);
@@ -137,7 +143,7 @@ public class LocalServiceBinder<T> extends Binder {
 	 */
 	public String getEventList() throws Exception {
 		String responseString = null;
-		String url = Application.EVENT_URL;
+		String url =JCApplication.getInstance().getUrlFactory().getEventUrl();
 
 		RestClient client = new RestClient(url);
 		try {
@@ -158,7 +164,7 @@ public class LocalServiceBinder<T> extends Binder {
 	 */
 	public String getSpeakerList() throws Exception {
 		String responseString = null;
-		String url = Application.SPEAKER_URL;
+		String url = JCApplication.getInstance().getUrlFactory().getSpeakerUrl();
 
 		RestClient client = new RestClient(url);
 		try {

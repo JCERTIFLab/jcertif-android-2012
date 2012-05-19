@@ -15,7 +15,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
-import com.jcertif.android.Application;
+import com.jcertif.android.JCApplication;
 import com.jcertif.android.transverse.model.Speaker;
 
 /**
@@ -53,7 +53,8 @@ public class SpeakerProvider {
 	public void saveAll(List<Speaker> speakers) throws SQLException{
 		for (Speaker speaker : speakers) {
 			mSpeakerDao.createOrUpdate(speaker);
-			saveSpeakerPicture(Application.BASE_PICTURE_URL,speaker.urlPhoto);			
+			String urlSpeaker=JCApplication.getInstance().getUrlFactory().getSpeakerUrl();
+			saveSpeakerPicture(urlSpeaker,speaker.urlPhoto);			
 		}
 	}
 

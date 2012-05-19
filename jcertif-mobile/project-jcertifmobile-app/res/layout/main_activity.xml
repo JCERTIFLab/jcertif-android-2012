@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/violet"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <include layout="@layout/jcertif_header" />
+
+    <TableLayout
+        android:id="@+id/titleTableLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/marginTop" >
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/btnCalendrier"
+                style="@style/btn_style"
+                android:text="Calendrier" />
+
+            <Button
+                android:id="@+id/btnAgenda"
+                style="@style/btn_style"
+                android:text="Agenda" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/btnSpeaker"
+                style="@style/btn_style"
+                android:text="Speaker" />
+
+            <Button
+                android:id="@+id/btnSession"
+                style="@style/btn_style"
+                android:text="Session" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text=" " />
+
+            <Button
+                android:id="@+id/btnInfo"
+                style="@style/btn_style"
+                android:text="Info" />
+        </TableRow>
+    </TableLayout>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

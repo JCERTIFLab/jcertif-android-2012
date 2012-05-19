@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="url_base">http://facade.jcertif.cloudbees.net/api</string>
+    <string name="url_base_picture">http://pics.jcertif.cloudbees.net/img/2012</string>
+    <string name="url_suffixe_speaker">/speaker/list/2</string>
+    <string name="url_suffixe_event">/event/list/2</string>
+    <string name="url_suffixe_authentification">/user/connect</string>
+    <string name="url_suffixe_register">/user/create</string>
+
+</resources>

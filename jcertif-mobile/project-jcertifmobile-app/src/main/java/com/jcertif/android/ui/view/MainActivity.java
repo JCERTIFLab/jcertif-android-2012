@@ -12,14 +12,14 @@ import android.widget.Button;
  * @author Yakhya DABO
  *
  */
-public class MenuView extends Activity{
+public class MainActivity extends Activity{
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         		
-        setContentView(R.layout.menu);
+        setContentView(R.layout.main_activity);
         
         Button btnSpeaker = (Button) findViewById(R.id.btnSpeaker);
         btnSpeaker.setOnClickListener(new OnClickListener() {

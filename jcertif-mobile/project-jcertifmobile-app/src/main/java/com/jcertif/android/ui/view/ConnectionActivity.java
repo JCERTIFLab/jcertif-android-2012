@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.jcertif.android.Application;
+import com.jcertif.android.JCApplication;
 import com.jcertif.android.service.androidservices.JCertifService;
 import com.jcertif.android.service.androidservices.State;
 import com.jcertif.android.service.androidservices.StateAdapter;
@@ -27,7 +27,6 @@ import com.jcertif.android.transverse.model.User;
 /**
  * 
  * @author Yakhya DABO
- * 
  */
 public class ConnectionActivity extends Activity {
 	/**
@@ -84,8 +83,8 @@ public class ConnectionActivity extends Activity {
 		btnConnect.setOnClickListener(new OnClickListener() {
 			public void onClick(View view) {
 				if ((txtEmail.getText().length() > 0) && ((txtPassword.getText().length() > 0))) {
-					Application.EMAIL = txtEmail.getText().toString();
-					Application.PASSWORD = txtPassword.getText().toString();
+//					JCApplication.getInstance().getUser(). = txtEmail.getText().toString();
+//					JCApplication.PASSWORD = txtPassword.getText().toString();
 					
 					// ProgressDialog doesn't like getApplicationContext(). 
 					// That's why we use LoginView.this as the context parameter
@@ -106,7 +105,7 @@ public class ConnectionActivity extends Activity {
 	}
 
 	private void displayMenuView() {
-		Intent intentView = new Intent(getApplicationContext(), MenuView.class);
+		Intent intentView = new Intent(getApplicationContext(), MainActivity.class);
 		startActivityForResult(intentView, 0);
 	}
 
@@ -141,11 +140,11 @@ public class ConnectionActivity extends Activity {
 				String password2 = ((EditText) dialog.findViewById(R.id.txtPasswordConfirmation))
 						.getText().toString();
 
-				Log.i(Application.NAME, "pwd1 : " + password1);
-				Log.i(Application.NAME, "pwd2 : " + password2);
+				Log.i(JCApplication.NAME, "pwd1 : " + password1);
+				Log.i(JCApplication.NAME, "pwd2 : " + password2);
 
-				Log.i(Application.NAME, "email1 : " + email1);
-				Log.i(Application.NAME, "email2 : " + email2);
+				Log.i(JCApplication.NAME, "email1 : " + email1);
+				Log.i(JCApplication.NAME, "email2 : " + email2);
 
 				if (password1.equals(password2) && email1.equals(email2)) {
 					user.setEmail(email1);
@@ -206,7 +205,7 @@ public class ConnectionActivity extends Activity {
 				user.setRole(spnRole.getSelectedItem().toString());
 				user.setType(spnType.getSelectedItem().toString());
 				registerUser(user);
-				Log.i(Application.NAME, user.toString());
+				Log.i(JCApplication.NAME, user.toString());
 				dialog.cancel();
 			}
 
@@ -221,7 +220,7 @@ public class ConnectionActivity extends Activity {
 		try {
 //			String data = mService.registerUser(user);
 //
-//			Log.i(Application.NAME, "User data : " + data);
+//			Log.i(JCApplication.NAME, "User data : " + data);
 
 			/*
 			 * if (!"null".equalsIgnoreCase(data)){ saveCredentials();
@@ -240,7 +239,7 @@ public class ConnectionActivity extends Activity {
 
 	private boolean loadCredentials() {
 		// Get preferences
-		SharedPreferences preferences = getSharedPreferences(Application.NAME, MODE_PRIVATE);
+		SharedPreferences preferences = getSharedPreferences(JCApplication.NAME, MODE_PRIVATE);
 		boolean loaded = false;
 
 		// Load email
@@ -265,7 +264,7 @@ public class ConnectionActivity extends Activity {
 
 	private void saveCredentials() {
 		// Get preferences
-		SharedPreferences preferences = getSharedPreferences(Application.NAME, MODE_PRIVATE);
+		SharedPreferences preferences = getSharedPreferences(JCApplication.NAME, MODE_PRIVATE);
 		Editor editor = preferences.edit();
 
 		// Store email
@@ -287,7 +286,7 @@ public class ConnectionActivity extends Activity {
 		@Override
 		public String getData() throws Exception {
 			String data = getBinder().authenticateUser();
-			Log.i(Application.NAME,"Login : " +  data);
+			Log.i(JCApplication.NAME,"Login : " +  data);
 			return data;
 		}
 	}
@@ -297,7 +296,7 @@ public class ConnectionActivity extends Activity {
         
         @Override
         public void onDataAvailable(String data) {
-        	Log.i(Application.NAME, "Login result : [" + data +"]");
+        	Log.i(JCApplication.NAME, "Login result : [" + data +"]");
 
         	if  (!"null".equalsIgnoreCase(data)){
         		saveCredentials();

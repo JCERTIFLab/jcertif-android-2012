@@ -2,7 +2,7 @@
 <resources>
 
     <!-- General -->
-    <string name="hello">Hello World, JCertifMobileActivity!</string>
+    <string name="hello">Bienvenue</string>
     <string name="app_name">JCertif Mobile</string>
     <string name="search_description">Search patient</string>
     <string name="search_hint">A patient</string>
@@ -14,52 +14,54 @@
     <string name="speakerBioLabel">Biographie</string>
     <string name="speakerCompanyLabel">Compagnie : </string>
 
-        <!-- Session List -->
-    <string name="session_list_title">Présentations</string>    
-    
-    <!-- Session detail -->
-    <string name="session_detail_speaker_title">Présentateur</string>        
+    <!-- Session List -->
+    <string name="session_list_title">Présentations</string>
 
-	<!-- Connection -->    
-	<string name="emailLabel">Email</string>
-	<string name="emailConfirmationLabel">Confirmation Email</string>
+    <!-- Session detail -->
+    <string name="session_detail_speaker_title">Présentateur</string>
+
+    <!-- Connection -->
+    <string name="emailLabel">Email</string>
+    <string name="emailConfirmationLabel">Confirmation Email</string>
     <string name="passwordLabel">Mot de passe </string>
     <string name="passwordConfirmationLabel">Confirmation Mot de passe </string>
     <string name="subscriptionLabel">S\'ENREGISTRER</string>
-    
+    <string name="connectionEmptyElementErrorMessage">Erreur: Email et/ou Password vide.</string>
+
     <!-- Account profile dialogs -->
     <string name="accountProfileLabel">Creation compte [profile] </string>
     <string name="accountInformationLabel">Creation compte [information] </string>
+    <string name="accountEmailErrorMessage">Erreur: Les emails sont différents.</string>
+    <string name="accountPasswordErrorMessage">Erreur: Les passwords sont différents.</string>
 
-	<!-- Buttons -->
-	<string name="quitButtonLabel">QUITTER</string>
+    <!-- Buttons -->
+    <string name="quitButtonLabel">QUITTER</string>
     <string name="connectButtonLabel">CONNECTER</string>
     <string name="saveButtonLabel">Enregistrer</string>
     <string name="cancelButtonLabel">Annuler</string>
     <string name="nextButtonLabel">Next >> </string>
-    
+
     <!-- Account information dialogs -->
     <string name="firstNameLabel">Prénom </string>
     <string name="lastNameLabel">Nom </string>
-    
-	<!-- Error Message -->
-	<string name ="alertDialogTitle">JCertif Mobile Error</string>
-	<string name="authenticationErrorMessage">Authentication failed !</string>
-	    
-    <!-- Spinners -->    
+
+    <!-- Waiting Dialog -->
+    <string name="waitingDialogTitle">Traitement en cours</string>
+    <string name="wiatingDialogMessage">Attendez qu\'il se termine.</string>
+
+    <!-- Spinners -->
     <string-array name="civility_array">
         <item>Mr</item>
         <item>M</item>
         <item>Mlle</item>
     </string-array>
-    
     <string-array name="role_array">
         <item>Role 1</item>
         <item>Role 2</item>
     </string-array>
-    
-	<string-array name="type_array">
+    <string-array name="type_array">
         <item>Type 1</item>
         <item>Type 2</item>
     </string-array>
+
 </resources>

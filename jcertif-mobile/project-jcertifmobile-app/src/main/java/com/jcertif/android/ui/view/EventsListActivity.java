@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.jcertif.android.Application;
+import com.jcertif.android.JCApplication;
 import com.jcertif.android.com.parsing.jackson.service.EventsController;
 import com.jcertif.android.dao.ormlight.EventProvider;
 import com.jcertif.android.service.androidservices.JCertifService;
@@ -101,7 +101,7 @@ public class EventsListActivity extends ListActivity {
 			
 			if (OK_WEB) {
 				OK_WEB = false;
-				Log.i(Application.NAME, "EventListActivity : getting data from WS ");
+				Log.i(JCApplication.NAME, "EventListActivity : getting data from WS ");
 				
 				String json = getBinder().getEventList();
 				EventsController eventsController = new EventsController(json);
@@ -109,13 +109,13 @@ public class EventsListActivity extends ListActivity {
 				events = eventsController.findAll();
 				eventsProvider.saveEvents(events);
 				
-				Log.i(Application.NAME, "EventListActivity : " + events.toString());
+				Log.i(JCApplication.NAME, "EventListActivity : " + events.toString());
 			}else{
-				Log.e(Application.NAME, "EventListActivity : getting data from DB");
+				Log.e(JCApplication.NAME, "EventListActivity : getting data from DB");
 				events = eventsProvider.getAllEvents();
-				Log.i(Application.NAME, "EventListActivity : " + events.toString());
+				Log.i(JCApplication.NAME, "EventListActivity : " + events.toString());
 			}
-			Log.i(Application.NAME, "EventListActivity : " + events.toString());
+			Log.i(JCApplication.NAME, "EventListActivity : " + events.toString());
 			
 			return events;
 		}
@@ -136,7 +136,7 @@ public class EventsListActivity extends ListActivity {
 
 		@Override
 		public void onError(Throwable t) {
-			Log.e(Application.NAME, t.getMessage());
+			Log.e(JCApplication.NAME, t.getMessage());
 			AlertDialog.Builder builder = new AlertDialog.Builder(
 					EventsListActivity.this);
 			builder.setTitle(R.string.alertDialogTitle)

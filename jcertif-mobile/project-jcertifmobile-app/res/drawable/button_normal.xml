@@ -1,0 +1,23 @@
+<!--
+ * <ul>
+ * <li>SensorsListTuto</li>
+ * <li>com.android2ee.android.tuto.sensorlist</li>
+ * <li>17 Novembre 2011</li>
+ * 
+ * <li>======================================================</li>
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <stroke
+        android:width="@dimen/stroke_buttonSize"
+        android:color="@color/button_border" />
+
+    <gradient
+        android:angle="270"
+        android:endColor="@color/white"
+        android:startColor="@color/btn_background"
+        android:type="linear" />
+
+    <corners android:radius="@dimen/corner_button_Size" />
+
+</shape>

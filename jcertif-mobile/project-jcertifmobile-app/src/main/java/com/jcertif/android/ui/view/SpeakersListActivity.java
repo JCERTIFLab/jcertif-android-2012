@@ -12,7 +12,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
-import com.jcertif.android.Application;
+import com.jcertif.android.JCApplication;
 import com.jcertif.android.com.parsing.jackson.service.SpeakersController;
 import com.jcertif.android.dao.ormlight.SpeakerProvider;
 import com.jcertif.android.service.androidservices.JCertifService;
@@ -96,7 +96,7 @@ public class SpeakersListActivity extends ListActivity {
 				selectedSpeaker = speakers.get(_index);
 				intentForDisplay.putExtra("speakerId", selectedSpeaker.id);
 				startActivity(intentForDisplay);
-				Log.i(Application.NAME + this.getClass(), "Selected Speaker : " + selectedSpeaker.id);
+				Log.i(JCApplication.NAME + this.getClass(), "Selected Speaker : " + selectedSpeaker.id);
 			}
 			
 		});
@@ -111,7 +111,7 @@ public class SpeakersListActivity extends ListActivity {
 			
 			if (OK_WEB) {
 				OK_WEB = false;
-				Log.i(Application.NAME, "SpeakerListActivity : getting data from WS ");
+				Log.i(JCApplication.NAME, "SpeakerListActivity : getting data from WS ");
 				
 				String json = getBinder().getSpeakerList();
 				SpeakersController speakersController = new SpeakersController(json);
@@ -119,13 +119,13 @@ public class SpeakersListActivity extends ListActivity {
 				speakers = speakersController.findAll();
 				speakersProvider.saveAll(speakers);
 				
-				Log.i(Application.NAME, "SpeakerListActivity : " + speakers.toString());
+				Log.i(JCApplication.NAME, "SpeakerListActivity : " + speakers.toString());
 			}else{
-				Log.e(Application.NAME, "SpeakerListActivity : getting data from DB");
+				Log.e(JCApplication.NAME, "SpeakerListActivity : getting data from DB");
 				speakers = speakersProvider.findAll();
-				Log.i(Application.NAME, "SpeakerListActivity : " + speakers.toString());
+				Log.i(JCApplication.NAME, "SpeakerListActivity : " + speakers.toString());
 			}
-			Log.i(Application.NAME, "SpeakerListActivity : " + speakers.toString());
+			Log.i(JCApplication.NAME, "SpeakerListActivity : " + speakers.toString());
 			
 			return speakers;
 		}
@@ -145,7 +145,7 @@ public class SpeakersListActivity extends ListActivity {
 
 		@Override
 		public void onError(Throwable t) {
-			Log.e(Application.NAME, t.getMessage());
+			Log.e(JCApplication.NAME, t.getMessage());
 			AlertDialog.Builder builder = new AlertDialog.Builder(
 					SpeakersListActivity.this);
 			builder.setTitle(R.string.alertDialogTitle)

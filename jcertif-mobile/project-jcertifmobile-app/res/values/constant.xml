@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- SharedPreferences Constants -->
+    <string name="shhash">hashcode</string>
+    <string name="shEmail">email</string>
+    <string name="shPassword">password</string>
+    <string name="shValidUser">validuser</string>
+    <string name="shCivilite">civilite</string>
+    <string name="shCompagnie">compagnie</string>
+    <string name="shNom">nom</string>
+    <string name="shPays">pays</string>
+    <string name="shPrenom">prenom</string>
+    <string name="shRole">role</string>
+    <string name="shSiteweb">siteweb</string>
+    <string name="shTelFixe">telfixe</string>
+    <string name="shTelMobile">telmobile</string>
+    <string name="shType">type</string>
+    <string name="shVille">ville</string>
+
+    <!-- Service And associatedIntents Constants -->
+    <string name="servAuthentIntentExtraName">response</string>
+
+</resources>

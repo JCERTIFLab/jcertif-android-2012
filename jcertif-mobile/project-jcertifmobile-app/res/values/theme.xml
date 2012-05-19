@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Style for Button -->
+    <!-- ************************ -->
+
+    <style name="root_style">
+        <item name="android:paddingLeft">@dimen/paddingLeft</item>
+        <item name="android:paddingRight">@dimen/paddingRight</item>
+        <item name="android:paddingTop">@dimen/paddingTop</item>
+        <item name="android:paddingBottom">@dimen/paddingBottom</item>
+        <item name="android:layout_marginLeft">@dimen/marginLeft</item>
+        <item name="android:layout_marginRight">@dimen/marginRight</item>
+        <item name="android:layout_marginBottom">@dimen/marginBottom</item>
+        <item name="android:layout_marginTop">@dimen/marginTop</item>
+    </style>
+
+    <!-- Style for TextView -->
+    <!-- ************************ -->
+    <style name="txv_style" parent="root_style">
+        <item name="android:textSize">@dimen/textSize</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:background">@color/background</item>
+        <item name="android:textColor">@color/text_frgd</item>
+    </style>
+
+    <!-- Style for TextView displaying errors -->
+    <!-- ************************ -->
+    <style name="error_message_style" parent="txv_style">
+        <item name="android:background">@color/yellow </item>
+        <item name="android:textColor">@color/red</item>
+    </style>
+
+    <!-- Style for Title -->
+    <!-- ************************ -->
+    <style name="txv_title" parent="txv_style">
+        <item name="android:shadowDx">1.0</item>
+        <item name="android:shadowDy">2.0</item>
+        <item name="android:shadowRadius">5.0</item>
+        <item name="android:shadowColor">@color/background</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/textSizeLarge</item>
+        <item name="android:textColor">@color/deep_blue</item>
+    </style>
+
+    <!-- Style for JCertif Banner Title -->
+    <!-- ************************ -->
+    <style name="txv_banner_title" parent="txv_title">
+        <item name="android:shadowDx">1.0</item>
+        <item name="android:shadowDy">2.0</item>
+        <item name="android:shadowRadius">5.0</item>
+        <item name="android:shadowColor">@color/deep_blue</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/textSizeXLarge</item>
+        <item name="android:textColor">@color/violet_bright</item>
+    </style>
+
+    <!-- Style for EditText -->
+    <!-- ************************ -->
+    <style name="edt_style" parent="txv_style">
+        <item name="android:textSize">@dimen/textSizeLarge</item>
+        <item name="android:background">@color/edt_background</item>
+        <item name="android:textColor">@color/edt_frgd</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <!-- Style for Button -->
+    <!-- ************************ -->
+    <style name="btn_style" parent="@android:style/Widget.Button">
+        <item name="android:layout_width">@dimen/buttonWidth</item>
+        <item name="android:layout_height">@dimen/buttonHeight</item>
+        <item name="android:background">@drawable/button</item>
+        <item name="android:textColor">@color/btn_frgd</item>
+        <item name="android:paddingLeft">@dimen/paddingLeft</item>
+        <item name="android:paddingRight">@dimen/paddingRight</item>
+        <item name="android:paddingTop">@dimen/paddingTop</item>
+        <item name="android:paddingBottom">@dimen/paddingBottom</item>
+        <item name="android:layout_marginLeft">@dimen/marginLeft</item>
+        <item name="android:layout_marginRight">@dimen/marginRight</item>
+        <item name="android:layout_marginBottom">@dimen/marginBottom</item>
+        <item name="android:layout_marginTop">@dimen/marginTop</item>
+    </style>
+
+    <!-- Style for ListArray -->
+    <style name="cocoaheadsListOdd" parent="txv_style">
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="cocoaheadsList" parent="txv_style">
+        <item name="android:textStyle">normal</item>
+    </style>
+
+</resources>

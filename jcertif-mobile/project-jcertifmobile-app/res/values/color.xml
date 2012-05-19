@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ <ul>
+  <li>CocoaHeadsSimple</li>
+  <li>com.android2ee.tuto.simple.cocoaheads</li>
+  <li>3 mai 2012</li>
+  
+  <li>======================================================</li>
+ 
+  <li>Projet : Mathias Seguy Project</li>
+  <li>Produit par MSE.</li>
+ 
+ /
+  <ul>
+  Android Tutorial, An <strong>Android2EE</strong>'s project.</br> 
+  Produced by <strong>Dr. Mathias SEGUY</strong>.</br>
+  Delivered by <strong>http://android2ee.com/</strong></br>
+   Belongs to <strong>Mathias Seguy</strong></br>
+ </br>
+  This code is free for any usage except training and can't be distribute.</br>
+  The distribution is reserved to the site <strong>http://android2ee.com</strong>.</br>
+  The intelectual property belongs to <strong>Mathias Seguy</strong>.</br>
+  <em>http://mathias-seguy.developpez.com/</em></br> </br>
+  
+  </br>
+   Ce code est libre de toute utilisation mais n'est pas distribuable.</br>
+   Sa distribution est reservée au site <strong>http://android2ee.com</strong>.</br> 
+   Sa propriété intellectuelle appartient à <strong>Mathias Seguy</strong>.</br>
+   <em>http://mathias-seguy.developpez.com/</em></br> </br>
+  </br>
+ /
+-->
+<resources>
+
+    <!-- Colors To use -->
+    <!-- ****************** -->
+    <color name="red">#FFFF6633</color>
+    <color name="red_pure">#FFFA300C</color>
+    <color name="green">#FF45D929</color>
+    <color name="violet">#FFCCCCFF</color>
+    <color name="violet_bright">#FFD5D5FC</color>
+    <color name="yellow">#88ECEC0B</color>
+    <color name="blue">#880000FF</color>
+    <color name="deep_blue">#FF333399</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Referential colors -->
+    <!-- ****************** -->
+    <!-- Background -->
+    <color name="background">@color/violet</color>
+    <color name="btn_background">@color/blue</color>
+    <color name="btn_background_selected">@color/deep_blue</color>
+    <color name="edt_background">@color/violet_bright</color>
+    <color name="list_background">#990000FF</color>
+    <color name="list_odd_background">#FF92B535</color>
+    <!-- Foreground -->
+    <color name="text_frgd">#FFFFFFFF</color>
+    <color name="edt_frgd">#FF000000</color>
+    <color name="btn_frgd">#FFFFFFFF</color>
+    <color name="list_frgd">#FFFFFFFF</color>
+    <color name="list_odd_frgd">#FFFFFFFF</color>
+    <!-- Shape -->
+    <color name="button_border">@color/blue</color>
+    <color name="button_border_selected">@color/deep_blue</color>
+    <color name="shape_end_color">#FFBBBBFF</color>
+    <color name="shape_start_color">#FF0000FF</color>
+    <color name="shape_stroke_color">#FFFFFFFF</color>
+    <!-- Shape for List -->
+    <color name="selector_stroke_list_color">#FFFF0000</color>
+    <color name="selector_list_background">#99FFFFFF</color>
+    <color name="shape_list_odd_end_color">#FFABFA0E</color>
+
+</resources>

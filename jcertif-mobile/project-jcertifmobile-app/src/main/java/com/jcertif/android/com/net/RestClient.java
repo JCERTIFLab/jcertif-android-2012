@@ -23,7 +23,7 @@ import org.apache.http.protocol.HttpContext;
 
 import android.util.Log;
 
-import com.jcertif.android.Application;
+import com.jcertif.android.JCApplication;
 
 /**
  * REST client encapsulation
@@ -191,7 +191,7 @@ public class RestClient
             responseCode = httpResponse.getStatusLine().getStatusCode();
             message = httpResponse.getStatusLine().getReasonPhrase();
 
-            Log.i(Application.NAME, "http Status : " + responseCode);
+            Log.i(JCApplication.NAME, "http Status : " + responseCode);
             
             HttpEntity entity = httpResponse.getEntity();
 
@@ -232,7 +232,7 @@ public class RestClient
                 is.close();
             } catch (IOException e) 
             {
-                Log.w(Application.NAME, "RestClient : Cannot close stream", e);
+                Log.w(JCApplication.NAME, "RestClient : Cannot close stream", e);
             }
         }
         return sb.toString();
