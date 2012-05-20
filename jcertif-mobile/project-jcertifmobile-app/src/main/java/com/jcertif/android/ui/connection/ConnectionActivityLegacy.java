@@ -58,9 +58,13 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 		setContentView(R.layout.connection);
 		accountDialog = new AccountDialog(this, this);
 		authThread = new AuthentificationThread(this);
-		// initState();
+		// Load the last user credentials
 		loadCredentials();
+		// Add listeners to the buttons
 		addListeners();
+		// Define header title
+		TextView headerTitle = (TextView) findViewById(R.id.header_title);
+		headerTitle.setText(R.string.email_header_title);
 	}
 
 	/*
@@ -101,7 +105,7 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 		// Instantiate the btnQuit's listener
 		Button btnQuit = (Button) findViewById(R.id.btnQuit);
 		btnQuit.setOnClickListener(new OnClickListener() {
-			public void onClick(View view) {				
+			public void onClick(View view) {
 				finish();
 			}
 		});
@@ -146,7 +150,7 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 				Bundle params = new Bundle();
 				params.putString(AuthentificationThread.EMAIL_KEY, email);
 				params.putString(AuthentificationThread.PASSWORD_KEY, password);
-				authThread.execute(this,params);
+				authThread.execute(this, params);
 
 			} else {
 				// show error to the user
@@ -169,11 +173,11 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 		String httpGetResponse = message.getData().getString(AuthentificationThread.RESPONSE_KEY);
 		// Update what is need to be updated
 		// !"null".equalsIgnoreCase(httpGetResponse)
-		if (httpGetResponse!=null&&(!httpGetResponse.equalsIgnoreCase("null"))) {
+		if (httpGetResponse != null && (!httpGetResponse.equalsIgnoreCase("null"))) {
 			saveCredentials();
 			// TODO here I should be able to update the user
 			// saveUser();
-			//JCApplication.updateUser
+			// JCApplication.updateUser
 			// displayMenuView();
 		} else {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -312,6 +316,5 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 		// And update the user in the application
 		((JCApplication) getApplication()).updateUser(hash);
 	}
-	
-	
+
 }

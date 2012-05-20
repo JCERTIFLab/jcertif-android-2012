@@ -4,5 +4,10 @@
     <!-- Error Message -->
     <string name="alertDialogTitle">JCertif Mobile Error</string>
     <string name="authenticationErrorMessage">Authentication failed !</string>
+    <!-- CONNEXION activity errors -->
+    <string name="connectionEmptyElementErrorMessage">Erreur: Email et/ou Password vide.</string>
+    <!-- Account profile dialogs errors -->
+    <string name="accountEmailErrorMessage">Erreur: Les emails sont différents.</string>
+    <string name="accountPasswordErrorMessage">Erreur: Les passwords sont différents.</string>
 
 </resources>

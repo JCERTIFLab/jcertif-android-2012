@@ -7,76 +7,81 @@
 
     <include layout="@layout/jcertif_header" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical"
-        android:orientation="vertical" >
-
-        <TextView
-            style="@style/txv_banner_title"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/hello" />
+        android:layout_height="wrap_content" >
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/txvConnectionError"
-                style="@style/error_message_style"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:visibility="gone" />
-
-            <EditText
-                android:id="@+id/txtEmail"
-                style="@style/edt_style"
+                style="@style/txv_banner_title"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/marginLeftLarge"
-                android:layout_marginRight="@dimen/marginRightLarge"
-                android:hint="@string/emailLabel" />
+                android:gravity="center"
+                android:text="@string/hello" />
 
-            <EditText
-                android:id="@+id/txtPassword"
-                style="@style/edt_style"
+            <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/marginLeftLarge"
-                android:layout_marginRight="@dimen/marginRightLarge"
-                android:hint="@string/passwordLabel"
-                android:password="true" />
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:orientation="vertical" >
 
-            <Button
-                android:id="@+id/btnConnect"
-                style="@style/btn_style"
-                android:text="@string/connectButtonLabel" />
+                <TextView
+                    android:id="@+id/txvConnectionError"
+                    style="@style/error_message_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/txtEmail"
+                    style="@style/edt_style"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/marginLeftLarge"
+                    android:layout_marginRight="@dimen/marginRightLarge"
+                    android:hint="@string/emailLabel" />
+
+                <EditText
+                    android:id="@+id/txtPassword"
+                    style="@style/edt_style"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/marginLeftLarge"
+                    android:layout_marginRight="@dimen/marginRightLarge"
+                    android:hint="@string/passwordLabel"
+                    android:password="true" />
+
+                <Button
+                    android:id="@+id/btnConnect"
+                    style="@style/btn_style"
+                    android:text="@string/connectButtonLabel" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal" >
+
+                <Button
+                    android:id="@+id/btnQuit"
+                    style="@style/btn_style"
+                    android:text="@string/quitButtonLabel" />
+
+                <Button
+                    android:id="@+id/btnSubscribe"
+                    style="@style/btn_style"
+                    android:text="@string/subscriptionLabel" />
+            </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal" >
-
-            <Button
-                android:id="@+id/btnQuit"
-                style="@style/btn_style"
-                android:text="@string/quitButtonLabel" />
-
-            <Button
-                android:id="@+id/btnSubscribe"
-                style="@style/btn_style"
-                android:text="@string/subscriptionLabel" />
-        </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

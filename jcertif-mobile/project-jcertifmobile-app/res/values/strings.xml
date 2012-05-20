@@ -21,18 +21,16 @@
     <string name="session_detail_speaker_title">Présentateur</string>
 
     <!-- Connection -->
+    <string name="email_header_title">Connexion</string>
     <string name="emailLabel">Email</string>
     <string name="emailConfirmationLabel">Confirmation Email</string>
     <string name="passwordLabel">Mot de passe </string>
     <string name="passwordConfirmationLabel">Confirmation Mot de passe </string>
     <string name="subscriptionLabel">S\'ENREGISTRER</string>
-    <string name="connectionEmptyElementErrorMessage">Erreur: Email et/ou Password vide.</string>
 
     <!-- Account profile dialogs -->
     <string name="accountProfileLabel">Creation compte [profile] </string>
     <string name="accountInformationLabel">Creation compte [information] </string>
-    <string name="accountEmailErrorMessage">Erreur: Les emails sont différents.</string>
-    <string name="accountPasswordErrorMessage">Erreur: Les passwords sont différents.</string>
 
     <!-- Buttons -->
     <string name="quitButtonLabel">QUITTER</string>

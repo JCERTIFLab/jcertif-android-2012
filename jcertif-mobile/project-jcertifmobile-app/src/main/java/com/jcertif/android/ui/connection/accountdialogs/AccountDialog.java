@@ -52,7 +52,7 @@ import com.jcertif.android.ui.view.R;
  *        The second one register sex/First and Last name/ and role and type
  */
 public class AccountDialog {
-	//TODO MSE finir cette classe
+	// TODO MSE finir cette classe
 
 	/**
 	 * The calling activity context
@@ -76,7 +76,7 @@ public class AccountDialog {
 	/**
 	 * The parent that has in charge the saveUser(User) method
 	 */
-	AccountDialogParent parent=null;
+	AccountDialogParent parent = null;
 
 	/******************************************************************************************/
 	/** Constructors **************************************************************************/
@@ -87,11 +87,11 @@ public class AccountDialog {
 	 * 
 	 * @param context
 	 */
-	public AccountDialog(Context context,AccountDialogParent parent) {
+	public AccountDialog(Context context, AccountDialogParent parent) {
 		super();
 		this.context = context;
-		this.parent=parent;
-		user=new User();
+		this.parent = parent;
+		user = new User();
 	}
 
 	/******************************************************************************************/
@@ -103,7 +103,7 @@ public class AccountDialog {
 	public void showAccountDialog() {
 		// insure the Dialog is built
 		if (createAccountFirstDialog == null) {
-			
+
 			buildAccountFirstDialog();
 			// Hide the textError (juts in case)
 			TextView txvError = ((TextView) createAccountFirstDialog.findViewById(R.id.textError));
@@ -118,10 +118,18 @@ public class AccountDialog {
 	 * When the user go in the main stream of the application
 	 */
 	public void dismissDialog() {
-		createAccountFirstDialog.dismiss();
-		createAccountSecondDialog.dismiss();
-		createAccountFirstDialog = null;
-		createAccountSecondDialog = null;
+		if (createAccountFirstDialog != null) {
+			// then release the resource
+			createAccountFirstDialog.dismiss();
+			createAccountSecondDialog.dismiss();
+			createAccountFirstDialog = null;
+			createAccountSecondDialog = null;
+		}
+		if (createAccountSecondDialog != null) {
+			// then release the resource
+			createAccountSecondDialog.dismiss();
+			createAccountSecondDialog = null;
+		}
 	}
 
 	/******************************************************************************************/
@@ -261,20 +269,24 @@ public class AccountDialog {
 
 	/**
 	 * Update the user object accordin to the SecondDialog elements and the parameter
-	 * @param civility User's civility
-	 * @param role User's role
-	 * @param type User's type
+	 * 
+	 * @param civility
+	 *            User's civility
+	 * @param role
+	 *            User's role
+	 * @param type
+	 *            User's type
 	 */
 	private void updateUser(String civility, String role, String type) {
-		//Set the user attributes:
+		// Set the user attributes:
 		user.setCivilite(civility);
 		user.setPrenom(((EditText) createAccountSecondDialog.findViewById(R.id.txtFirstName)).getText().toString());
 		user.setNom(((EditText) createAccountSecondDialog.findViewById(R.id.txtLastName)).getText().toString());
 		user.setRole(role);
 		user.setType(type);
-		//Register the user using WebServices
+		// Register the user using WebServices
 		registerUser();
-		//Make some log
+		// Make some log
 		Log.i(JCApplication.NAME, user.toString());
 	}
 
@@ -282,7 +294,7 @@ public class AccountDialog {
 	 * Register user using a webServices
 	 */
 	private void registerUser() {
-		//TODO implement this method
+		// TODO implement this method
 		// Web service call
 		try {
 			// String data = mService.registerUser(user);
@@ -310,6 +322,7 @@ public class AccountDialog {
 
 	/**
 	 * Log the following parameters
+	 * 
 	 * @param email1
 	 * @param email2
 	 * @param password1
