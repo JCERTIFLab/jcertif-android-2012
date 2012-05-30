@@ -2,7 +2,6 @@ package com.jcertif.android;
 
 import android.app.Application;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -23,6 +22,7 @@ public class JCApplication extends Application {
 	 * The User that currently uses the application
 	 */
 	private User user;
+
 	/******************************************************************************************/
 	/** Access Every Where **************************************************************************/
 	/******************************************************************************************/
@@ -30,12 +30,6 @@ public class JCApplication extends Application {
 	 * instance of this
 	 */
 	private static JCApplication instance;
-	/**
-	 * instance of this
-	 */
-	// TODO MSE a virer
-	public static String NAME = "JCertifApplication Mobile";
-
 	/**
 	 * @return The instance of the application
 	 */
@@ -50,8 +44,6 @@ public class JCApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		// TODO To delete the next method call
-		clearPreference();
 		initializeUser();
 		instance = this;
 		urlFactory = new UrlFactory(this);
@@ -61,23 +53,6 @@ public class JCApplication extends Application {
 	public void onLowMemory() {
 		super.onLowMemory();
 	}
-
-	@Override
-	public void onTerminate() {
-		instance = null;
-		super.onTerminate();
-	}
-
-	private void clearPreference() {
-		// TODO Delete this method only to test authentification
-		// Get preferences
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		Editor editor = preferences.edit();
-		editor.clear();
-		editor.commit();
-		Log.e("JCApplication", "clearPreference called");
-	}
-
 	/******************************************************************************************/
 	/** URL **************************************************************************/
 	/******************************************************************************************/

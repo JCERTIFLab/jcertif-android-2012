@@ -8,10 +8,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
@@ -22,39 +24,38 @@ import com.jcertif.android.transverse.model.Speaker;
  * Provider for Speaker Do persistence and parsing stuff
  * 
  * @author mouhamed_diouf
- * 
  */
 public class SpeakerProvider {
-//	private JCertifLocalService service;
-//	private Context context;
+	// private JCertifLocalService service;
+	// private Context context;
 
 	private Context mContext;
 	private DatabaseHelper mDbHelper;
 	private Dao<Speaker, Integer> mSpeakerDao;
-	
-	public SpeakerProvider(Context context) throws SQLException{
+
+	public SpeakerProvider(Context context) throws SQLException {
 		mContext = context;
-        mDbHelper = new DatabaseHelper(mContext); 
-        mSpeakerDao = mDbHelper.getSpeakerDao();	
+		mDbHelper = new DatabaseHelper(mContext);
+		mSpeakerDao = mDbHelper.getSpeakerDao();
 	}
 
 	public Speaker findById(int speakerId) throws SQLException {
 		return mSpeakerDao.queryForId(speakerId);
 	}
-	
+
 	public List<Speaker> findAll() throws SQLException {
 		return mSpeakerDao.queryForAll();
 	}
-	
+
 	public Speaker getEventById(Integer speakerId) throws SQLException {
 		return mSpeakerDao.queryForId(speakerId);
 	}
-	
-	public void saveAll(List<Speaker> speakers) throws SQLException{
+
+	public void saveAll(List<Speaker> speakers) throws SQLException {
 		for (Speaker speaker : speakers) {
 			mSpeakerDao.createOrUpdate(speaker);
-			String urlSpeaker=JCApplication.getInstance().getUrlFactory().getSpeakerUrl();
-			saveSpeakerPicture(urlSpeaker,speaker.urlPhoto);			
+			String urlPictureSpeaker = JCApplication.getInstance().getUrlFactory().getBasePictureUrl();
+			saveSpeakerPicture(urlPictureSpeaker, speaker.urlPhoto);
 		}
 	}
 
@@ -64,8 +65,7 @@ public class SpeakerProvider {
 		URL myFileUrl = null;
 		try {
 			myFileUrl = new URL(fileUrl + "/" + fileName);
-			HttpURLConnection conn = (HttpURLConnection) myFileUrl
-					.openConnection();
+			HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();
 			conn.setDoInput(true);
 			conn.connect();
 
@@ -73,16 +73,14 @@ public class SpeakerProvider {
 
 			bmImg = BitmapFactory.decodeStream(is);
 			// this.imView.setImageBitmap(bmImg);
-			String filepath = Environment.getExternalStorageDirectory()
-					.getAbsolutePath();
-			FileOutputStream fos = new FileOutputStream(filepath + "/"
-					+ fileName);
+			String filepath = Environment.getExternalStorageDirectory().getAbsolutePath();
+			FileOutputStream fos = new FileOutputStream(filepath + "/" + fileName);
 			bmImg.compress(CompressFormat.JPEG, 75, fos);
 			Log.i(SpeakerProvider.class.getName(), "Save of picture ok:" + fos.getFD().toString());
 			fos.flush();
 			fos.close();
 		} catch (Exception e) {
-			Log.e("MyLog", e.toString());
+			Log.d("MyLog", e.toString());
 		}
 
 	}

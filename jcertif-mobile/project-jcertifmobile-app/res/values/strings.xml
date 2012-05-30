@@ -3,25 +3,35 @@
 
     <!-- General -->
     <string name="hello">Bienvenue</string>
-    <string name="app_name">JCertif Mobile</string>
+    <string name="app_name">JCertif</string>
     <string name="search_description">Search patient</string>
     <string name="search_hint">A patient</string>
 
+    <!-- Title For the Title Bar -->
+    <string name="main_htitle">Home</string>
+    <string name="speaker_htitle">Présentateur</string>
+    <string name="speaker_list_htitle">Présentateurs</string>
+    <string name="sessions_list_htitle">Présentations</string>
+    <string name="session_htitle">Présentation</string>
+    <string name="connexion_htitle">Connexion</string>
+    <string name="calendar_htitle">Calendrier</string>
+    <string name="agenda_htitle">Agenda</string>
+    <string name="info_htitle">Info</string>
+
     <!-- Speakers -->
-    <string name="speaker_list_header_title">Présentateurs</string>
     <string name="speakerFirstNameLabel">Prénom : </string>
     <string name="speakerLastNameLabel">Nom : </string>
     <string name="speakerBioLabel">Biographie</string>
     <string name="speakerCompanyLabel">Compagnie : </string>
 
     <!-- Session List -->
-    <string name="session_list_title">Présentations</string>
+
 
     <!-- Session detail -->
-    <string name="session_detail_speaker_title">Présentateur</string>
+    <string name="session_detail_speaker_title">Conférencier</string>
 
     <!-- Connection -->
-    <string name="email_header_title">Connexion</string>
+    <!-- <string name="email_header_title">Connexion</string> -->
     <string name="emailLabel">Email</string>
     <string name="emailConfirmationLabel">Confirmation Email</string>
     <string name="passwordLabel">Mot de passe </string>
@@ -46,6 +56,7 @@
     <!-- Waiting Dialog -->
     <string name="waitingDialogTitle">Traitement en cours</string>
     <string name="wiatingDialogMessage">Attendez qu\'il se termine.</string>
+    <string name="waitingMessage">Traitement en cours.Attendez qu\'il se termine.</string>
 
     <!-- Spinners -->
     <string-array name="civility_array">
@@ -61,5 +72,11 @@
         <item>Type 1</item>
         <item>Type 2</item>
     </string-array>
+
+    <!-- Service And associatedIntents Constants -->
+    <string name="updateServiceNotificationMessage">L\'application JCertif mets à jour ses données par le wifi</string>
+    <string name="updateServiceStopMessage">L\'application JCertif ne met plus à jour ses données</string>
+    <string name="speakerUpdater">speakers Updater</string>
+    <string name="eventUpdater">events Updater</string>
 
 </resources>

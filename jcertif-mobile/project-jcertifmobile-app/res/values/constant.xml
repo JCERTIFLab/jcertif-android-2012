@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+ <!-- Init Constants -->
+    <string name="initialisation">initiliazed</string>
+    
     <!-- SharedPreferences Constants -->
     <string name="shhash">hashcode</string>
     <string name="shEmail">email</string>
@@ -20,5 +22,8 @@
 
     <!-- Service And associatedIntents Constants -->
     <string name="servAuthentIntentExtraName">response</string>
+
+    <!-- Fragments arguments key -->
+    <string name="speakerId">speakerId</string>
 
 </resources>

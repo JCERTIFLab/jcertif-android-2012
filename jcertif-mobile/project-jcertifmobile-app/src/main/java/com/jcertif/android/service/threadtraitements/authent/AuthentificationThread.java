@@ -5,7 +5,7 @@
  * 
  * <li>======================================================</li>
  *
- * <li>Projet : Mathias Seguy Project</li>
+ * <li>Projet : JCertif Africa 2012 Project</li>
  * <li>Produit par MSE.</li>
  *
  /**
@@ -37,10 +37,11 @@ import android.util.Log;
 import com.jcertif.android.JCApplication;
 import com.jcertif.android.com.net.RestClient;
 import com.jcertif.android.com.net.RestClient.RequestMethod;
-import com.jcertif.android.service.threadtraitements.BasicBackgroundThread;
+import com.jcertif.android.service.threadtraitements.generic.BasicBackgroundThread;
 
 /**
  * @author Mathias Seguy (Android2EE)
+ * @author Yakhya DABO 
  * @goals
  *        This class aims to:
  *        <ul>
@@ -59,11 +60,7 @@ public class AuthentificationThread extends BasicBackgroundThread {
 	/**
 	 * The key to use to pass the password as parameter in the Bundle
 	 */
-	public static final String PASSWORD_KEY="email";
-	/**
-	 * The key to use to retrieve the response
-	 */
-	public static final String RESPONSE_KEY="response";
+	public static final String PASSWORD_KEY="password";
 	/******************************************************************************************/
 	/** Constructors **************************************************************************/
 	/******************************************************************************************/
@@ -89,28 +86,26 @@ public class AuthentificationThread extends BasicBackgroundThread {
 	public void workingMethod(Handler handler) {
 		// instantiate the values
 		String responseString = null;
+		int responseStatus=STATUS_NOTSET;
 		String email = params.getString(EMAIL_KEY);
 		String password = params.getString(PASSWORD_KEY);
 		Log.w(this.getClass().getSimpleName(), "Trying to authenticate user" + email + "," + password);
 		// Define the URL
-		StringBuilder url = new StringBuilder(JCApplication.getInstance().getUrlFactory().getAuthenticationUrl());
-		url.append("/");
-		url.append(email);
-		url.append("/");
-		url.append(password);
-		url.append("/2");
+		String url = JCApplication.getInstance().getUrlFactory().getAuthenticationUrl(email,password);
 		// Instantiate the client
-		RestClient client = new RestClient(url.toString());
+		RestClient client = new RestClient(url);
 		try {
 			client.Execute(RequestMethod.GET);
 			responseString = client.getResponse();
+			responseStatus=client.getResponseCode();
 			Log.i(this.getClass().getSimpleName(), "The answer from RestService is" + responseString);
 		} catch (Exception e) {
-			Log.e(this.getClass().getSimpleName(), "LocalServiceBinder : json " + responseString);
+			Log.d(this.getClass().getSimpleName(), "LocalServiceBinder : json " + responseString);
 		}
 		Message mess=handler.obtainMessage();
 		Bundle data=new Bundle();
-		data.putString(responseString, responseString);
+		data.putString(RESPONSE_KEY, responseString);
+		data.putInt(STATUS_KEY, responseStatus);
 		mess.setData(data);
 		handler.sendMessage(mess);
 	}

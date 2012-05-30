@@ -19,7 +19,7 @@
 
     <!-- Text Size -->
     <dimen name="textSize">15sp</dimen>
-    <dimen name="textSizeLarge">18sp</dimen>
+    <dimen name="textSizeLarge">17sp</dimen>
     <dimen name="textSizeXLarge">24sp</dimen>
 
     <!-- Button Dimsension -->

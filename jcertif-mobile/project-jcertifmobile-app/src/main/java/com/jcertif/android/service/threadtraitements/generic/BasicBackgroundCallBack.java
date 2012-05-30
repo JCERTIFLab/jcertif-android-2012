@@ -5,7 +5,7 @@
  * 
  * <li>======================================================</li>
  *
- * <li>Projet : Mathias Seguy Project</li>
+ * <li>Projet : JCertif Africa 2012 Project</li>
  * <li>Produit par MSE.</li>
  *
  /**
@@ -27,7 +27,7 @@
  *  <em>http://mathias-seguy.developpez.com/</em></br> </br>
  * *****************************************************************************************************************</br>
  */
-package com.jcertif.android.service.threadtraitements;
+package com.jcertif.android.service.threadtraitements.generic;
 
 import android.os.Message;
 

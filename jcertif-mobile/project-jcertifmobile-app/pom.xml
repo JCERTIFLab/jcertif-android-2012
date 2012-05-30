@@ -19,6 +19,10 @@
 			<artifactId>android</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>support-v4</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>de.akquinet.android.androlog</groupId>
 			<artifactId>androlog</artifactId>
 		</dependency>
@@ -38,7 +42,7 @@
 		<plugins>
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
-<!-- 				<artifactId>maven-android-plugin</artifactId> -->
+				<!-- <artifactId>maven-android-plugin</artifactId> -->
 				<artifactId>android-maven-plugin</artifactId>
 				<extensions>true</extensions>
 			</plugin>

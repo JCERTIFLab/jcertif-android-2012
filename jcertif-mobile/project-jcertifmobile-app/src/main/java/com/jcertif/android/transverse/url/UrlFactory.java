@@ -5,7 +5,7 @@
  * 
  * <li>======================================================</li>
  *
- * <li>Projet : Mathias Seguy Project</li>
+ * <li>Projet : JCertif Africa 2012 Project</li>
  * <li>Produit par MSE.</li>
  *
  /**
@@ -37,7 +37,7 @@ import com.jcertif.android.ui.view.R;
 /**
  * @author Mathias Seguy (Android2EE)
  * @goals
- * This class aims to define getters to retrieve the Url of the application
+ *        This class aims to define getters to retrieve the Url of the application
  */
 public class UrlFactory {
 	/******************************************************************************************/
@@ -47,7 +47,7 @@ public class UrlFactory {
 	/**
 	 * Base URL
 	 */
-	private String baseUrl ;
+	private String baseUrl;
 	/**
 	 * Base URL for picture
 	 */
@@ -67,24 +67,31 @@ public class UrlFactory {
 	/**
 	 * Url for registration
 	 */
-	private String registerUrl; 
+	private String registerUrl;
+	/**
+	 * The Application object
+	 */
+	private JCApplication jcApplication;
+
 	/******************************************************************************************/
 	/** Constructors **************************************************************************/
-	/******************************************************************************************/	
+	/******************************************************************************************/
 	/**
 	 * Constructor
-	 * @param jCApplication The Application
+	 * 
+	 * @param jCApplication
+	 *            The Application
 	 */
 	public UrlFactory(JCApplication jCApplication) {
 		super();
-		Context ctx=jCApplication.getApplicationContext();
-		baseUrl=ctx.getString(R.string.url_base);
-		basePictureUrl=ctx.getString(R.string.url_base_picture);
-		speakerUrl=baseUrl+ctx.getString(R.string.url_suffixe_speaker);
-		eventUrl=baseUrl+ctx.getString(R.string.url_suffixe_event);
-		authenticationUrl=baseUrl+ctx.getString(R.string.url_suffixe_authentification);
-		registerUrl=baseUrl+ctx.getString(R.string.url_suffixe_register);
+		jcApplication = jCApplication;
+		Context ctx = jCApplication.getApplicationContext();
+		baseUrl = ctx.getString(R.string.url_base);
+		basePictureUrl = ctx.getString(R.string.url_base_picture);
+		speakerUrl = baseUrl + ctx.getString(R.string.url_suffixe_speaker);
+		eventUrl = baseUrl + ctx.getString(R.string.url_suffixe_event);
 	}
+
 	/******************************************************************************************/
 	/** GETTERS **************************************************************************/
 	/******************************************************************************************/
@@ -120,7 +127,10 @@ public class UrlFactory {
 	/**
 	 * @return the authenticationUrl
 	 */
-	public final String getAuthenticationUrl() {
+	public final String getAuthenticationUrl(String email, String password) {
+		Context ctx = jcApplication.getApplicationContext();
+		authenticationUrl = baseUrl
+				+ String.format(ctx.getString(R.string.url_suffixe_authentification), email, password);
 		return authenticationUrl;
 	}
 
@@ -128,9 +138,11 @@ public class UrlFactory {
 	 * @return the registerUrl
 	 */
 	public final String getRegisterUrl() {
+		// TODO add parameters to the url when known
+		Context ctx = jcApplication.getApplicationContext();
+		registerUrl = baseUrl + ctx.getString(R.string.url_suffixe_register);
+
 		return registerUrl;
 	}
-	
-	
-	
+
 }

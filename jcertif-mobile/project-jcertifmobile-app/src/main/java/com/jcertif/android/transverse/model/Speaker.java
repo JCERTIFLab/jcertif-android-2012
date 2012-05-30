@@ -29,5 +29,26 @@ public class Speaker {
 	public String company;
 	@DatabaseField
 	@JsonProperty("photo")
-	public String urlPhoto; 
+	public String urlPhoto;
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder strb=new StringBuilder();
+		strb.append("Nom[")
+		.append(lastName)
+		.append("][Prenom")
+		.append(firstName)
+		.append("][id")
+		.append(id)
+		.append("][bio")
+		.append(bio)
+		.append("][Company")
+		.append(company)
+		.append("][photo")
+		.append(urlPhoto);
+		return strb.toString();
+	} 
+	
 }

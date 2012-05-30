@@ -191,7 +191,7 @@ public class RestClient
             responseCode = httpResponse.getStatusLine().getStatusCode();
             message = httpResponse.getStatusLine().getReasonPhrase();
 
-            Log.i(JCApplication.NAME, "http Status : " + responseCode);
+            Log.i("RestClient", "http Status : " + responseCode);
             
             HttpEntity entity = httpResponse.getEntity();
 
@@ -232,7 +232,7 @@ public class RestClient
                 is.close();
             } catch (IOException e) 
             {
-                Log.w(JCApplication.NAME, "RestClient : Cannot close stream", e);
+                Log.w("RestClient", "RestClient : Cannot close stream", e);
             }
         }
         return sb.toString();

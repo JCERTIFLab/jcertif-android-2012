@@ -22,6 +22,8 @@
                 style="@style/txv_banner_title"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:gravity="center"
                 android:text="@string/hello" />
 
@@ -41,7 +43,7 @@
                     android:visibility="gone" />
 
                 <EditText
-                    android:id="@+id/txtEmail"
+                    android:id="@+id/edtEmail"
                     style="@style/edt_style"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -50,7 +52,7 @@
                     android:hint="@string/emailLabel" />
 
                 <EditText
-                    android:id="@+id/txtPassword"
+                    android:id="@+id/edtPassword"
                     style="@style/edt_style"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"

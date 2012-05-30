@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/violet"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <include layout="@layout/jcertif_header" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="1.0" >
+
+        <TextView
+            android:id="@+id/isLandscape"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="layout-land"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/mainfragment"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.6" >
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/secondfragment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.4" >
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

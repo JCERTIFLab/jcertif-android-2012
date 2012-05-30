@@ -5,61 +5,119 @@
     android:background="@color/violet"
     android:orientation="vertical" >
 
-    <include layout="@layout/jcertif_header" />
-
-    <TextView
-        android:id="@+id/eventDetail"
-        style="@style/edt_style"
+    <ScrollView
+        android:id="@+id/scrollViewEvent"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
-
-    <TextView
-        style="@style/txv_title"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:text="@string/session_detail_speaker_title" />
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical" >
+        android:layout_height="fill_parent" >
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
 
-            <ImageView
-                android:id="@+id/speakerImg"
+            <TextView
+                android:id="@+id/eventTitle"
+                style="@style/txv_title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/eventDetail"
+                style="@style/txv_style"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/eventSubject"
+                style="@style/txv_style"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/paddingBottom"
-                android:paddingRight="@dimen/paddingRight" />
+                android:orientation="horizontal" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/eventDebut"
+                        style="@style/txv_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/eventFin"
+                        style="@style/txv_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/eventRoom"
+                    style="@style/edt_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/eventSummary"
+                style="@style/txv_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                style="@style/txv_title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/session_detail_speaker_title" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:orientation="vertical" >
 
-                <TextView
-                    android:id="@+id/speakerName"
-                    style="@style/txv_style"
+                <LinearLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <ImageView
+                        android:id="@+id/speakerImg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/paddingBottom"
+                        android:paddingRight="@dimen/paddingRight" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/speakerName"
+                            style="@style/txv_style"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/speakerBioPart1"
+                            style="@style/txv_style"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/speakerBioPart1"
+                    android:id="@+id/speakerBioPart2"
                     style="@style/txv_style"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent" />
             </LinearLayout>
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/speakerBioPart2"
-            style="@style/txv_style"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
-    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

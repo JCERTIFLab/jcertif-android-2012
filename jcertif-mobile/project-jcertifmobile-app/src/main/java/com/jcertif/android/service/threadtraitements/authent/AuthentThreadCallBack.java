@@ -5,7 +5,7 @@
  * 
  * <li>======================================================</li>
  *
- * <li>Projet : Mathias Seguy Project</li>
+ * <li>Projet : JCertif Africa 2012 Project</li>
  * <li>Produit par MSE.</li>
  *
  /**
@@ -29,7 +29,7 @@
  */
 package com.jcertif.android.service.threadtraitements.authent;
 
-import com.jcertif.android.service.threadtraitements.BasicBackgroundCallBack;
+import com.jcertif.android.service.threadtraitements.generic.BasicBackgroundCallBack;
 
 /**
  * @author Mathias Seguy (Android2EE)

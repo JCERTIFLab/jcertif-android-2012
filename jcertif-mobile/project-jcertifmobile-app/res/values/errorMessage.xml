@@ -2,8 +2,10 @@
 <resources>
 
     <!-- Error Message -->
-    <string name="alertDialogTitle">JCertif Mobile Error</string>
+    <string name="alertDialogTitle">JCertif Mobile Erreur</string>
     <string name="authenticationErrorMessage">Authentication failed !</string>
+    <!-- Error Message -->
+    <string name="registrationErrorMessage">Registration failed (%1$d)!</string>
     <!-- CONNEXION activity errors -->
     <string name="connectionEmptyElementErrorMessage">Erreur: Email et/ou Password vide.</string>
     <!-- Account profile dialogs errors -->

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/violet"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="@dimen/paddingBottom" >
@@ -9,25 +10,25 @@
     <TextView
         android:id="@+id/txtName"
         style="@style/txv_title"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:orientation="horizontal" >
 
         <TextView
             android:id="@+id/txtPlace"
             style="@style/txv_style"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="fill_parent" />
 
         <TextView
             android:id="@+id/txtTime"
-            style="@style/edt_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/txv_style"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:layout_gravity="left" />
     </LinearLayout>
 

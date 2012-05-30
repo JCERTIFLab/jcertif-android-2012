@@ -5,7 +5,7 @@
  * 
  * <li>======================================================</li>
  */
-package com.jcertif.android.service.threadtraitements;
+package com.jcertif.android.service.threadtraitements.generic;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -33,8 +33,20 @@ public abstract class BasicBackgroundThread {
 	/**
 	 * The method to implement
 	 */
-	public abstract void workingMethod(Handler hanlder);
+	public abstract void workingMethod(Handler handler);
 
+	/**
+	 * The key to use to retrieve the response
+	 */
+	public static final String RESPONSE_KEY = "response";
+	/**
+	 * The key to use to retrieve the response's status
+	 */
+	public static final String STATUS_KEY = "status";
+	/**
+	 * The value set to a status when the status doesn't exist
+	 */
+	public static final int STATUS_NOTSET = -1;
 	/******************************************************************************************/
 	/** Managing the Handler and the Thread *************************************************/
 	/******************************************************************************************/
@@ -84,21 +96,50 @@ public abstract class BasicBackgroundThread {
 			public void handleMessage(Message msg) {
 				super.handleMessage(msg);
 				Log.d(TAG, "handle message called ");
-				Log.w(TAG, "handle message calls updateProgress ");
 				if (getCallBack() != null) {
 					getCallBack().handleMessage(msg);
 				}
-				progressDialog.dismiss();
+				if(progressDialog!=null) {
+					progressDialog.dismiss();
+				}
 			}
 		};
 
 	}
 
 	/**
-	 * To be launch the backgroundThread
+	 * launch the backgroundThread
 	 * Use the bundle to pass parameters
+	 * 
+	 * @param mParams
+	 *            Parameters to use for the method
 	 */
-	public void execute(Context activity,Bundle mParams) {
+	public void execute(Bundle mParams) {
+		executeWorkingMethod(mParams);
+		progressDialog=null;
+	}
+
+	/**
+	 * launch the backgroundThread
+	 * Use the bundle to pass parameters
+	 * Display a DialogProgressBar
+	 * 
+	 * @param mParams
+	 *            Parameters to use for the method
+	 */
+	public void execute(Context activity, Bundle mParams) {
+		executeWorkingMethod(mParams);
+		// Affichage de la fenêtre d'attente
+		buildProgressBarInde(activity).show();
+	}
+
+	/**
+	 * launch the backgroundThread
+	 * 
+	 * @param mParams
+	 *            Parameters to use for the method
+	 */
+	private void executeWorkingMethod(Bundle mParams) {
 		// The params to be used during the threatment
 		this.params = mParams;
 		// use a random double to give a name to the thread
@@ -120,16 +161,14 @@ public abstract class BasicBackgroundThread {
 			}
 		});
 		backgroundThread.setName("BasicBackgroundThread " + random);
-		//Affichage de la fenêtre d'attente
-		buildProgressBarInde(activity).show();
 		// start the thread
 		backgroundThread.start();
 	}
-	
+
 	/**
-	 * @return a ProgressDialog indeterminate 
+	 * @return a ProgressDialog indeterminate
 	 */
-	private Dialog buildProgressBarInde(Context context) {		
+	private Dialog buildProgressBarInde(Context context) {
 		// instanciate it
 		progressDialog = new ProgressDialog(context);
 		// define it style and its title and message
@@ -144,7 +183,6 @@ public abstract class BasicBackgroundThread {
 		// but in fact you should use an Handler or an AsyncTask to do that
 		return progressDialog;
 	}
-
 
 	/******************************************************************************************/
 	/** Manage CallBack **************************************************************************/

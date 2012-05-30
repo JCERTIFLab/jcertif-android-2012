@@ -5,7 +5,7 @@
  * 
  * <li>======================================================</li>
  *
- * <li>Projet : Mathias Seguy Project</li>
+ * <li>Projet : JCertif Africa 2012 Project</li>
  * <li>Produit par MSE.</li>
  *
  /**
@@ -29,13 +29,19 @@
  */
 package com.jcertif.android;
 
-import com.jcertif.android.ui.connection.ConnectionActivityHC;
-import com.jcertif.android.ui.connection.ConnectionActivityLegacy;
-import com.jcertif.android.ui.view.MainActivity;
-
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+
+import com.jcertif.android.service.androidservices.UpdaterService;
+import com.jcertif.android.ui.view.R;
+import com.jcertif.android.ui.view.connection.ConnectionActivityLegacy;
+import com.jcertif.android.ui.view.main.MainActivityLegacy;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * @author Mathias Seguy (Android2EE)
@@ -45,6 +51,7 @@ import android.os.Bundle;
  *        There is a big gap between Post and Pre HoneyComb versions, according to fragments
  *        management.
  *        This is the reason of the existence of that class.
+ *        It also launch the first load of the database when the application is first runs
  */
 public class LauncherActivity extends Activity {
 	/**
@@ -55,27 +62,51 @@ public class LauncherActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Intent startActivityIntent = null;
+		Intent intent = new Intent(this, UpdaterService.class);
+		startService(intent);
 		
+		//First launch
+		firstLaunchInit();
+		//Then do the rest
+		Intent startActivityIntent = null;
+
 		// First test if the user exists
 		if (((JCApplication) getApplication()).isValidUser()) {
-			//if the user is valid, launch the mainActivity
-			// TODO UpdateMainActivity to call it here using Legacy or HC
+			// if the user is valid, launch the mainActivity
+			// TODO Update MainActivity to call it here using Legacy or HC
 			if (!shinyNewAPIS) {
-				startActivityIntent = new Intent(this, MainActivity.class);
+				startActivityIntent = new Intent(this, MainActivityLegacy.class);
 			} else {
-				startActivityIntent = new Intent(this, MainActivity.class);
+				startActivityIntent = new Intent(this, MainActivityLegacy.class);
 			}
 		} else {
-			//else if there is no user, launch the Connection Activity
-			if (!shinyNewAPIS) {
-				startActivityIntent = new Intent(this, ConnectionActivityLegacy.class);
-			} else {
-				startActivityIntent = new Intent(this, ConnectionActivityHC.class);
-			}
+			// else if there is no user, launch the Connection Activity
+			//It doens't need HC compatibility
+			startActivityIntent = new Intent(this, ConnectionActivityLegacy.class);
 		}
 		startActivity(startActivityIntent);
 		finish();
+		
 	}
 
+	/**
+	 * Launch the first load of the database
+	 */
+	private void firstLaunchInit() {
+		Log.w("firstLaunchInit","firstLaunchInit called");
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		Boolean init=preferences.getBoolean(getString(R.string.initialisation), false);
+		if(!init) {
+			Log.w("firstLaunchInit","Init Launched");
+			//Launch the database first update
+			Intent intent = new Intent(this, UpdaterService.class);
+			startService(intent);
+			//Store the init			
+			Editor editor = preferences.edit();
+			// Store initialisation
+			editor.putBoolean(getString(R.string.initialisation), false);
+			//and commit
+			editor.commit();
+		}
+	}
 }

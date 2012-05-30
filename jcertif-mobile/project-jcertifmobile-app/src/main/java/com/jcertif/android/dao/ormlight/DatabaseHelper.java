@@ -11,7 +11,6 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import com.jcertif.android.JCApplication;
 import com.jcertif.android.transverse.model.Event;
 import com.jcertif.android.transverse.model.Speaker;
 
@@ -36,7 +35,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase sqliteDatabase,
 			ConnectionSource connectionSource) {
-		Log.i(JCApplication.NAME, "Trying to create tables ... ");
+		Log.i("DatabaseHelper", "Trying to create tables ... ");
 
 		try {
 			// eventDao.isTableExists() is not supported on Android
@@ -51,7 +50,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 				Log.i(DatabaseHelper.class.getName(), "Creating table Event");
 			}
 		} catch (SQLException e) {
-			Log.e(DatabaseHelper.class.getName(), "Unable to create datbases",
+			Log.d(DatabaseHelper.class.getName(), "Unable to create datbases",
 					e);
 		}
 	}
@@ -64,7 +63,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 			TableUtils.dropTable(connectionSource, Event.class, true);
 			onCreate(sqliteDatabase, connectionSource);
 		} catch (SQLException e) {
-			Log.e(DatabaseHelper.class.getName(),
+			Log.d(DatabaseHelper.class.getName(),
 					"Unable to upgrade database from version " + oldVer
 							+ " to new " + newVer, e);
 		}
