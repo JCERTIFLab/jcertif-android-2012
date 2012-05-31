@@ -3,11 +3,12 @@ package com.jcertif.android;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
+import android.support.v4.app.FragmentActivity;
 
 import com.jcertif.android.transverse.model.User;
 import com.jcertif.android.transverse.url.UrlFactory;
 import com.jcertif.android.ui.view.R;
+import com.jcertif.android.ui.view.main.FragmentsSwitcherLegacy;
 
 /**
  * @author Mathias Seguy
@@ -22,6 +23,10 @@ public class JCApplication extends Application {
 	 * The User that currently uses the application
 	 */
 	private User user;
+	/**
+	 * The one that as in charge the fragment switching and displays
+	 */
+	FragmentsSwitcherLegacy fragmentSwitcher;
 
 	/******************************************************************************************/
 	/** Access Every Where **************************************************************************/
@@ -145,4 +150,20 @@ public class JCApplication extends Application {
 		return preferences.getBoolean(hash + getString(R.string.shValidUser), false);
 	}
 
+	/******************************************************************************************/
+	/** Fragment Management **************************************************************************/
+	/******************************************************************************************/
+	/**
+	 * @return the fragmentSwitcher
+	 */
+	public final FragmentsSwitcherLegacy initialise(FragmentActivity activity,Boolean twoFragmentsVisible,Boolean recreationMode) {
+		if(fragmentSwitcher==null) {
+			fragmentSwitcher=new FragmentsSwitcherLegacy(activity,twoFragmentsVisible );
+		}else {
+			fragmentSwitcher.setMainActivity(activity);
+			fragmentSwitcher.setTwoFragmentsVisible(twoFragmentsVisible);
+		}
+		fragmentSwitcher.showMain(recreationMode);
+		return fragmentSwitcher;
+	}
 }

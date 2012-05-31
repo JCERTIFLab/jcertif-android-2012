@@ -1,0 +1,21 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <stroke
+        android:width="@dimen/shape_stroke_Size"
+        android:color="@color/shape_stroke_color" />
+
+    <gradient
+        android:angle="270"
+        android:endColor="@color/shape_end_color"
+        android:startColor="@color/shape_start_color" />
+    <!-- <solid android:color="@color/selector_list_background" /> -->
+
+    <corners android:radius="@dimen/shape_corner_Size" />
+
+    <padding
+        android:bottom="@dimen/paddingBottom"
+        android:left="@dimen/paddingLeft"
+        android:right="@dimen/paddingRight"
+        android:top="@dimen/paddingTop" />
+
+</shape> <!-- <solid android:color="#ffffffff" /> -->

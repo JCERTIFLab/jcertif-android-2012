@@ -32,6 +32,7 @@ package com.jcertif.android.ui.view.main;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
+import com.jcertif.android.JCApplication;
 import com.jcertif.android.ui.view.R;
 
 import de.akquinet.android.androlog.Log;
@@ -42,21 +43,22 @@ import de.akquinet.android.androlog.Log;
  *        This class aims to be the main activity that displays the whole application using fragments
  */
 public class MainActivityLegacy extends FragmentActivity  {
+	
+	
 	/**
 	 * The one that as in charge the fragment switching and displays
 	 */
 	FragmentsSwitcherLegacy fragmentSwitcher;
 	
-
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.w("LifeCycle MainActivityLeg","onCreate");
 		setContentView(R.layout.main_activity);
-		fragmentSwitcher=new FragmentsSwitcherLegacy(this,findViewById(R.id.isLandscape)!=null );
+		fragmentSwitcher=((JCApplication)getApplication()).initialise(this, findViewById(R.id.isLandscape)!=null , savedInstanceState != null);
 		// recreation mode ==(savedInstanceState != null)
-		fragmentSwitcher.showMain(savedInstanceState != null);
+		//ragmentSwitcher.showMain(savedInstanceState != null);
 	}
 	
 	/**

@@ -19,7 +19,6 @@ import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 
 import com.jcertif.android.ui.view.R;
 import com.jcertif.android.ui.view.event.detail.EventDetailCallBack;
@@ -59,50 +58,50 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 	 * The mainActivity parent
 	 */
 	FragmentActivity mainActivity = null;
-	// /**
-	// * The main fragment
-	// */
-	// Fragment mainFragment;
-	// /**
-	// * The speakers List fragment
-	// */
-	// SpeakersListFragment speakersListFragment;
-	// /**
-	// * The speaker fragment for the first layout
-	// */
-	// SpeakerDetailFragment speakerFragment1;
-	// /**
-	// * The speaker fragment for the second layout
-	// */
-	// SpeakerDetailFragment speakerFragment2;
-	// /**
-	// * The events List fragment
-	// */
-	// EventsListFragment eventsListFragment;
-	// /**
-	// * The event fragment for the first layout
-	// */
-	// EventDetailFragment eventFragment1;
-	// /**
-	// * The event fragment for the second layout
-	// */
-	// EventDetailFragment eventFragment2;
-	// /**
-	// * The calendar main fragment
-	// */
-	// Fragment calendarMainFragment;
-	// /**
-	// * The calendar detail fragment
-	// */
-	// Fragment calendarDetailFragment;
-	// /**
-	// * The agenda fragment
-	// */
-	// Fragment agendaFragment;
-	// /**
-	// * The agenda detail fragment
-	// */
-	// Fragment agendaDetailFragment;
+	/**
+	 * The main fragment
+	 */
+	Fragment mainFragment;
+	/**
+	 * The speakers List fragment
+	 */
+	SpeakersListFragment speakersListFragment;
+	/**
+	 * The speaker fragment for the first layout
+	 */
+	SpeakerDetailFragment speakerFragment1;
+	/**
+	 * The speaker fragment for the second layout
+	 */
+	SpeakerDetailFragment speakerFragment2;
+	/**
+	 * The events List fragment
+	 */
+	EventsListFragment eventsListFragment;
+	/**
+	 * The event fragment for the first layout
+	 */
+	EventDetailFragment eventFragment1;
+	/**
+	 * The event fragment for the second layout
+	 */
+	EventDetailFragment eventFragment2;
+	/**
+	 * The calendar main fragment
+	 */
+	Fragment calendarMainFragment;
+	/**
+	 * The calendar detail fragment
+	 */
+	Fragment calendarDetailFragment;
+	/**
+	 * The agenda fragment
+	 */
+	Fragment agendaFragment;
+	/**
+	 * The agenda detail fragment
+	 */
+	Fragment agendaDetailFragment;
 
 	/******************************************************************************************/
 	/** TAGS **************************************************************************/
@@ -152,7 +151,6 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 	 * The agenda detail fragment TAG
 	 */
 	private final String agendaDetailFragmentTag = "agendaDetailFragmentTag";
-	Boolean displayLeaf=false;
 
 	/******************************************************************************************/
 	/** Constructors **************************************************************************/
@@ -172,16 +170,14 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 				backstackChanged();
 			}
 		});
-
-		// Si C'est une recreation
-		// Et qu'il n'y a plus qu'un layout (fragment)
-		// il faut passer le fragment afficher dans le second layout dans le premier layout
-		if (!twoFragmentsVisible&&displayLeaf) {
-			Fragment fr=fm.findFragmentById(R.id.secondfragment);
-			FragmentTransaction fTransaction = fm.beginTransaction();
-			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
-			fTransaction.replace(R.id.mainfragment, fr);
-			fTransaction.commit();
+		//clean the FragmentManager BackStack
+		BackStackEntry bse;
+		Boolean pop;
+		for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
+			bse = fm.getBackStackEntryAt(i);
+			pop=fm.popBackStackImmediate();
+			Log.e("FragmentsSwitcherLegacy:BackStackEntry POP",
+					"pop" +pop);
 		}
 		Log.i("FragmentsSwitcherLegacy:FragmentsSwitcherLegacy", "twoFragmentsVisible :" + twoFragmentsVisible);
 
@@ -197,14 +193,14 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 	public void setSecondFragmentVisible(Boolean show) {
 		if (show) {
 			mainActivity.findViewById(R.id.secondfragment).setVisibility(View.VISIBLE);
-			LinearLayout.LayoutParams params = (LayoutParams) mainActivity.findViewById(R.id.mainfragment)
-					.getLayoutParams();
+			LinearLayout.LayoutParams params = (android.widget.LinearLayout.LayoutParams) mainActivity.findViewById(
+					R.id.mainfragment).getLayoutParams();
 			params.width = LinearLayout.LayoutParams.WRAP_CONTENT;
 			mainActivity.findViewById(R.id.mainfragment).setLayoutParams(params);
 		} else {
 			mainActivity.findViewById(R.id.secondfragment).setVisibility(View.GONE);
-			LinearLayout.LayoutParams params = (LayoutParams) mainActivity.findViewById(R.id.mainfragment)
-					.getLayoutParams();
+			LinearLayout.LayoutParams params = (android.widget.LinearLayout.LayoutParams) mainActivity.findViewById(
+					R.id.mainfragment).getLayoutParams();
 			params.width = LinearLayout.LayoutParams.MATCH_PARENT;
 			mainActivity.findViewById(R.id.mainfragment).setLayoutParams(params);
 		}
@@ -219,8 +215,6 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 	 * @param isRecreationMode
 	 */
 	public void showMain(Boolean isRecreationMode) {
-		displayLeaf=false;
-		Fragment mainFragment = null;
 		Log.i("FragmentsSwitcherLegacy:initialize", "twoFragmentsVisible :" + twoFragmentsVisible);
 		// Now we can instantiate the appropriate fragment
 		// if not in recreation mode we can act we are in the creation mode
@@ -253,21 +247,22 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 	 */
 	@Override
 	public void showEvents() {
-		displayLeaf=false;
 		Log.i("FragmentsSwitcherLegacy:showEvents", "twoFragmentsVisible :" + twoFragmentsVisible);
 		FragmentManager fm = mainActivity.getSupportFragmentManager();
-		EventsListFragment eventsListFragment = (EventsListFragment) fm.findFragmentByTag(eventsListFragmentTag);
 		FragmentTransaction fTransaction = fm.beginTransaction();
 		fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
 		if (eventsListFragment == null) {
-			eventsListFragment = new EventsListFragment();
+			eventsListFragment = (EventsListFragment) fm.findFragmentByTag(eventsListFragmentTag);
+			if (eventsListFragment == null) {
+				eventsListFragment = new EventsListFragment();
+			}
 		}
 		if (twoFragmentsVisible) {
 			// hide the second fragment because we displays the list of speakers without any
 			// speakers selected
 			setSecondFragmentVisible(false);
 			// So add the speakers fragment
-			fTransaction.replace(R.id.mainfragment, eventsListFragment, eventsListFragmentTag);
+			fTransaction.replace(R.id.mainfragment, eventsListFragment,eventsListFragmentTag);
 			fTransaction.addToBackStack(mainActivity.getString(R.string.main_htitle));
 			fTransaction.commit();
 
@@ -287,36 +282,32 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 	 */
 	@Override
 	public void showSelectedEvent(int eventID, boolean fromEvent) {
-		FragmentManager fm = mainActivity.getSupportFragmentManager();
-		displayLeaf=true;
 		Log.i("showSelectedEvent", "Selected event:" + eventID);
 		Log.i("FragmentsSwitcherLegacy:showSelectedEvent", "twoFragmentsVisible :" + twoFragmentsVisible);
 		if (twoFragmentsVisible) {
 			// Set the second fragment visible
 			setSecondFragmentVisible(true);
 			// Prepare the fragment transaction
-
-			EventDetailFragment eventFragment2 = (EventDetailFragment) fm.findFragmentByTag(eventFragment2Tag);
+			FragmentManager fm = mainActivity.getSupportFragmentManager();
 			FragmentTransaction fTransaction = fm.beginTransaction();
 			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
-			// Ensure the first fragment is the event list if the event is selected from events list
-			if (fromEvent) {
-				EventsListFragment eventsListFragment = (EventsListFragment) fm
-						.findFragmentByTag(eventsListFragmentTag);
+			// Ensure the first fragment is the speakers list:
+			if (eventsListFragment == null) {
+				eventsListFragment = (EventsListFragment) fm.findFragmentByTag(eventsListFragmentTag);
 				if (eventsListFragment == null) {
-					eventsListFragment = (EventsListFragment) fm.findFragmentByTag(eventsListFragmentTag);
-					if (eventsListFragment == null) {
-						eventsListFragment = new EventsListFragment();
-					}
-					fTransaction.replace(R.id.mainfragment, eventsListFragment, eventsListFragmentTag);
+					eventsListFragment = new EventsListFragment();
 				}
+				fTransaction.replace(R.id.mainfragment, eventsListFragment,eventsListFragmentTag);
 			}
 			// Then manage the speaker detail
 			if (eventFragment2 == null) {
 				// the event has to be created
-				eventFragment2 = new EventDetailFragment();
+				eventFragment2 = (EventDetailFragment) fm.findFragmentByTag(eventFragment2Tag);
+				if (eventFragment2 == null) {
+					eventFragment2 = new EventDetailFragment();
+				}
 				// add it to the secondfragment layout
-				fTransaction.replace(R.id.secondfragment, eventFragment2, eventFragment2Tag);
+				fTransaction.replace(R.id.secondfragment, eventFragment2,eventFragment2Tag);
 				// The bundle is used to give to the speakerFragment the id of the selected speaker
 				Bundle bundle = new Bundle();
 				bundle.putInt(EventDetailFragment.EVENT_ID, eventID);
@@ -327,7 +318,7 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 				eventFragment2.updateEvent(eventID);
 				// if the fragment is not visible set it visible
 				if (!eventFragment2.isVisible()) {
-					fTransaction.replace(R.id.secondfragment, eventFragment2, eventFragment2Tag);
+					fTransaction.replace(R.id.secondfragment, eventFragment2,eventFragment2Tag);
 				}
 
 				if (fromEvent) {
@@ -344,15 +335,17 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 			}
 			fTransaction.commit();
 		} else {
-
 			Boolean firstCall = false;
 			// So add the main fragment
-			EventDetailFragment eventFragment1 = (EventDetailFragment) fm.findFragmentByTag(eventFragment1Tag);
+			FragmentManager fm = mainActivity.getSupportFragmentManager();
 			FragmentTransaction fTransaction = fm.beginTransaction();
 			// if the fragment doesn't exist create it
 			if (eventFragment1 == null) {
 				// the event has to be created
-				eventFragment1 = new EventDetailFragment();
+				eventFragment1 = (EventDetailFragment) fm.findFragmentByTag(eventFragment1Tag);
+				if (eventFragment1 == null) {
+					eventFragment1 = new EventDetailFragment();
+				}
 				// The bundle is used to give to the speakerFragment the id of the selected speaker
 				Bundle bundle = new Bundle();
 				bundle.putInt(EventDetailFragment.EVENT_ID, eventID);
@@ -361,12 +354,12 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 			}
 			// add the fragment
 			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
-			// if (fromEvent) {
-			// fTransaction.remove(eventsListFragment);
-			// } else {
-			// fTransaction.remove(speakerFragment1);
-			// }
-			fTransaction.replace(R.id.mainfragment, eventFragment1, eventFragment1Tag);
+			if (fromEvent) {
+				fTransaction.remove(eventsListFragment);
+			} else {
+				fTransaction.remove(speakerFragment1);
+			}
+			fTransaction.add(R.id.mainfragment, eventFragment1,eventFragment1Tag);
 			fTransaction.addToBackStack(mainActivity.getString(R.string.speaker_htitle));
 			fTransaction.commit();
 			// if it's not the first call, update the speaker data
@@ -383,33 +376,36 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 	 */
 	@Override
 	public void showSpeakers() {
-		displayLeaf=false;
 		Log.i("FragmentsSwitcherLegacy:showSpeakers", "twoFragmentsVisible :" + twoFragmentsVisible);
-		FragmentManager fm = mainActivity.getSupportFragmentManager();
-		SpeakersListFragment speakersListFragment = (SpeakersListFragment) fm
-				.findFragmentByTag(speakersListFragmentTag);
 		if (twoFragmentsVisible) {
 			// hide the second fragment because we displays the list of speakers without any
 			// speakers selected
 			setSecondFragmentVisible(false);
 			// So add the speakers fragment
-
+			FragmentManager fm = mainActivity.getSupportFragmentManager();
 			FragmentTransaction fTransaction = fm.beginTransaction();
 			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
 			// the speakersListFragment has to be created
 			if (speakersListFragment == null) {
-				speakersListFragment = new SpeakersListFragment();
+				speakersListFragment = (SpeakersListFragment) fm.findFragmentByTag(speakersListFragmentTag);
+				if (speakersListFragment == null) {
+					speakersListFragment = new SpeakersListFragment();
+				}
 			}
-			fTransaction.replace(R.id.mainfragment, speakersListFragment, speakersListFragmentTag);
+			fTransaction.replace(R.id.mainfragment, speakersListFragment,speakersListFragmentTag);
 			fTransaction.addToBackStack(mainActivity.getString(R.string.main_htitle));
 			fTransaction.commit();
 
 		} else {
 			// So add the speaker fragment
+			FragmentManager fm = mainActivity.getSupportFragmentManager();
 			FragmentTransaction fTransaction = fm.beginTransaction();
 			// the speakersListFragment has to be created
 			if (speakersListFragment == null) {
-				speakersListFragment = new SpeakersListFragment();
+				speakersListFragment = (SpeakersListFragment) fm.findFragmentByTag(speakersListFragmentTag);
+				if (speakersListFragment == null) {
+					speakersListFragment = new SpeakersListFragment();
+				}
 			}
 			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
 			fTransaction.replace(R.id.mainfragment, speakersListFragment, speakersListFragmentTag);
@@ -427,30 +423,33 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 	 */
 	@Override
 	public void showSelectedSpeaker(int speakerID) {
-		displayLeaf=true;
 		Log.i("showSelectedSpeaker", "Selected speaker:" + speakerID);
 		Log.i("FragmentsSwitcherLegacy:showSpeakers", "twoFragmentsVisible :" + twoFragmentsVisible);
-		FragmentManager fm = mainActivity.getSupportFragmentManager();
-		SpeakersListFragment speakersListFragment = (SpeakersListFragment) fm
-				.findFragmentByTag(speakersListFragmentTag);
 		if (twoFragmentsVisible) {
 			// Set the second fragment visible
 			setSecondFragmentVisible(true);
 			// Prepare the fragment transaction
-			SpeakerDetailFragment speakerFragment2 = (SpeakerDetailFragment) fm.findFragmentByTag(speakerFragment2Tag);
+			FragmentManager fm = mainActivity.getSupportFragmentManager();
 			FragmentTransaction fTransaction = fm.beginTransaction();
 			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
 			// Ensure the first fragment is the speakers list:
 			if (speakersListFragment == null) {
-				speakersListFragment = new SpeakersListFragment();
-				fTransaction.replace(R.id.mainfragment, speakersListFragment, speakersListFragmentTag);
+				speakersListFragment = (SpeakersListFragment) fm.findFragmentByTag(speakersListFragmentTag);
+				if (speakersListFragment == null) {
+					speakersListFragment = new SpeakersListFragment();
+				}
+				fTransaction.replace(R.id.mainfragment, speakersListFragment,speakersListFragmentTag);
 			}
 			// Then manage the speaker detail
+
 			// the speaker has to be created
 			if (speakerFragment2 == null) {
-				speakerFragment2 = new SpeakerDetailFragment();
+				speakerFragment2 = (SpeakerDetailFragment) fm.findFragmentByTag(speakerFragment2Tag);
+				if (speakerFragment2 == null) {
+					speakerFragment2 = new SpeakerDetailFragment();
+				}
 				// add it to the secondfragment layout
-				fTransaction.replace(R.id.secondfragment, speakerFragment2, speakerFragment2Tag);
+				fTransaction.replace(R.id.secondfragment, speakerFragment2,speakerFragment2Tag);
 				// The bundle is used to give to the speakerFragment the id of the selected speaker
 				Bundle bundle = new Bundle();
 				bundle.putInt(SpeakerDetailFragment.SPEAKER_ID, speakerID);
@@ -461,7 +460,7 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 				speakerFragment2.updateSpeaker(speakerID);
 				// if the fragment is not visible set it visible
 				if (!speakerFragment2.isVisible()) {
-					fTransaction.replace(R.id.secondfragment, speakerFragment2, speakerFragment2Tag);
+					fTransaction.replace(R.id.secondfragment, speakerFragment2,speakerFragment2Tag);
 				}
 				// Add only one level of backstack for the speaker detail
 				// so if the last back stack entry is R.string.speaker_htitle do nothing
@@ -472,14 +471,16 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 			}
 			fTransaction.commit();
 		} else {
-
 			Boolean firstCall = false;
 			// So add the main fragment
+			FragmentManager fm = mainActivity.getSupportFragmentManager();
 			FragmentTransaction fTransaction = fm.beginTransaction();
-			SpeakerDetailFragment speakerFragment1 = (SpeakerDetailFragment) fm.findFragmentByTag(speakerFragment1Tag);
 			// if the fragment doesn't exist create it
 			if (speakerFragment1 == null) {
-				speakerFragment1 = new SpeakerDetailFragment();
+				speakerFragment1 = (SpeakerDetailFragment) fm.findFragmentByTag(speakerFragment1Tag);
+				if (speakerFragment1 == null) {
+					speakerFragment1 = new SpeakerDetailFragment();
+				}
 				// The bundle is used to give to the speakerFragment the id of the selected speaker
 				Bundle bundle = new Bundle();
 				bundle.putInt(SpeakerDetailFragment.SPEAKER_ID, speakerID);
@@ -489,7 +490,7 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 			// add the fragment
 			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
 			fTransaction.remove(speakersListFragment);
-			fTransaction.add(R.id.mainfragment, speakerFragment1, speakerFragment1Tag);
+			fTransaction.add(R.id.mainfragment,speakerFragment1,speakerFragment1Tag);
 			fTransaction.addToBackStack(mainActivity.getString(R.string.speaker_htitle));
 			fTransaction.commit();
 			// if it's not the first call, update the speaker data
@@ -531,10 +532,10 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 		// TODO Auto-generated method stub
 
 	}
-
 	/******************************************************************************************/
 	/** Managing Space **************************************************************************/
 	/******************************************************************************************/
+
 
 	/*
 	 * (non-Javadoc)
@@ -561,24 +562,15 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 			}
 		}
 	}
-
+	
 	/******************************************************************************************/
 	/** Getter/Setter **************************************************************************/
 	/******************************************************************************************/
 	/**
-	 * @param mainActivity
-	 *            the mainActivity to set
+	 * @param mainActivity the mainActivity to set
 	 */
 	public final void setMainActivity(FragmentActivity mainActivity) {
 		this.mainActivity = mainActivity;
-	}
-
-	/**
-	 * @param twoFragmentsVisible
-	 *            the twoFragmentsVisible to set
-	 */
-	public final void setTwoFragmentsVisible(Boolean twoFragmentsVisible) {
-		this.twoFragmentsVisible = twoFragmentsVisible;
 	}
 
 	/******************************************************************************************/
@@ -599,4 +591,5 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 		}
 	}
 
+	
 }

@@ -36,56 +36,47 @@ import com.jcertif.android.ui.view.main.MainActivityLegacy;
 /**
  * @author Mathias Seguy (Android2EE)
  * @goals
- *        This class aims to:
- *        <ul>
- *        <li></li>
- *        </ul>
+ *         This class aims to displays an event within a fragment
  */
 public class EventDetailFragment extends Fragment {
 	/**
-	 * 
+	 * The max lenght for the Speaker bio part 1
 	 */
 	public static final int BIO_PART1_MAX_LENGTH = 100;
 	/**
-	 * 
+	 * The constant to use to pass the event id attribute to the fragment
 	 */
 	public static final String EVENT_ID = "eventId";
 	/**
-	 * 
+	 * The speakers provider
 	 */
 	private SpeakerProvider speakersProvider;
 	/**
-	 * 
+	 * The events providers
 	 */
 	private EventProvider eventProvider;
 	/**
-	 * 
+	 * The callBack
 	 */
 	private EventDetailCallBack callBack;
 	/**
-	 * 
+	 * The displayed event id 
 	 */
 	private int eventId = -1;
+	
+	/******************************************************************************************/
+	/** Constructors **************************************************************************/
+	/******************************************************************************************/
 
 	/**
-	 * 
+	 * Empty constructor
 	 */
 	public EventDetailFragment() {
 		super();
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.support.v4.app.Fragment#setArguments(android.os.Bundle)
-	 */
-	@Override
-	public void setArguments(Bundle args) {
-		if (args != null) {
-			eventId = args.getInt(EVENT_ID);
-		}
-		super.setArguments(args);
-	}
+	/******************************************************************************************/
+	/** Managing Life Cycle **************************************************************************/
+	/******************************************************************************************/
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -119,9 +110,24 @@ public class EventDetailFragment extends Fragment {
 	@Override
 	public void onDestroy() {
 		Log.d("LifeCycle EventDetailFragment", "onDestroy");
-		getCallBack().fillSpace(false);
+		if(getCallBack()!=null) {
+			getCallBack().fillSpace(false);
+		}
 		// Then the backStack is called
 		super.onDestroy();
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.support.v4.app.Fragment#setArguments(android.os.Bundle)
+	 */
+	@Override
+	public void setArguments(Bundle args) {
+		if (args != null) {
+			eventId = args.getInt(EVENT_ID);
+		}
+		super.setArguments(args);
 	}
 
 	/**
@@ -133,7 +139,11 @@ public class EventDetailFragment extends Fragment {
 		}
 		return callBack;
 	}
-
+	
+	/******************************************************************************************/
+	/** Updating the screen **************************************************************************/
+	/******************************************************************************************/
+	
 	/**
 	 * @param view
 	 * @param speakerId
@@ -199,7 +209,11 @@ public class EventDetailFragment extends Fragment {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/******************************************************************************************/
+	/** Data management **************************************************************************/
+	/******************************************************************************************/
+	
 	/**
 	 * Retrieve the event
 	 * 

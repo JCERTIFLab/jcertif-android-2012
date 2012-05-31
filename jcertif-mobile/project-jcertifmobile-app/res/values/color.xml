@@ -9,11 +9,15 @@
     <color name="violet">#FFCCCCFF</color>
     <color name="violet_bright">#FFD5D5FC</color>
     <color name="violet_dark">#FF9F9FF4</color>
+    <color name="violet_trans">#77CCCCFF</color>
+    <color name="violet_bright_trans">#77D5D5FC</color>
+    <color name="violet_dark_trans">#779F9FF4</color>
     <color name="yellow">#88ECEC0B</color>
     <color name="blue">#880000FF</color>
     <color name="deep_blue">#FF333399</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="translucent">#00889988</color>
 
     <!-- Referential colors -->
     <!-- ****************** -->
@@ -33,12 +37,15 @@
     <!-- Shape -->
     <color name="button_border">@color/blue</color>
     <color name="button_border_selected">@color/deep_blue</color>
-    <color name="shape_end_color">#FFBBBBFF</color>
-    <color name="shape_start_color">#FF0000FF</color>
-    <color name="shape_stroke_color">#FFFFFFFF</color>
+    <color name="shape_end_color">@color/violet_dark</color>
+    <color name="shape_start_color">@color/violet</color>
+    <color name="shape_stroke_color">#FF000000</color>
     <!-- Shape for List -->
     <color name="selector_stroke_list_color">#FFFF0000</color>
     <color name="selector_list_background">#99FFFFFF</color>
-    <color name="shape_list_odd_end_color">#FFABFA0E</color>
+    <color name="shape_list_odd_end_color">@color/violet_bright_trans</color>
+    <color name="shape_list_odd_start_color">@color/blue</color>
+    <color name="shape_list_end_color">@color/violet_bright_trans</color>
+    <color name="shape_list_start_color">@color/deep_blue</color>
 
 </resources>

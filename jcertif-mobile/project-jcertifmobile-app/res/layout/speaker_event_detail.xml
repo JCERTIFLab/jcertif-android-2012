@@ -2,15 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/violet"
+    android:background="@color/translucent"
     android:orientation="vertical"
     android:paddingTop="@dimen/paddingTop" >
-
-    <ImageView
-        android:id="@+id/eventSeparator"
-        android:layout_width="fill_parent"
-        android:layout_height="20dp"
-        android:src="@drawable/speaker_detail_event_separator" />
 
     <TextView
         android:id="@+id/eventName"
@@ -28,7 +22,7 @@
             style="@style/txv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/red"
+            android:textColor="@color/black"
             android:textStyle="bold" />
 
         <LinearLayout

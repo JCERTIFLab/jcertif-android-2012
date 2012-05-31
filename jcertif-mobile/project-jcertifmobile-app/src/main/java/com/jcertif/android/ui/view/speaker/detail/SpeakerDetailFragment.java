@@ -18,6 +18,7 @@ import java.util.List;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -44,53 +45,60 @@ import com.jcertif.android.ui.view.main.MainActivityLegacy;
  */
 public class SpeakerDetailFragment extends Fragment {
 	/**
-	 * 
+	 * The max lenght for the Speaker bio part 1
 	 */
 	public static final int BIO_PART1_MAX_LENGTH = 100;
 	/**
-	 * 
+	 * The constant to use to pass the speaker id attribute to the fragment
 	 */
 	public static final String SPEAKER_ID = "speakerId";
 	/**
-	 * 
+	 * The speakers provider
 	 */
 	private SpeakerProvider speakersProvider;
 	/**
-	 * 
+	 * The events providers
 	 */
 	private EventProvider eventProvider;
 	/**
-	 * 
+	 * The callBack
 	 */
 	private SpeakerDetailCallBack callBack;
 	/**
-	 * 
+	 * The displayed speaker id 
 	 */
 	private int speakerId = -1;
+	/**
+	 * The background for even events rows
+	 */
+	GradientDrawable evenBackground = null;
+	/**
+	 * The background for odd events rows
+	 */
+	GradientDrawable oddBackground = null;
+	
+	/******************************************************************************************/
+	/** Constructors **************************************************************************/
+	/******************************************************************************************/
+
 
 	/**
-	 * 
+	 * Default constructor
 	 */
 	public SpeakerDetailFragment() {
 		super();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.support.v4.app.Fragment#setArguments(android.os.Bundle)
-	 */
-	@Override
-	public void setArguments(Bundle args) {
-		if (args != null) {
-			speakerId = args.getInt(SPEAKER_ID);
-		}
-		super.setArguments(args);
-	}
+	/******************************************************************************************/
+	/** Managing Life Cycle **************************************************************************/
+	/******************************************************************************************/
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.w("SpeakerDetailFragment onResume", "getView :" + getView());
+		evenBackground = (GradientDrawable) getResources().getDrawable(R.drawable.list_item);
+		oddBackground = (GradientDrawable) getResources().getDrawable(R.drawable.list_item_odd);
 		View view = inflater.inflate(R.layout.speaker_detail, container, false);
 
 		return view;
@@ -120,11 +128,26 @@ public class SpeakerDetailFragment extends Fragment {
 	@Override
 	public void onDestroy() {
 		Log.d("LifeCycle SpeakerDetailFragment", "onDestroy");
-		getCallBack().fillSpace(false);
+		if(getCallBack()!=null) {
+			getCallBack().fillSpace(false);
+		}
 		// Then the backStack is called
 		super.onDestroy();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.support.v4.app.Fragment#setArguments(android.os.Bundle)
+	 */
+	@Override
+	public void setArguments(Bundle args) {
+		if (args != null) {
+			speakerId = args.getInt(SPEAKER_ID);
+		}
+		super.setArguments(args);
+	}
+	
 	/**
 	 * To be sure that the callBack is instantiate
 	 */
@@ -134,6 +157,10 @@ public class SpeakerDetailFragment extends Fragment {
 		}
 		return callBack;
 	}
+	
+	/******************************************************************************************/
+	/** Updating the screen **************************************************************************/
+	/******************************************************************************************/
 
 	/**
 	 * @param view
@@ -194,6 +221,45 @@ public class SpeakerDetailFragment extends Fragment {
 		}
 	}
 
+	
+	/**
+	 * @param speakerEvents
+	 */
+	private void buildSpeakerEventLayout(LinearLayout speakerEventLayout, List<Event> speakerEvents) {
+		int i=0;
+		for (final Event ev : speakerEvents) {
+			LinearLayout newLayout = new LinearLayout(getActivity());
+			View detailEventView = getActivity().getLayoutInflater().inflate(R.layout.speaker_event_detail, newLayout);
+			TextView nameView = (TextView) detailEventView.findViewById(R.id.eventName);
+			nameView.setText(ev.name);
+			newLayout.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View view) {
+					getCallBack().showSelectedEvent(ev.id, false);
+				}
+			});
+			TextView roomView = (TextView) detailEventView.findViewById(R.id.eventRoom);
+			roomView.setText(ev.room);
+			TextView dateView = (TextView) detailEventView.findViewById(R.id.eventDate);
+			dateView.setText(new SimpleDateFormat("EEE").format(ev.startDate) + " "
+					+ new SimpleDateFormat("HH:mm").format(ev.startDate) + " à "
+					+ new SimpleDateFormat("HH:mm").format(ev.endDate));
+			
+			if(i%2==0) {
+				newLayout.setBackgroundDrawable(evenBackground);
+			}else {
+				newLayout.setBackgroundDrawable(oddBackground);
+			}
+			i++;
+			
+			speakerEventLayout.addView(newLayout);
+		}
+
+	}
+	
+	/******************************************************************************************/
+	/** Data management **************************************************************************/
+	/******************************************************************************************/
+	
 	/**
 	 * @param speakerId
 	 * @return
@@ -217,30 +283,6 @@ public class SpeakerDetailFragment extends Fragment {
 		return speakerEvents;
 	}
 
-	/**
-	 * @param speakerEvents
-	 */
-	private void buildSpeakerEventLayout(LinearLayout speakerEventLayout, List<Event> speakerEvents) {
-		for (final Event ev : speakerEvents) {
-			LinearLayout newLayout = new LinearLayout(getActivity());
-			View detailEventView = getActivity().getLayoutInflater().inflate(R.layout.speaker_event_detail, newLayout);
-			TextView nameView = (TextView) detailEventView.findViewById(R.id.eventName);
-			nameView.setText(ev.name);
-			newLayout.setOnClickListener(new View.OnClickListener() {
-				public void onClick(View view) {
-					getCallBack().showSelectedEvent(ev.id,false);
-				}
-			});
-			TextView roomView = (TextView) detailEventView.findViewById(R.id.eventRoom);
-			roomView.setText(ev.room);
-			TextView dateView = (TextView) detailEventView.findViewById(R.id.eventDate);
-			dateView.setText(new SimpleDateFormat("EEE").format(ev.startDate) + " "
-					+ new SimpleDateFormat("HH:mm").format(ev.startDate) + " à "
-					+ new SimpleDateFormat("HH:mm").format(ev.endDate));
-			speakerEventLayout.addView(newLayout);
-		}
-
-	}
 
 	/**
 	 * Spliting bio.

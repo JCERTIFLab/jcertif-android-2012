@@ -2,15 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/violet_dark"
+    android:background="@drawable/panel_shape"
     android:orientation="vertical" >
 
     <TextView
         android:id="@+id/speakerName"
         style="@style/txv_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/violet_dark" />
+        android:layout_height="wrap_content" />
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -26,6 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:paddingBottom="@dimen/paddingBottom"
                 android:paddingLeft="@dimen/paddingLeft"
                 android:paddingRight="@dimen/paddingRight" >
 
@@ -33,23 +33,22 @@
                     android:id="@+id/speakerImg"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/paddingBottom"
-                    android:paddingRight="@dimen/paddingRight" />
+                    android:layout_gravity="center"
+                    android:paddingLeft="@dimen/paddingLeft" />
 
                 <TextView
                     android:id="@+id/speakerBioPart1"
-                    style="@style/txv_style"
+                    style="@style/txv_style_nvm"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/violet_dark" />
+                    android:layout_marginTop="0dp" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/speakerBioPart2"
-                style="@style/txv_style"
+                style="@style/txv_style_nvm"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/violet_dark" />
+                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:id="@+id/speakerEvents"
