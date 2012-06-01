@@ -71,7 +71,7 @@ public class LauncherActivity extends Activity {
 		Intent startActivityIntent = null;
 
 		// First test if the user exists
-		if (((JCApplication) getApplication()).isValidUser()) {
+		if (((JCApplication) getApplication()).isDefaultValidUser()) {
 			// if the user is valid, launch the mainActivity
 			// TODO Update MainActivity to call it here using Legacy or HC
 			if (!shinyNewAPIS) {

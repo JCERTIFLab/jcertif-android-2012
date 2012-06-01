@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
- <!-- Init Constants -->
+
+    <!-- Init Constants -->
     <string name="initialisation">initiliazed</string>
-    
+
     <!-- SharedPreferences Constants -->
     <string name="shhash">hashcode</string>
+    <string name="shID">ID</string>
     <string name="shEmail">email</string>
     <string name="shPassword">password</string>
     <string name="shValidUser">validuser</string>
@@ -19,6 +21,7 @@
     <string name="shTelMobile">telmobile</string>
     <string name="shType">type</string>
     <string name="shVille">ville</string>
+    <string name="shLastUpdateTime">shLastUpdateTime</string>
 
     <!-- Service And associatedIntents Constants -->
     <string name="servAuthentIntentExtraName">response</string>

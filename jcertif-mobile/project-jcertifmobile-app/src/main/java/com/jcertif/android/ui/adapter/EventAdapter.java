@@ -24,7 +24,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
 	/**
 	 * The maximal lenght of the description
 	 */
-	private final int MAX_DESC_LENGHT=500;
+	private final int MAX_DESC_LENGHT=200;
 	/**
 	 * Even position for item
 	 */

@@ -11,6 +11,9 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" >
     </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name="com.jcertif.android.JCApplication"
@@ -61,8 +64,15 @@
         <!-- Service -->
         <service android:name="com.jcertif.android.service.androidservices.JCertifLocalService" />
         <service android:name="com.jcertif.android.service.androidservices.UpdaterService" />
+        <!-- BroadCastReceiver -->
+        <!-- Listening for Boot and connectivity changed (Launch the update service) -->
+        <receiver android:name="com.jcertif.android.braodcastreceiver.BootAndWifiReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.STATE_CHANGE" />
+            </intent-filter>
+        </receiver>
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

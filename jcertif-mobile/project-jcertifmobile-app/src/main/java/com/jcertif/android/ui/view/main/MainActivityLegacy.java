@@ -34,6 +34,8 @@ import android.support.v4.app.FragmentActivity;
 
 import com.jcertif.android.JCApplication;
 import com.jcertif.android.ui.view.R;
+import com.jcertif.android.ui.view.generic.BaseActivityLegacy;
+import com.jcertif.android.ui.view.generic.BasicActivityHC;
 
 import de.akquinet.android.androlog.Log;
 
@@ -42,7 +44,7 @@ import de.akquinet.android.androlog.Log;
  * @goals
  *        This class aims to be the main activity that displays the whole application using fragments
  */
-public class MainActivityLegacy extends FragmentActivity  {
+public class MainActivityLegacy extends BaseActivityLegacy  {
 	
 	
 	/**

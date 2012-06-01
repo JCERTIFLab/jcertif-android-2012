@@ -32,8 +32,11 @@ package com.jcertif.android.service.androidservices;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
@@ -57,7 +60,7 @@ public class UpdaterService extends Service {
 
 	/**
 	 * The list of elements that have to update the data
-	 * Each element has to update a specific data (spreakers, events,...) 
+	 * Each element has to update a specific data (spreakers, events,...)
 	 */
 	List<UpdaterServiceElementIntf> updaters;
 	/**
@@ -82,7 +85,7 @@ public class UpdaterService extends Service {
 	@Override
 	public IBinder onBind(Intent intent) {
 		// This service will never be bound to anyone
-		//It is called by onStart
+		// It is called by onStart
 		return null;
 	}
 
@@ -95,7 +98,8 @@ public class UpdaterService extends Service {
 	public void onCreate() {
 		super.onCreate();
 		// Display a notification about us starting. We put an icon in the status bar.
-		showNotification();
+		mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		
 		// instantiate all the update services
 		updaters = new ArrayList<UpdaterServiceElementIntf>();
 		updaters.add(new SpeakersUpdater());
@@ -133,7 +137,7 @@ public class UpdaterService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.i("UpdaterService", "Received start id " + startId + ": " + intent);
-		mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		showNotification();
 		// Launch the thread// start the thread
 		for (Thread backgroundThread : backgroundThreads) {
 			Log.i("UpdaterService", "RbackgroundThread" + startId + ": " + intent);
@@ -173,23 +177,46 @@ public class UpdaterService extends Service {
 	 */
 	private void showNotification() {
 		// TODO MSE mettre en place la notification, le PendingIntent doit la stopper
-
+//		NotificationManager mNM = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		// // In this sample, we'll use the same text for the ticker and the expanded notification
-		// CharSequence text = getText(R.string.local_service_started);
+		CharSequence text = "Updates Jcertif running";
 		//
 		// // Set the icon, scrolling text and timestamp
-		// Notification notification = new Notification(R.drawable.stat_sample, text,
-		// System.currentTimeMillis());
+		Notification notification = new Notification(R.drawable.logo, text, System.currentTimeMillis());
 		//
 		// // The PendingIntent to launch our activity if the user selects this notification
 		// PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this,
 		// LocalServiceActivities.Controller.class), 0);
 		//
 		// // Set the info for the views that show in the notification panel.
-		// notification.setLatestEventInfo(this, getText(R.string.local_service_label), text,
-		// contentIntent);
+		notification.setLatestEventInfo(this, "JCertif", text, null);
 		//
 		// // Send the notification.
-		// mNM.notify(NOTIFICATION, notification);
+		mNM.notify(NOTIFICATION, notification);
+//ou faire comme ça:
+		// //Récupération du notification Manager
+		// final NotificationManager notificationManager =
+		// (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+		//
+		// //Création de la notification avec spécification de l'icone de la notification et le
+		// texte qui apparait à la création de la notfication
+		// final Notification notification = new Notification(R.drawable.notification,
+		// notificationTitle, System.currentTimeMillis());
+		//
+		// //Definition de la redirection au moment du clique sur la notification. Dans notre cas la
+		// notification redirige vers notre application
+		// final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,
+		// TutoNotificationHomeActivity.class), 0);
+		//
+		// //Récupération du titre et description de la notfication
+		// final String notificationTitle = getResources().getString(R.string.notification_title);
+		// final String notificationDesc = getResources().getString(R.string.notification_desc);
+		//
+		// //Notification & Vibration
+		// notification.setLatestEventInfo(this, notificationTitle, notificationDesc,
+		// pendingIntent);
+		// notification.vibrate = new long[] {0,200,100,200,100,200};
+		//
+		// notificationManager.notify(NOTIFICATION_ID, notification);
 	}
 }

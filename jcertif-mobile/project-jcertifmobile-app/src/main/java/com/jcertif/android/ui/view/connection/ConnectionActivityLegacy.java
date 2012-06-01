@@ -5,11 +5,12 @@
  */
 package com.jcertif.android.ui.view.connection;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -20,6 +21,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.jcertif.android.JCApplication;
+import com.jcertif.android.com.parsing.jackson.service.UsersController;
 import com.jcertif.android.service.threadtraitements.authent.AuthentThreadCallBack;
 import com.jcertif.android.service.threadtraitements.authent.AuthentificationThread;
 import com.jcertif.android.transverse.model.User;
@@ -38,7 +40,6 @@ import de.akquinet.android.androlog.Log;
  *        Display the connection activity for Device which have a version level < HoneyComb
  */
 public class ConnectionActivityLegacy extends Activity implements AccountDialogParentIntf, AuthentThreadCallBack {
-	// TODO MSE Reflechir à la persistence de l'utilisateur, mais il manque la reponse de l'authent et de la registration
 	/**
 	 * The dialogs to display to the user for registration
 	 */
@@ -159,10 +160,8 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 		String password = edtPassword.getText().toString();
 		if (isValidUser(email, password)) {
 			// go to the next activity
-			// TODO MSE to centralize within a same method
 			displayMainView();
 		} else {
-
 			if ((email.length() > 0) && ((password.length() > 0))) {
 				// Launch the thread
 				// authThread.execute(email, password);
@@ -192,25 +191,53 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 		String httpGetResponse = message.getData().getString(AuthentificationThread.RESPONSE_KEY);
 		int httpGetRespStatus = message.getData().getInt(AuthentificationThread.STATUS_KEY);
 		// Update what is need to be updated
-		Log.w("ConnectionActivityLegacy", "Authentification httpGetResponse : |" + httpGetResponse+"|");
-		//Be carefull HttpResponse = "null\r" ou "null\n" un truc du genre
-		Log.w("ConnectionActivityLegacy", "Authentification HttpTools.isValidHttpResponseCode(httpGetRespStatus) : " + HttpTools.isValidHttpResponseCode(httpGetRespStatus));
+		Log.w("ConnectionActivityLegacy", "Authentification httpGetResponse : |" + httpGetResponse + "|");
+		// Be carefull HttpResponse = "null\r" ou "null\n" un truc du genre
+		Log.w("ConnectionActivityLegacy", "Authentification HttpTools.isValidHttpResponseCode(httpGetRespStatus) : "
+				+ HttpTools.isValidHttpResponseCode(httpGetRespStatus));
 		if (httpGetResponse != null && (!httpGetResponse.contains("null"))
 				&& (HttpTools.isValidHttpResponseCode(httpGetRespStatus))) {
 			Log.w("ConnectionActivityLegacy", "httpGetResponse : is ok");
-			saveCredentials();
-			// TODO here I should be able to update the user
-			// saveUser();
-			// JCApplication.updateUser
+			// Demander la liste des speakers (chaque speaker est complet)
+			try {
+				// reconstruire les données
+				UsersController userCont = new UsersController(httpGetResponse);
+				Log.i("onUpdate", httpGetResponse);
+				Boolean initOk = userCont.init();
+				if (initOk) {
+					User user = userCont.get();
+					if (null!=user) {
+						// Enregistre l'utilisateur comme valide
+						onUserValidated(user);
+					} else {
+						// TODO launch an exception, or do something else 
+						ShowAuthentFailedDialog();
+					}
+				}else {
+					ShowAuthentFailedDialog();
+				}
+
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			// TODO When the bypass of the Authent is not required for dev anymore uncomment
 			// displayMenuView();
 		} else {
-			Log.w("ConnectionActivityLegacy", "Authentification httpGetResponse : is ko");
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle(R.string.alertDialogTitle).setMessage(R.string.authenticationErrorMessage)
-					.setPositiveButton("OK", null).show();
+			ShowAuthentFailedDialog();
 		}
-		// TODO MSE to replace in the if
+		// TODO to replace in the if when authent is finished to be coded
 		displayMainView();
+	}
+
+	/**
+	 * Show the Dialog authentification failed
+	 */
+	public void ShowAuthentFailedDialog() {
+		Log.w("ConnectionActivityLegacy", "Authentification httpGetResponse : is ko");
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.alertDialogTitle).setMessage(R.string.authenticationErrorMessage)
+				.setPositiveButton("OK", null).show();
 	}
 
 	/******************************************************************************************/
@@ -224,12 +251,17 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 		Intent intentView = new Intent(getApplicationContext(), MainActivityLegacy.class);
 		startActivityForResult(intentView, 0);
 	}
+
 	/******************************************************************************************/
 	/** Managing Registration *************************************************************/
 	/******************************************************************************************/
-	
-	/* (non-Javadoc)
-	 * @see com.jcertif.android.ui.view.connection.accountdialogs.AccountDialogParentIntf#onRegisterCallBack(com.jcertif.android.transverse.model.User)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.jcertif.android.ui.view.connection.accountdialogs.AccountDialogParentIntf#onRegisterCallBack
+	 * (com.jcertif.android.transverse.model.User)
 	 */
 	public void onRegisterCallBack(User user) {
 		String email = user.getEmail();
@@ -243,15 +275,12 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 			final EditText passwordView = (EditText) this.findViewById(R.id.edtPassword);
 			passwordView.setText(password);
 		}
-		// Save the user in the preference
-		saveUser(user);
-		// And update the user in the application
-		int hash = (email.hashCode() + password.hashCode()) / 2;
-		((JCApplication) getApplication()).updateUser(hash);
-		//And a last by pass the connection
-		//TODO Doit-on quand la regsitration est ok by-passé la connection ou pas???
-		//i.e. doit faire  onConnectButtonClicked() ou displayMenuView ?o? ou rien ?
+		// Save the user in the application
+		onUserValidated(user);
+		// TODO Doit-on quand la regsitration est ok by-passé la connection ou pas???
+		// i.e. doit faire onConnectButtonClicked() ou displayMenuView ?o? ou rien ?
 	}
+
 	/******************************************************************************************/
 	/** User Management With SharedPreference *************************************************/
 	/******************************************************************************************/
@@ -299,71 +328,23 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 	}
 
 	/**
-	 * Call this method to store the user password.
-	 * This method should be called only once when the Activity is destroyed
-	 * And only if the user is valid
-	 * And it should write to the disk using a thread (asyncTask for example)
+	 * This method update the email and Password fields
+	 * Update the current user in the application (and doing that store the user information in the
+	 * DefaultSharedPreference)
+	 * 
+	 * @param user
+	 *            The user to store
 	 */
-	private void saveCredentials() {
+	private void onUserValidated(User user) {
 		// find email
 		final EditText edtEmail = (EditText) this.findViewById(R.id.edtEmail);
 		final String email = edtEmail.getText().toString();
 		// find password
 		final EditText edtPassword = (EditText) this.findViewById(R.id.edtPassword);
 		final String password = edtPassword.getText().toString();
-		// Set the user to be accessible in the whole application
-		User user = ((JCApplication) getApplication()).getUser();
-		user.setEmail(email);
-		user.setPassword(password);
-		// Get preferences
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		Editor editor = preferences.edit();
-
-		// The Hashcode of the user
-		// needed to have multi users account for the application
-		int hash = (email.hashCode() + password.hashCode()) / 2;
-		// Store the user password and email
-		editor.putString(hash + getString(R.string.shEmail), email);
-		editor.putString(hash + getString(R.string.shPassword), password);
-		// Store validity
-		editor.putBoolean(hash + getString(R.string.shValidUser), true);
-		// and store the hashcode of the last user connected
-		// to reload the email/password of the last connected person
-		editor.putString(getString(R.string.shhash), Integer.toString(hash));
-		editor.commit();
-
+		// Update the Application current user
+		// The user will be stored in the SharedPreference also
+		((JCApplication) getApplication()).setUser(user);
 	}
 
-	
-	/**
-	 * This method save the user profile within the defaultSharedPreference
-	 * it should write to the disk using a thread (asyncTask for example)
-	 * /!\Warning Email and Password are store in the method saveCredentials not in that one
-	 * 
-	 * @param user
-	 *            The user to store
-	 */
-	private void saveUser(User user) {
-		// Get preferences
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		Editor editor = preferences.edit();
-		// Store user's informations
-		// to enable multi-users we add the user hash code to the key
-		// int hash =(email.hashcode+password.hashcode)/2.
-		int hash = (user.getEmail().hashCode() + user.getPassword().hashCode()) / 2;
-		editor.putString(hash + getString(R.string.shCivilite), user.getCivilite());
-		editor.putString(hash + getString(R.string.shCompagnie), user.getCompagnie());
-		editor.putString(hash + getString(R.string.shNom), user.getNom());
-		editor.putString(hash + getString(R.string.shPays), user.getPays());
-		editor.putString(hash + getString(R.string.shPrenom), user.getPrenom());
-		editor.putString(hash + getString(R.string.shRole), user.getRole());
-		editor.putString(hash + getString(R.string.shSiteweb), user.getSiteWeb());
-		editor.putString(hash + getString(R.string.shTelFixe), user.getTelFixe());
-		editor.putString(hash + getString(R.string.shTelMobile), user.getTelMobile());
-		editor.putString(hash + getString(R.string.shType), user.getType());
-		editor.putString(hash + getString(R.string.shVille), user.getVille());
-		// And commit
-		editor.commit();
-
-	}
 }

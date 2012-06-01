@@ -336,7 +336,7 @@ public class AccountDialog implements RegistrationThreadCallBack {
 				&& (HttpTools.isValidHttpResponseCode(httpGetRespStatus))) {
 			// hide the dialog
 			createAccountSecondDialog.hide();
-			// TODO MSE do something if the answer is not null but something like false
+			// TODO do something if the answer is not null but something like false
 			parent.onRegisterCallBack(user);
 		} else {
 			TextView txvError=(TextView)createAccountSecondDialog.findViewById(R.id.txvRegistrationError);

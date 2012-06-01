@@ -42,6 +42,11 @@
     <string name="accountProfileLabel">Creation compte [profile] </string>
     <string name="accountInformationLabel">Creation compte [information] </string>
 
+    <!-- Menu profile dialogs -->
+    <string name="menu_forceupdate">Mises A Jour données</string>
+    <string name="menu_disconnect_user">Déconnection utilisateur</string>
+    <string name="menu_actions">actions</string>
+
     <!-- Buttons -->
     <string name="quitButtonLabel">QUITTER</string>
     <string name="connectButtonLabel">CONNECTER</string>

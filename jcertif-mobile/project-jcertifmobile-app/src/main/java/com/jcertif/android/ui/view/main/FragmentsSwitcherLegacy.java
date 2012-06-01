@@ -152,7 +152,7 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 	 * The agenda detail fragment TAG
 	 */
 	private final String agendaDetailFragmentTag = "agendaDetailFragmentTag";
-	Boolean displayLeaf=false;
+	Boolean displayLeaf = false;
 
 	/******************************************************************************************/
 	/** Constructors **************************************************************************/
@@ -172,17 +172,6 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 				backstackChanged();
 			}
 		});
-
-		// Si C'est une recreation
-		// Et qu'il n'y a plus qu'un layout (fragment)
-		// il faut passer le fragment afficher dans le second layout dans le premier layout
-		if (!twoFragmentsVisible&&displayLeaf) {
-			Fragment fr=fm.findFragmentById(R.id.secondfragment);
-			FragmentTransaction fTransaction = fm.beginTransaction();
-			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
-			fTransaction.replace(R.id.mainfragment, fr);
-			fTransaction.commit();
-		}
 		Log.i("FragmentsSwitcherLegacy:FragmentsSwitcherLegacy", "twoFragmentsVisible :" + twoFragmentsVisible);
 
 	}
@@ -219,7 +208,7 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 	 * @param isRecreationMode
 	 */
 	public void showMain(Boolean isRecreationMode) {
-		displayLeaf=false;
+		displayLeaf = false;
 		Fragment mainFragment = null;
 		Log.i("FragmentsSwitcherLegacy:initialize", "twoFragmentsVisible :" + twoFragmentsVisible);
 		// Now we can instantiate the appropriate fragment
@@ -253,7 +242,7 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 	 */
 	@Override
 	public void showEvents() {
-		displayLeaf=false;
+		displayLeaf = false;
 		Log.i("FragmentsSwitcherLegacy:showEvents", "twoFragmentsVisible :" + twoFragmentsVisible);
 		FragmentManager fm = mainActivity.getSupportFragmentManager();
 		EventsListFragment eventsListFragment = (EventsListFragment) fm.findFragmentByTag(eventsListFragmentTag);
@@ -288,7 +277,7 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 	@Override
 	public void showSelectedEvent(int eventID, boolean fromEvent) {
 		FragmentManager fm = mainActivity.getSupportFragmentManager();
-		displayLeaf=true;
+		displayLeaf = true;
 		Log.i("showSelectedEvent", "Selected event:" + eventID);
 		Log.i("FragmentsSwitcherLegacy:showSelectedEvent", "twoFragmentsVisible :" + twoFragmentsVisible);
 		if (twoFragmentsVisible) {
@@ -383,7 +372,7 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 	 */
 	@Override
 	public void showSpeakers() {
-		displayLeaf=false;
+		displayLeaf = false;
 		Log.i("FragmentsSwitcherLegacy:showSpeakers", "twoFragmentsVisible :" + twoFragmentsVisible);
 		FragmentManager fm = mainActivity.getSupportFragmentManager();
 		SpeakersListFragment speakersListFragment = (SpeakersListFragment) fm
@@ -427,7 +416,7 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 	 */
 	@Override
 	public void showSelectedSpeaker(int speakerID) {
-		displayLeaf=true;
+		displayLeaf = true;
 		Log.i("showSelectedSpeaker", "Selected speaker:" + speakerID);
 		Log.i("FragmentsSwitcherLegacy:showSpeakers", "twoFragmentsVisible :" + twoFragmentsVisible);
 		FragmentManager fm = mainActivity.getSupportFragmentManager();

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/submenu1"
+        android:orderInCategory="3"
+        android:title="@string/menu_actions">
+        <menu>
+            <item
+                android:id="@+id/menu_forceupdate"
+                android:orderInCategory="0"
+                android:title="@string/menu_forceupdate"/>
+            <item
+                android:id="@+id/menu_disconnect_user"
+                android:orderInCategory="3"
+                android:title="@string/menu_disconnect_user"/>
+        </menu>
+    </item>
+
+</menu>
