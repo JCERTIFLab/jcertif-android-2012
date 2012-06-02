@@ -60,6 +60,8 @@
 		<android.sdk.version>15</android.sdk.version>
 		<!-- Android jar dependency -->
 		<google.com.android.version>2.3.1</google.com.android.version>
+		<!-- Android Compatibility librairy version -->
+		<android.compatibillity.librairy.version>r7</android.compatibillity.librairy.version>
 		<!-- AkquinetVersion -->
 		<de.akquinet.android.androlog.version>2.3.1</de.akquinet.android.androlog.version>
 		<!-- ORMLite -->
@@ -106,6 +108,11 @@
 				<artifactId>android</artifactId>
 				<version>${google.com.android.version}</version>
 				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.google.android</groupId>
+				<artifactId>support-v4</artifactId>
+				<version>${android.compatibillity.librairy.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.android</groupId>
