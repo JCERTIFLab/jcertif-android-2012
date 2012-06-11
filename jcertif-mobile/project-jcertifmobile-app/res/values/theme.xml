@@ -33,6 +33,12 @@
         <item name="android:layout_marginTop">0dp</item>
     </style>
 
+    <!-- Style for TextView No Vertical Margin No Vertical Padding -->
+    <!-- ************************ -->
+    <style name="txv_style_small" parent="txv_style_nvm">
+        <item name="android:textSize">@dimen/textSizeSmall</item>
+    </style>
+
     <!-- Style for TextView displaying errors -->
     <!-- ************************ -->
     <style name="error_message_style" parent="txv_style">
@@ -88,6 +94,27 @@
         <item name="android:layout_marginRight">@dimen/marginRight</item>
         <item name="android:layout_marginBottom">@dimen/marginBottom</item>
         <item name="android:layout_marginTop">@dimen/marginTop</item>
+    </style>
+    <!-- Style for large Button -->
+    <!-- ************************ -->
+    <style name="btn_style_large" parent="btn_style">
+        <item name="android:layout_width">@dimen/buttonWidthLarge</item>
+        <item name="android:layout_height">@dimen/buttonHeightLarge</item>
+    </style>
+
+    <!-- Style for small Button -->
+    <!-- ************************ -->
+    <style name="btn_style_small" parent="btn_style">
+        <item name="android:layout_width">@dimen/buttonWidthSmall</item>
+        <item name="android:layout_height">@dimen/buttonHeightSmall</item>
+        <item name="android:paddingLeft">0dip</item>
+        <item name="android:paddingRight">0dip</item>
+        <item name="android:paddingTop">0dip</item>
+        <item name="android:paddingBottom">0dip</item>
+        <item name="android:layout_marginLeft">0dip</item>
+        <item name="android:layout_marginRight">0dip</item>
+        <item name="android:layout_marginBottom">0dip</item>
+        <item name="android:layout_marginTop">0dip</item>
     </style>
 
     <!-- Style for ListArray -->

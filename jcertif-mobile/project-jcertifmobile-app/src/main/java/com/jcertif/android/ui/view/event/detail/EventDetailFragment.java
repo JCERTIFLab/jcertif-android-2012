@@ -82,7 +82,9 @@ public class EventDetailFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.w("EventDetailFragment onResume", "getView :" + getView());
 		View view = inflater.inflate(R.layout.event_detail, container, false);
-
+		// insure the fragment not being destroyed when activity destroyed because else memory leaks
+				// is generated and null pointerExceptions too (when rotating the device)
+				setRetainInstance(true);
 		return view;
 	}
 
@@ -222,7 +224,7 @@ public class EventDetailFragment extends Fragment {
 	 */
 	private Event findEvent() throws SQLException {
 		if (eventProvider == null) {
-			eventProvider = new EventProvider(getActivity());
+			eventProvider = new EventProvider();
 		}
 		Event ev = eventProvider.getEventById(eventId);
 		return ev;
@@ -236,7 +238,7 @@ public class EventDetailFragment extends Fragment {
 	 */
 	private Speaker findSpeaker(Event event) throws SQLException {
 		if (speakersProvider == null) {
-			speakersProvider = new SpeakerProvider(getActivity());
+			speakersProvider = new SpeakerProvider();
 		}
 		Speaker sp = speakersProvider.findById(Integer.parseInt(event.speakersId));
 		return sp;

@@ -48,8 +48,6 @@ public class SpeakersListFragment extends ListFragment {
 	 */
 	SpeakerAdapter speakerAdapter;
 
-	
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -63,7 +61,7 @@ public class SpeakersListFragment extends ListFragment {
 		// retrieve data in the database
 		SpeakerProvider sp;
 		try {
-			sp = new SpeakerProvider(getActivity());
+			sp = new SpeakerProvider();
 			speakers = sp.findAll();
 		} catch (SQLException e) {
 			// TODO Manage exception in the exceptionManager
@@ -72,7 +70,9 @@ public class SpeakersListFragment extends ListFragment {
 		// set the adapter using SpeakerAdapter
 		speakerAdapter = new SpeakerAdapter(getActivity(), speakers);
 		this.setListAdapter(speakerAdapter);
-
+		// insure the fragment not being destroyed when activity destroyed because else memory leaks
+		// is generated and null pointerExceptions too (when rotating the device)
+		setRetainInstance(true);
 		return view;
 	}
 
@@ -113,6 +113,7 @@ public class SpeakersListFragment extends ListFragment {
 		headerTitle.setText(R.string.speaker_list_htitle);
 		super.onResume();
 	}
+
 	/**
 	 * To be sure that the callBack is instantiate
 	 */
@@ -122,12 +123,11 @@ public class SpeakersListFragment extends ListFragment {
 		}
 		return callback;
 	}
-/******************************************************************************************/
-/** Usunused To track fragment lifecycle **************************************************************************/
-/******************************************************************************************/
 
+	/******************************************************************************************/
+	/** Usunused To track fragment lifecycle **************************************************************************/
+	/******************************************************************************************/
 
-	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -136,10 +136,10 @@ public class SpeakersListFragment extends ListFragment {
 	@Override
 	public void onDestroy() {
 		Log.w("LifeCycle SpeakersListFragment", "onDestroy");
-		//Then the backStack is called
+		// Then the backStack is called
 		super.onDestroy();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -229,5 +229,4 @@ public class SpeakersListFragment extends ListFragment {
 		super.onStop();
 	}
 
-	
 }

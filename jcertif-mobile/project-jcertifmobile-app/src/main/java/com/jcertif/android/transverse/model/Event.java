@@ -1,11 +1,11 @@
 package com.jcertif.android.transverse.model;
 
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
-
 import java.util.Date;
 
 import org.codehaus.jackson.annotate.JsonProperty;
+
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
 /**
  * Event model.
@@ -13,7 +13,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
  * @author: rossi.oddet
  */
 @DatabaseTable(tableName = "events")
-public class Event {
+public class Event  implements Comparable<Event>{
 	@DatabaseField(id = true)
 	public Integer id;
 	@DatabaseField
@@ -43,7 +43,19 @@ public class Event {
 	@DatabaseField
 	@JsonProperty(value="sujets")
 	public String subjects;
-	
+	/* (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(Event another) {
+		if(this.startDate.compareTo(another.startDate)!=0) {
+			return this.startDate.compareTo(another.startDate);
+		}else if(this.endDate.compareTo(another.endDate)!=0) {
+			return this.endDate.compareTo(another.endDate);
+		}else {
+			return this.room.compareTo(another.room);
+		}
+	}
 	public String getTime(){
 		return startDate.toString().substring(0, 10) + " ...";
 		// return time;

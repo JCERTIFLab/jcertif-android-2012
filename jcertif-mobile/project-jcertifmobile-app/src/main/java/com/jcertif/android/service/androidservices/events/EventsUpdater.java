@@ -50,7 +50,7 @@ public class EventsUpdater implements UpdaterServiceElementIntf {
 			evc.init();
 			List<Event> events = evc.findAll();
 			// Enregistrer chacun en BD
-			EventProvider evp = new EventProvider(JCApplication.getInstance().getApplicationContext());
+			EventProvider evp = new EventProvider();
 			evp.saveEvents(events);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

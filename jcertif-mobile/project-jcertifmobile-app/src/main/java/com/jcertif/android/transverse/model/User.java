@@ -1,11 +1,7 @@
 package com.jcertif.android.transverse.model;
 
-import java.io.IOException;
-
-import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.JsonMappingException;
 
 import com.jcertif.android.com.parsing.jackson.service.UsersController;
 
@@ -50,65 +46,6 @@ public class User {
 	@JsonProperty("photo")
 	public String photo;
 	
-	@JsonCreator
-	public static User Create(String jsonString)
-	{
-
-		User pc = null;
-	    	UsersController uc=new UsersController(jsonString);
-	    	uc.init();
-
-	    return pc;
-	}
-	
-	/**
-	 * 
-	 */
-	public User() {
-		super();
-	}
-
-	/**
-	 * @param id
-	 * @param civilite
-	 * @param nom
-	 * @param prenom
-	 * @param email
-	 * @param password
-	 * @param role
-	 * @param typeUser
-	 * @param compagnie
-	 * @param siteWeb
-	 * @param telFixe
-	 * @param telMobile
-	 * @param ville
-	 * @param pays
-	 * @param bio
-	 * @param idConference
-	 * @param photo
-	 */
-	public User(int id, String civilite, String nom, String prenom, String email, String password, String role,
-			String typeUser, String compagnie, String siteWeb, String telFixe, String telMobile, String ville,
-			String pays, String bio, String idConference, String photo) {
-		super();
-		this.id = id;
-		this.civilite = civilite;
-		this.nom = nom;
-		this.prenom = prenom;
-		this.email = email;
-		this.password = password;
-		this.role = role;
-		this.typeUser = typeUser;
-		this.compagnie = compagnie;
-		this.siteWeb = siteWeb;
-		this.telFixe = telFixe;
-		this.telMobile = telMobile;
-		this.ville = ville;
-		this.pays = pays;
-		this.bio = bio;
-		this.idConference = idConference;
-		this.photo = photo;
-	}
 
 	public String getCivilite() {
 		return civilite;

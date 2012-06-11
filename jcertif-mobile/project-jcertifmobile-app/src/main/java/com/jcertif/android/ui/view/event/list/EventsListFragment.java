@@ -67,7 +67,7 @@ public class EventsListFragment extends ListFragment {
 		// retrieve data in the database
 		EventProvider ep;
 		try {
-			ep = new EventProvider(getActivity());
+			ep = new EventProvider();
 			events = ep.getAllEvents();
 		} catch (SQLException e) {
 			// TODO Manage exception in the exceptionManager
@@ -76,7 +76,9 @@ public class EventsListFragment extends ListFragment {
 		// set the adapter using SpeakerAdapter
 		eventAdapter = new EventAdapter(getActivity(), events);
 		this.setListAdapter(eventAdapter);
-
+		// insure the fragment not being destroyed when activity destroyed because else memory leaks
+				// is generated and null pointerExceptions too (when rotating the device)
+				setRetainInstance(true);
 		return view;
 	}
 

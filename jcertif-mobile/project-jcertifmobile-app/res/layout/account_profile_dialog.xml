@@ -19,45 +19,44 @@
         style="@style/edt_style"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/emailLabel" >
+        android:hint="@string/emailLabel" />
 
-        <EditText
-            android:id="@+id/txtEmailConfirmation"
-            style="@style/edt_style"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/emailConfirmationLabel" />
+    <EditText
+        android:id="@+id/txtEmailConfirmation"
+        style="@style/edt_style"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/emailConfirmationLabel" />
 
-        <EditText
-            android:id="@+id/txtPassword"
-            style="@style/edt_style"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/passwordLabel" />
+    <EditText
+        android:id="@+id/txtPassword"
+        style="@style/edt_style"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/passwordLabel" />
 
-        <EditText
-            android:id="@+id/txtPasswordConfirmation"
-            style="@style/edt_style"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/passwordConfirmationLabel" />
+    <EditText
+        android:id="@+id/txtPasswordConfirmation"
+        style="@style/edt_style"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/passwordConfirmationLabel" />
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal" >
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
 
-            <Button
-                android:id="@+id/btnCancel"
-                style="@style/btn_style"
-                android:text="@string/cancelButtonLabel" />
+        <Button
+            android:id="@+id/btnCancel"
+            style="@style/btn_style"
+            android:text="@string/cancelButtonLabel" />
 
-            <Button
-                android:id="@+id/btnNext"
-                style="@style/btn_style"
-                android:text="@string/nextButtonLabel" />
-        </LinearLayout>
-    </EditText>
+        <Button
+            android:id="@+id/btnNext"
+            style="@style/btn_style"
+            android:text="@string/nextButtonLabel" />
+    </LinearLayout>
 
 </LinearLayout>

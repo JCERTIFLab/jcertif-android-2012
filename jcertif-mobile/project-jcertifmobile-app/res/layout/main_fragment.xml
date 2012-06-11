@@ -19,12 +19,12 @@
 
             <Button
                 android:id="@+id/btnCalendrier"
-                style="@style/btn_style"
+                style="@style/btn_style_large"
                 android:text="Calendrier" />
 
             <Button
                 android:id="@+id/btnAgenda"
-                style="@style/btn_style"
+                style="@style/btn_style_large"
                 android:text="Agenda" />
         </TableRow>
 
@@ -34,12 +34,12 @@
 
             <Button
                 android:id="@+id/btnSpeaker"
-                style="@style/btn_style"
+                style="@style/btn_style_large"
                 android:text="Speaker" />
 
             <Button
                 android:id="@+id/btnSession"
-                style="@style/btn_style"
+                style="@style/btn_style_large"
                 android:text="Session" />
         </TableRow>
 
@@ -54,7 +54,7 @@
 
             <Button
                 android:id="@+id/btnInfo"
-                style="@style/btn_style"
+                style="@style/btn_style_large"
                 android:text="Info" />
         </TableRow>
     </TableLayout>

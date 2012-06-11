@@ -18,6 +18,7 @@
     <dimen name="paddingBottom">5dp</dimen>
 
     <!-- Text Size -->
+    <dimen name="textSizeSmall">12sp</dimen>
     <dimen name="textSize">15sp</dimen>
     <dimen name="textSizeLarge">17sp</dimen>
     <dimen name="textSizeXLarge">24sp</dimen>
@@ -25,9 +26,13 @@
     <!-- Button Dimsension -->
     <dimen name="buttonHeight">40dip</dimen>
     <dimen name="buttonWidth">120dip</dimen>
+    <dimen name="buttonHeightLarge">120dip</dimen>
+    <dimen name="buttonWidthLarge">120dip</dimen>
+    <dimen name="buttonHeightSmall">40dip</dimen>
+    <dimen name="buttonWidthSmall">80dip</dimen>
 
     <!-- Shape dimensions -->
-    <dimen name="corner_button_Size">150dp</dimen>
+    <dimen name="corner_button_Size">15dp</dimen>
     <dimen name="stroke_buttonSize">8dp</dimen>
     <dimen name="shape_stroke_Size">1dp</dimen>
     <dimen name="shape_corner_Size">10dp</dimen>

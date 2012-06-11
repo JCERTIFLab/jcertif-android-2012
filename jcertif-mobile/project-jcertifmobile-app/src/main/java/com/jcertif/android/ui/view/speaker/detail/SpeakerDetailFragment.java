@@ -100,7 +100,9 @@ public class SpeakerDetailFragment extends Fragment {
 		evenBackground = (GradientDrawable) getResources().getDrawable(R.drawable.list_item);
 		oddBackground = (GradientDrawable) getResources().getDrawable(R.drawable.list_item_odd);
 		View view = inflater.inflate(R.layout.speaker_detail, container, false);
-
+		// insure the fragment not being destroyed when activity destroyed because else memory leaks
+				// is generated and null pointerExceptions too (when rotating the device)
+				setRetainInstance(true);
 		return view;
 	}
 
@@ -191,7 +193,7 @@ public class SpeakerDetailFragment extends Fragment {
 			TextView headerTitle = (TextView) getActivity().findViewById(R.id.header_title);
 			TextView speakerName = (TextView) view.findViewById(R.id.speakerName);
 			LinearLayout speakerEventLayout = (LinearLayout) view.findViewById(R.id.speakerEvents);
-			speakersProvider = new SpeakerProvider(getActivity());
+			speakersProvider = new SpeakerProvider();
 
 			// Searching speaker's event
 			List<Event> speakerEvents = findSpeakerEvents(speakerId);
@@ -267,7 +269,7 @@ public class SpeakerDetailFragment extends Fragment {
 	 */
 	private List<Event> findSpeakerEvents(int speakerId) throws Exception {
 		if (eventProvider == null) {
-			eventProvider = new EventProvider(getActivity());
+			eventProvider = new EventProvider();
 		}
 
 		List<Event> allEvent = eventProvider.getAllEvents();

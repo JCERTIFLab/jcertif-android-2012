@@ -98,7 +98,7 @@ public class JCApplication extends Application {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		Editor editor = preferences.edit();
 		// to reload the email/password of the last connected person
-		editor.putString(getString(R.string.shhash),"0");
+		editor.putString(getString(R.string.shhash), "0");
 		// And commit
 		editor.commit();
 	}
@@ -143,7 +143,7 @@ public class JCApplication extends Application {
 	 * @param hash
 	 */
 	private void userUpdate(SharedPreferences preferences, final String hash) {
-		user.id=preferences.getInt(hash + getString(R.string.shID), -1);
+		user.id = preferences.getInt(hash + getString(R.string.shID), -1);
 		user.setCivilite(preferences.getString(hash + getString(R.string.shCivilite), ""));
 		user.setCompagnie(preferences.getString(hash + getString(R.string.shCompagnie), ""));
 		user.setNom(preferences.getString(hash + getString(R.string.shNom), ""));
@@ -216,7 +216,7 @@ public class JCApplication extends Application {
 		int hash = (user.getEmail().hashCode() + user.getPassword().hashCode()) / 2;
 		return preferences.getBoolean(hash + getString(R.string.shValidUser), false);
 	}
-	
+
 	/**
 	 * To know if the default user is still valid
 	 * 
@@ -226,7 +226,7 @@ public class JCApplication extends Application {
 		// Get preferences
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		// Build the email and password hashcode of the default user
-		String hash=preferences.getString(getString(R.string.shhash),"");
+		String hash = preferences.getString(getString(R.string.shhash), "");
 		return preferences.getBoolean(hash + getString(R.string.shValidUser), false);
 	}
 

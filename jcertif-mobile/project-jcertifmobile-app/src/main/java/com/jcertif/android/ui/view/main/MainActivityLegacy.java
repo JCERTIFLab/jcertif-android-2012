@@ -29,6 +29,7 @@
  */
 package com.jcertif.android.ui.view.main;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 

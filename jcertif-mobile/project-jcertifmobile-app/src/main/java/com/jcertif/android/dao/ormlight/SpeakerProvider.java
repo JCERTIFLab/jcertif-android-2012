@@ -33,8 +33,8 @@ public class SpeakerProvider {
 	private DatabaseHelper mDbHelper;
 	private Dao<Speaker, Integer> mSpeakerDao;
 
-	public SpeakerProvider(Context context) throws SQLException {
-		mContext = context;
+	public SpeakerProvider() throws SQLException {
+		mContext =  JCApplication.getInstance().getApplicationContext();
 		mDbHelper = new DatabaseHelper(mContext);
 		mSpeakerDao = mDbHelper.getSpeakerDao();
 	}

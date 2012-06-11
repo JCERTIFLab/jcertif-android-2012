@@ -54,6 +54,9 @@ public class MainFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.main_fragment, container, false);
 		addListeners(view);
+		// insure the fragment not being destroyed when activity destroyed because else memory leaks
+				// is generated and null pointerExceptions too (when rotating the device)
+				setRetainInstance(true);
 		return view;
 	}
 	/*

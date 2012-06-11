@@ -10,6 +10,8 @@
  */
 package com.jcertif.android.ui.view.main;
 
+import java.util.Calendar;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -22,6 +24,9 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
 import com.jcertif.android.ui.view.R;
+import com.jcertif.android.ui.view.calendar.day.CalendarDayAdapter;
+import com.jcertif.android.ui.view.calendar.day.CalendarDayCallBack;
+import com.jcertif.android.ui.view.calendar.day.CalendarDayFragment;
 import com.jcertif.android.ui.view.event.detail.EventDetailCallBack;
 import com.jcertif.android.ui.view.event.detail.EventDetailFragment;
 import com.jcertif.android.ui.view.event.list.EventsListCallBack;
@@ -45,7 +50,7 @@ import de.akquinet.android.androlog.Log;
  *        speakerFragment2
  */
 public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersListCallBack, SpeakerDetailCallBack,
-		EventDetailCallBack, EventsListCallBack {
+		EventDetailCallBack, EventsListCallBack, CalendarDayCallBack {
 	/******************************************************************************************/
 	/** Attributes **************************************************************************/
 	/******************************************************************************************/
@@ -59,50 +64,6 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 	 * The mainActivity parent
 	 */
 	FragmentActivity mainActivity = null;
-	// /**
-	// * The main fragment
-	// */
-	// Fragment mainFragment;
-	// /**
-	// * The speakers List fragment
-	// */
-	// SpeakersListFragment speakersListFragment;
-	// /**
-	// * The speaker fragment for the first layout
-	// */
-	// SpeakerDetailFragment speakerFragment1;
-	// /**
-	// * The speaker fragment for the second layout
-	// */
-	// SpeakerDetailFragment speakerFragment2;
-	// /**
-	// * The events List fragment
-	// */
-	// EventsListFragment eventsListFragment;
-	// /**
-	// * The event fragment for the first layout
-	// */
-	// EventDetailFragment eventFragment1;
-	// /**
-	// * The event fragment for the second layout
-	// */
-	// EventDetailFragment eventFragment2;
-	// /**
-	// * The calendar main fragment
-	// */
-	// Fragment calendarMainFragment;
-	// /**
-	// * The calendar detail fragment
-	// */
-	// Fragment calendarDetailFragment;
-	// /**
-	// * The agenda fragment
-	// */
-	// Fragment agendaFragment;
-	// /**
-	// * The agenda detail fragment
-	// */
-	// Fragment agendaDetailFragment;
 
 	/******************************************************************************************/
 	/** TAGS **************************************************************************/
@@ -141,17 +102,9 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 	 */
 	private final String calendarMainFragmentTag = "calendarMainFragmentTag";
 	/**
-	 * The calendar detail fragment TAG
-	 */
-	private final String calendarDetailFragmentTag = "calendarDetailFragmentTag";
-	/**
 	 * The agenda fragment TAG
 	 */
 	private final String agendaFragmentTag = "agendaFragmentTag";
-	/**
-	 * The agenda detail fragment TAG
-	 */
-	private final String agendaDetailFragmentTag = "agendaDetailFragmentTag";
 	Boolean displayLeaf = false;
 
 	/******************************************************************************************/
@@ -495,8 +448,59 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 	 */
 	@Override
 	public void showCalendar() {
-		// TODO Auto-generated method stub
+		displayLeaf = false;
+		Log.i("FragmentsSwitcherLegacy:showCalendar", "twoFragmentsVisible :" + twoFragmentsVisible);
+		FragmentManager fm = mainActivity.getSupportFragmentManager();
+		CalendarDayFragment calendarDayFragment = (CalendarDayFragment) fm
+				.findFragmentByTag(calendarMainFragmentTag);
+		if (twoFragmentsVisible) {
+			// hide the second fragment because we displays the list of speakers without any
+			// speakers selected
+			setSecondFragmentVisible(false);
+			// So add the speakers fragment
 
+			FragmentTransaction fTransaction = fm.beginTransaction();
+			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
+			// the speakersListFragment has to be created
+			if (calendarDayFragment == null) {
+				//instanciate the fragment
+				calendarDayFragment = getCalendarDayFragment();
+			}
+			fTransaction.replace(R.id.mainfragment, calendarDayFragment, calendarMainFragmentTag);
+			fTransaction.addToBackStack(mainActivity.getString(R.string.calendar_htitle));
+			fTransaction.commit();
+
+		} else {
+			// So add the speaker fragment
+			FragmentTransaction fTransaction = fm.beginTransaction();
+			// the speakersListFragment has to be created
+			if (calendarDayFragment == null) {
+				//instanciate the fragment
+				calendarDayFragment = getCalendarDayFragment();
+			}
+			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
+			fTransaction.replace(R.id.mainfragment, calendarDayFragment, calendarMainFragmentTag);
+			fTransaction.addToBackStack(mainActivity.getString(R.string.calendar_htitle));
+			fTransaction.commit();
+		}
+		
+		
+	}
+	
+	/**
+	 * @return the calendar day fragment to use
+	 */
+	private CalendarDayFragment getCalendarDayFragment() {
+		Calendar day = Calendar.getInstance();
+		day.set(Calendar.YEAR, 2012);
+		day.set(Calendar.MONTH, 8);
+		day.set(Calendar.DAY_OF_MONTH, 3);
+		CalendarDayFragment calendarDay  = new CalendarDayFragment();
+		// define the adapter
+		CalendarDayAdapter adapter = new CalendarDayAdapter(CalendarDayAdapter.ALL_EVENTS, day);
+		// and link them
+		calendarDay.setAdapter(adapter);
+		return calendarDay;
 	}
 
 	/*
@@ -506,8 +510,58 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 	 */
 	@Override
 	public void showAgenda() {
-		// TODO Auto-generated method stub
+		displayLeaf = false;
+		Log.i("FragmentsSwitcherLegacy:showCalendar", "twoFragmentsVisible :" + twoFragmentsVisible);
+		FragmentManager fm = mainActivity.getSupportFragmentManager();
+		CalendarDayFragment calendarDayFragment = (CalendarDayFragment) fm
+				.findFragmentByTag(agendaFragmentTag);
+		if (twoFragmentsVisible) {
+			// hide the second fragment because we displays the list of speakers without any
+			// speakers selected
+			setSecondFragmentVisible(false);
+			// So add the speakers fragment
 
+			FragmentTransaction fTransaction = fm.beginTransaction();
+			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
+			// the speakersListFragment has to be created
+			if (calendarDayFragment == null) {
+				//instanciate the fragment
+				calendarDayFragment = getAgendaFragment();
+			}
+			fTransaction.replace(R.id.mainfragment, calendarDayFragment, agendaFragmentTag);
+			fTransaction.addToBackStack(mainActivity.getString(R.string.agenda_htitle));
+			fTransaction.commit();
+
+		} else {
+			// So add the speaker fragment
+			FragmentTransaction fTransaction = fm.beginTransaction();
+			// the speakersListFragment has to be created
+			if (calendarDayFragment == null) {
+				//instanciate the fragment
+				calendarDayFragment = getAgendaFragment();
+			}
+			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
+			fTransaction.replace(R.id.mainfragment, calendarDayFragment, agendaFragmentTag);
+			fTransaction.addToBackStack(mainActivity.getString(R.string.agenda_htitle));
+			fTransaction.commit();
+		}
+
+	}
+	
+	/**
+	 * @return the calendar day fragment to use
+	 */
+	private CalendarDayFragment getAgendaFragment() {
+		Calendar day = Calendar.getInstance();
+		day.set(Calendar.YEAR, 2012);
+		day.set(Calendar.MONTH, 8);
+		day.set(Calendar.DAY_OF_MONTH, 3);
+		CalendarDayFragment calendarDay  = new CalendarDayFragment();
+		// define the adapter
+		CalendarDayAdapter adapter = new CalendarDayAdapter(CalendarDayAdapter.STARED_EVENTS, day);
+		// and link them
+		calendarDay.setAdapter(adapter);
+		return calendarDay;
 	}
 
 	/*

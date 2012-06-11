@@ -51,7 +51,7 @@ public class SpeakersUpdater implements UpdaterServiceElementIntf {
 			spc.init();
 			List<Speaker> speakers = spc.findAll();
 			// Enregistrer chacun en BD
-			SpeakerProvider spp = new SpeakerProvider(JCApplication.getInstance().getApplicationContext());
+			SpeakerProvider spp = new SpeakerProvider();
 			spp.saveAll(speakers);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
