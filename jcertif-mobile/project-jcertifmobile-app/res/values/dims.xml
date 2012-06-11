@@ -26,8 +26,8 @@
     <!-- Button Dimsension -->
     <dimen name="buttonHeight">40dip</dimen>
     <dimen name="buttonWidth">120dip</dimen>
-    <dimen name="buttonHeightLarge">120dip</dimen>
-    <dimen name="buttonWidthLarge">120dip</dimen>
+    <dimen name="buttonHeightLarge">100dip</dimen>
+    <dimen name="buttonWidthLarge">100dip</dimen>
     <dimen name="buttonHeightSmall">40dip</dimen>
     <dimen name="buttonWidthSmall">80dip</dimen>
 
