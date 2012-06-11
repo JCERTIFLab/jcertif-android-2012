@@ -49,20 +49,22 @@
             android:theme="@android:style/Theme.NoTitleBar" />
 
         <!-- Other activities -->
-        <activity
-            android:name="SpeakersListActivity"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <activity
-            android:name="SpeakerActivity"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <activity
-            android:name="SessionDetailActivity"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <activity
-            android:name=".MainActivity"
-            android:theme="@android:style/Theme.NoTitleBar" />
+        <!-- <activity -->
+        <!-- android:name="SpeakersListActivity" -->
+        <!-- android:theme="@android:style/Theme.NoTitleBar" /> -->
+        <!-- <activity -->
+        <!-- android:name="SpeakerActivity" -->
+        <!-- android:theme="@android:style/Theme.NoTitleBar" /> -->
+        <!-- <activity -->
+        <!-- android:name="SessionDetailActivity" -->
+        <!-- android:theme="@android:style/Theme.NoTitleBar" /> -->
+        <!-- <activity -->
+        <!-- android:name=".MainActivity" -->
+        <!-- android:theme="@android:style/Theme.NoTitleBar" /> -->
+
+
         <!-- Service -->
-        <service android:name="com.jcertif.android.service.androidservices.JCertifLocalService" />
+        <!-- <service android:name="com.jcertif.android.service.androidservices.JCertifLocalService" /> -->
         <service android:name="com.jcertif.android.service.androidservices.UpdaterService" />
         <!-- BroadCastReceiver -->
         <!-- Listening for Boot and connectivity changed (Launch the update service) -->
