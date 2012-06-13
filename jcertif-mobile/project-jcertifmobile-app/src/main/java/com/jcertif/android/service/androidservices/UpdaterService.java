@@ -32,11 +32,8 @@ package com.jcertif.android.service.androidservices;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
@@ -99,7 +96,7 @@ public class UpdaterService extends Service {
 		super.onCreate();
 		// Display a notification about us starting. We put an icon in the status bar.
 		mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-		
+
 		// instantiate all the update services
 		updaters = new ArrayList<UpdaterServiceElementIntf>();
 		updaters.add(new SpeakersUpdater());
@@ -177,23 +174,25 @@ public class UpdaterService extends Service {
 	 */
 	private void showNotification() {
 		// TODO MSE mettre en place la notification, le PendingIntent doit la stopper
-//		NotificationManager mNM = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		// NotificationManager mNM = (NotificationManager)
+		// getSystemService(Context.NOTIFICATION_SERVICE);
 		// // In this sample, we'll use the same text for the ticker and the expanded notification
-		CharSequence text = "Updates Jcertif running";
+		// CharSequence text = "Updates Jcertif running";
 		//
 		// // Set the icon, scrolling text and timestamp
-		Notification notification = new Notification(R.drawable.logo, text, System.currentTimeMillis());
+		// Notification notification = new Notification(R.drawable.logo, text,
+		// System.currentTimeMillis());
 		//
 		// // The PendingIntent to launch our activity if the user selects this notification
 		// PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this,
 		// LocalServiceActivities.Controller.class), 0);
 		//
 		// // Set the info for the views that show in the notification panel.
-		notification.setLatestEventInfo(this, "JCertif", text, null);
+		// notification.setLatestEventInfo(this, "JCertif", text, null);
 		//
 		// // Send the notification.
-		mNM.notify(NOTIFICATION, notification);
-//ou faire comme ça:
+		// mNM.notify(NOTIFICATION, notification);
+		// ou faire comme ça:
 		// //Récupération du notification Manager
 		// final NotificationManager notificationManager =
 		// (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);

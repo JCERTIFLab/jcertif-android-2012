@@ -48,7 +48,12 @@ public class Event  implements Comparable<Event>{
 	 */
 	@Override
 	public int compareTo(Event another) {
-		if(this.startDate.compareTo(another.startDate)!=0) {
+		//first compare lenght
+		Long lenghtThis=this.endDate.getTime()- this.startDate.getTime();
+		Long lenghtAnother=another.endDate.getTime()- another.startDate.getTime();
+		if( lenghtThis.compareTo(lenghtAnother)!=0) {
+			return (lenghtThis.compareTo(lenghtAnother));
+		}else if(this.startDate.compareTo(another.startDate)!=0) {
 			return this.startDate.compareTo(another.startDate);
 		}else if(this.endDate.compareTo(another.endDate)!=0) {
 			return this.endDate.compareTo(another.endDate);

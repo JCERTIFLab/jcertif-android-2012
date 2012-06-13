@@ -110,6 +110,7 @@ public class CalendarDayAdapter {
 		this.eventType = eventType;
 		leftId = new HashMap<Integer, Integer>();
 		leftLevel = new HashMap<Integer, Integer>();
+//		dayToEventPosition = new HashMap<Integer, Map<Event, RelativeCellPosition>>();
 		initData();
 	}
 
@@ -118,7 +119,10 @@ public class CalendarDayAdapter {
 	 */
 	void changeDay(int step) {
 		dayToDisplay.set(Calendar.DAY_OF_MONTH, dayToDisplay.get(Calendar.DAY_OF_MONTH) + step);
+		leftId.clear();
+		leftLevel.clear();
 		initData();
+
 	}
 
 	/**
@@ -131,6 +135,8 @@ public class CalendarDayAdapter {
 			loadStaredEvents();
 		}
 		Collections.sort(events);
+		// then build the data
+		buildData();
 	}
 
 	/******************************************************************************************/
@@ -167,11 +173,80 @@ public class CalendarDayAdapter {
 		}
 	}
 
+	/**
+	 * The map that link a Day with the map that links the event and their position in the relative
+	 * layout
+	 */
+//	Map<Integer, Map<Event, RelativeCellPosition>> dayToEventPosition;
+	/**
+	 * The event to position map of the dayToDisplay
+	 */
+	Map<Event, RelativeCellPosition> currentEventToPosition;
+
+	/**
+	 * This method build the map that link an event with its relative position in the layout
+	 */
+	private void buildData() {
+		Log.e("CalendarDayAdapter:buildData", "buildData of "+dayToDisplay.get(Calendar.DAY_OF_MONTH));
+//		if (null == dayToEventPosition.get(dayToDisplay.get(Calendar.DAY_OF_MONTH))) {
+			Log.e("CalendarDayAdapter:buildData", "null == dayToEventPosition.get(dayToDisplay)");
+			// then build the map
+			currentEventToPosition = new HashMap<Event, RelativeCellPosition>();
+			// then for each event find its top, bottom and left alignment
+			RelativeCellPosition rcp;
+			for (final Event event : events) {				
+				// build the relative position of the event
+				rcp = new RelativeCellPosition();
+				rcp.top = getCellId(event.startDate);
+				rcp.bottom = getPreviousCellId(event.endDate);
+				rcp.leftCell = getLevelRightOf(event);
+				Log.e("CalendarDayAdapter:buildData", "buildData of the "+event.id+" top: "+rcp.top+" bottom:"+rcp.bottom+" left:"+rcp.leftCell);
+				// add it to the map
+				currentEventToPosition.put(event, rcp);
+			}
+			// add the map of the day to the dayToEventPosition
+//			dayToEventPosition.put(dayToDisplay.get(Calendar.DAY_OF_MONTH), eventToPosition);
+//		}
+//		Log.e("CalendarDayAdapter:buildData", "buildData returns "+dayToEventPosition.get(dayToDisplay.get(Calendar.DAY_OF_MONTH)).size()+" done");
+		// update the currentMap
+//		currentEventToPosition = dayToEventPosition.get(dayToDisplay.get(Calendar.DAY_OF_MONTH));
+
+	}
+
+	/**
+	 * Return the cell id to align on top for the event
+	 * @param event
+	 * @return the cell id to align on top for the event
+	 */
+	public int getTopAlign(Event event) {
+		return currentEventToPosition.get(event).top;
+	}
+	/**
+	 *  Return the cell id to align on bottom for the event
+	 * @param event
+	 * @return the cell id to align on bottom for the event
+	 */
+	public int getBottomAlign(Event event) {
+		return currentEventToPosition.get(event).bottom;
+	}
+	/**
+	 *  Return the cell id to align on left for the event
+	 * @param event
+	 * @return the cell id to align on left for the event
+	 */
+	public int getLeftAlign(Event event) {
+		return currentEventToPosition.get(event).leftCell;
+	}
+
 	/******************************************************************************************/
 	/** Usefull methods **************************************************************************/
 	/******************************************************************************************/
 
-	
+	public String getStartHour(Event event) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(event.startDate);
+		return formatDate(cal);
+	}
 
 	/**
 	 * Format the date to display the hour:minute
@@ -210,8 +285,6 @@ public class CalendarDayAdapter {
 		return strB.toString();
 	}
 
-	
-
 	/**
 	 * Return the Cell Id associated to a hour cell
 	 * 
@@ -233,7 +306,11 @@ public class CalendarDayAdapter {
 	public int getCellId(Date date) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
-		return (cal.get(Calendar.HOUR_OF_DAY) * 100) + cal.get(Calendar.MINUTE);
+		// only quarter work so
+		// 8h14=>8h00
+		int minute = cal.get(Calendar.MINUTE);
+		minute = (minute / CalendarDayAdapter.ROW_CURRENT_SIZE) * CalendarDayAdapter.ROW_CURRENT_SIZE;
+		return (cal.get(Calendar.HOUR_OF_DAY) * 100) + minute;
 	}
 
 	/**
@@ -247,7 +324,11 @@ public class CalendarDayAdapter {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) - CalendarDayAdapter.ROW_CURRENT_SIZE);
-		return (cal.get(Calendar.HOUR_OF_DAY) * 100) + cal.get(Calendar.MINUTE);
+		// only quarter work so
+		// 8h14=>8h00
+		int minute = cal.get(Calendar.MINUTE);
+		minute = (minute / CalendarDayAdapter.ROW_CURRENT_SIZE) * CalendarDayAdapter.ROW_CURRENT_SIZE;
+		return (cal.get(Calendar.HOUR_OF_DAY) * 100) + minute;
 	}
 
 	/**
@@ -270,7 +351,7 @@ public class CalendarDayAdapter {
 			strName = new StringBuilder(sp.firstName);
 			strName.append(" ");
 			strName.append(sp.lastName);
-		}else {
+		} else {
 			strName = new StringBuilder("Unknown");
 		}
 		return strName.toString();
@@ -284,38 +365,61 @@ public class CalendarDayAdapter {
 	 * @return the cellId to be rightOf
 	 */
 	public int getLevelRightOf(Event event) {
+		Log.e("CalendarDayAdapter:getLevelRightOf", "Debut avec event :" + event.id);
 		// The list of all the hourCellId
 		List<Integer> leftCells = getHourCellsId(event);
+		Log.e("CalendarDayAdapter:getLevelRightOf", "");
 		// on instancie à la première cellules
-		Integer leftCellId = leftCells.get(0);
+		Integer leftCellId = leftId.get(leftCells.get(0));
+		// on trouve la cellule non nulle:
+		for (Integer leftCellsId : leftCells) {
+			if (leftCellId == null) {
+				leftCellId = leftId.get(leftCellsId);
+			}
+		}
+		// on construit l'ihm
 		if (leftCellId != null) {
+			Log.e("CalendarDayAdapter:getLevelRightOf", "leftCellId != null");
 			// on reupere son niveau de profondeur horizontal
-			Integer maxLevel = leftLevel.get(leftCellId);
+			Integer maxLevel = leftLevel.get(leftCells.get(0));
+			Log.e("CalendarDayAdapter:getLevelRightOf", "maxLevel " + maxLevel + " for " + leftCellId);
 			// si le level est null c'est qu'il est à 1
 			if (maxLevel == null) {
 				maxLevel = 1;
 			}
 			// on parcours toutes les cellules pour savoir la ligne de plus grande largeur
 			for (Integer leftCell : leftCells) {
+				Log.e("CalendarDayAdapter:getLevelRightOf", "Looking for leftCellId: " + leftCell
+						+ " leftLevel.get(leftCell):" + leftLevel.get(leftCell));
 				// si une ligne est plus large on met a jour
 				if (null != leftLevel.get(leftCell) && leftLevel.get(leftCell) > maxLevel) {
-					leftCellId = leftCell;
+					leftCellId = leftId.get(leftCell);
 					maxLevel = leftLevel.get(leftCell);
+					Log.e("CalendarDayAdapter:getLevelRightOf", "New left cell found leftCellId" + leftCellId
+							+ "maxLevel" + maxLevel);
 				}
 			}
+			maxLevel++;
 			// the update all the leftLevel and leftId reference
 			for (Integer leftCell : leftCells) {
+				Log.e("CalendarDayAdapter:getLevelRightOf", "leftLevel mis a jour avec " + leftCell + " maxLevel "
+						+ maxLevel + " evtid " + event.id);
 				leftLevel.put(leftCell, maxLevel);
-				leftId.put(leftCell, event.id);
+				leftId.put(leftCell, event.id * 10000);
 			}
 		} else {
+			Log.e("CalendarDayAdapter:getLevelRightOf", "leftCellId == null");
 			leftCellId = getCellId(event.startDate);
 			// the update all the leftLevel and leftId reference
 			for (Integer leftCell : leftCells) {
 				leftLevel.put(leftCell, 1);
-				leftId.put(leftCell, event.id);
+				leftId.put(leftCell, event.id * 10000);
+				Log.e("CalendarDayAdapter:getLevelRightOf", "leftLevel mis a jour avec " + leftCell + " maxLevel " + 1
+						+ " evtid " + event.id);
 			}
 		}
+		Log.e("CalendarDayAdapter:getLevelRightOf", "Debut avec event :" + event.id + " renvoie leftCellId "
+				+ leftCellId);
 		return leftCellId;
 	}
 
@@ -338,7 +442,10 @@ public class CalendarDayAdapter {
 				.get(Calendar.HOUR_OF_DAY) * 100 + endCal.get(Calendar.MINUTE)) {
 			ret.add(stratCal.get(Calendar.HOUR_OF_DAY) * 100 + stratCal.get(Calendar.MINUTE));
 			stratCal.set(Calendar.MINUTE, stratCal.get(Calendar.MINUTE) + CalendarDayAdapter.ROW_CURRENT_SIZE);
+			Log.e("CalendarDayAdapter:getHourCellsId", "Ajout de "
+					+ (stratCal.get(Calendar.HOUR_OF_DAY) * 100 + stratCal.get(Calendar.MINUTE)));
 		}
+		Log.e("CalendarDayAdapter:getHourCellsId", "fin de la construction de la liste");
 		return ret;
 	}
 
@@ -368,6 +475,17 @@ public class CalendarDayAdapter {
 	 */
 	public final Calendar getDayToDisplay() {
 		return dayToDisplay;
+	}
+
+	/**
+	 * @author Mathias Seguy (Android2EE)
+	 * @goals
+	 *        This class aims to: store the relative position of a cell
+	 */
+	public class RelativeCellPosition {
+		public int top = 0;
+		public int bottom = 0;
+		public int leftCell = 0;
 	}
 
 }

@@ -54,6 +54,7 @@ public class CalendarDayFragment extends Fragment {
 	 * The callBack
 	 */
 	CalendarDayCallBack callBack;
+
 	/******************************************************************************************/
 	/** LifeCycle management **************************************************************************/
 	/******************************************************************************************/
@@ -112,6 +113,7 @@ public class CalendarDayFragment extends Fragment {
 		updateGui();
 		super.onResume();
 	}
+
 	/**
 	 * To be sure that the callBack is instantiate
 	 */
@@ -121,12 +123,10 @@ public class CalendarDayFragment extends Fragment {
 		}
 		return callBack;
 	}
-	
+
 	/******************************************************************************************/
 	/** GUI management **************************************************************************/
 	/******************************************************************************************/
-	int dayToDiaplsy = -1;
-
 	/**
 	 * Called when a new adapter is set to the calendar
 	 */
@@ -147,6 +147,8 @@ public class CalendarDayFragment extends Fragment {
 	private void buildDay(View view, Calendar cal) {
 		// Find the layout
 		RelativeLayout layout = (RelativeLayout) view.findViewById(R.id.calendarRelativeLayout);
+		// Find the layout
+		RelativeLayout layoutHour = (RelativeLayout) view.findViewById(R.id.calendarHourRelativeLayout);
 		// insure the layout is empty
 		layout.removeAllViewsInLayout();
 		// Build the calendar day used to displayed
@@ -160,30 +162,16 @@ public class CalendarDayFragment extends Fragment {
 		time.set(Calendar.MILLISECOND, 0);
 		// the current list of events of a period to display
 		List<Event> events = adapter.events;
-		TextView hourCell;
 		int hourCellId = 0;
 		int lastHourCellId = 0;
-		int startHourCellId,endHourCellId;
 		LinearLayout evtCell;
 		Boolean isFirstCell = true;
 		// Now browse the time
 		while (time.get(Calendar.HOUR_OF_DAY) <= CalendarDayAdapter.LAST_HOUR_OF_DAY) {
-			// Ajouter les heures
-			hourCell = (TextView) inflater.inflate(R.layout.calendar_hour_cell, null);
-			hourCellId = adapter.getCellId(time);
-			hourCell.setId(hourCellId);
-			hourCell.setText(adapter.formatDate(time));
-			// Build the relative layout parameter
-			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-					RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-			if (isFirstCell) {
-				// align to top
-				params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-			} else {
-				// align to previous
-				params.addRule(RelativeLayout.BELOW, lastHourCellId);
-			}
-			layout.addView(hourCell, params);
+			// Ajouter les heures dans le panel principal
+			hourCellId = createHourCell(layout, time, lastHourCellId, isFirstCell,false);
+			// Ajouter des heures dans le layout des heures
+			createHourCell(layoutHour, time, lastHourCellId, isFirstCell,true);			
 			lastHourCellId = hourCellId;
 			isFirstCell = false;
 			// increment the time
@@ -192,35 +180,67 @@ public class CalendarDayFragment extends Fragment {
 		for (final Event event : events) {
 			// ajouter les events
 			evtCell = (LinearLayout) inflater.inflate(R.layout.calendar_event_cell, null);
-			evtCell.setId(event.id);
+			evtCell.setId(10000 * event.id);
+			((TextView) evtCell.findViewById(R.id.calendar_evtStartTime)).setText(adapter.getStartHour(event));
 			((TextView) evtCell.findViewById(R.id.calendar_evtSpeakerName)).setText(adapter.getSpeakerName(event));
 			((TextView) evtCell.findViewById(R.id.calendar_evtName)).setText(event.name);
 			((TextView) evtCell.findViewById(R.id.calendar_evtSubject)).setText(event.description);
 			((TextView) evtCell.findViewById(R.id.calendar_evtRoom)).setText(event.room);
-			evtCell.setOnClickListener(new OnClickListener() {				
+			evtCell.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					getCallBack().showSelectedEvent(event.id, false);
 				}
 			});
 			// Build the relative layout parameter
-			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-					RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-			// android:layout_alignBottom="@id/ab"
-			// android:layout_alignTop="@id/aa"
-			// android:layout_toRightOf="@id/aa"
-			startHourCellId=adapter.getCellId(event.startDate);
-			endHourCellId=adapter.getPreviousCellId(event.endDate);
-			params.addRule(RelativeLayout.ALIGN_TOP, startHourCellId);
-			params.addRule(RelativeLayout.ALIGN_BOTTOM, endHourCellId);
-			//now fix the level android:layout_toRightOf
-			params.addRule(RelativeLayout.RIGHT_OF, adapter.getLevelRightOf(event));
-			layout.addView(evtCell,params);
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(180,
+					RelativeLayout.LayoutParams.WRAP_CONTENT);
+			params.addRule(RelativeLayout.ALIGN_TOP, adapter.getTopAlign(event));
+			params.addRule(RelativeLayout.ALIGN_BOTTOM, adapter.getBottomAlign(event));
+			// now fix the level android:layout_toRightOf
+			params.addRule(RelativeLayout.RIGHT_OF, adapter.getLeftAlign(event));
+			layout.addView(evtCell, params);
 		}
 		// Ajouter les evenements
-		Log.e("CalendarDayFragment:buildDay", "Outside the first else");
+		Log.d("CalendarDayFragment:buildDay", "build finished");
 	}
 
+	/**
+	 * @param layout
+	 * @param time
+	 * @param lastHourCellId
+	 * @param isFirstCell
+	 * @return
+	 */
+	public int createHourCell(RelativeLayout layout, Calendar time, int lastHourCellId, Boolean isFirstCell,Boolean visible) {
+		TextView hourCell;
+		int hourCellId;
+		hourCell = (TextView) inflater.inflate(R.layout.calendar_hour_cell, null);
+		hourCellId = adapter.getCellId(time);
+		hourCell.setId(hourCellId);
+		
+		// Build the relative layout parameter
+		RelativeLayout.LayoutParams params;
+		if(!visible) {
+			params= new RelativeLayout.LayoutParams(1,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+			hourCell.setText("");
+		}else {
+			params= new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+					RelativeLayout.LayoutParams.WRAP_CONTENT);
+			hourCell.setText(adapter.formatDate(time));
+		}
+		if (isFirstCell) {
+			// align to top
+			params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		} else {
+			// align to previous
+			params.addRule(RelativeLayout.BELOW, lastHourCellId);
+		}
+		
+		layout.addView(hourCell, params);
+		return hourCellId;
+	}
 
 	/******************************************************************************************/
 	/** Getters Setters **************************************************************************/

@@ -42,17 +42,32 @@
         android:layout_height="fill_parent"
         android:orientation="vertical" >
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:background="@color/background"
             android:orientation="horizontal" >
 
             <RelativeLayout
-                android:id="@+id/calendarRelativeLayout"
-                android:layout_width="fill_parent"
+                android:id="@+id/calendarHourRelativeLayout"
+                android:layout_width="wrap_content"
                 android:layout_height="fill_parent" >
             </RelativeLayout>
-        </ScrollView>
+
+            <HorizontalScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:fadeScrollbars="false"
+                android:orientation="horizontal"
+                android:scrollbarAlwaysDrawHorizontalTrack="true" >
+
+                <RelativeLayout
+                    android:id="@+id/calendarRelativeLayout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" >
+                </RelativeLayout>
+            </HorizontalScrollView>
+        </LinearLayout>
     </ScrollView>
 
 </LinearLayout>
