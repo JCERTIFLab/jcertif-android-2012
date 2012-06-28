@@ -6,13 +6,26 @@
     android:background="@drawable/calendar_evt_shape"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/calendar_evtStartTime"
-        style="@style/txv_style_small"
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Spekaer Name"
-        android:drawableRight="@drawable/star_icon" />
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/calendar_evtStartTime"
+            style="@style/txv_style_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:text="Spekaer Name" />
+
+        <ImageView
+            android:id="@+id/star_cal"
+            android:layout_width="18dip"
+            android:layout_height="18dip"
+            android:layout_gravity="center"
+            android:background="@drawable/empty_star" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/calendar_evtSpeakerName"
@@ -33,8 +46,7 @@
         style="@style/txv_style_small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Conf Name" 
-        />
+        android:text="Conf Name" />
 
     <TextView
         android:id="@+id/calendar_evtSubject"

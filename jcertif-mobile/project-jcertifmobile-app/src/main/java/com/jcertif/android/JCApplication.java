@@ -5,10 +5,13 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 import com.jcertif.android.transverse.model.User;
 import com.jcertif.android.transverse.url.UrlFactory;
 import com.jcertif.android.ui.view.R;
+import com.jcertif.android.ui.view.generic.BaseActivityIntf;
+import com.jcertif.android.ui.view.generic.BaseActivityLegacy;
 import com.jcertif.android.ui.view.main.FragmentsSwitcherLegacy;
 
 /**
@@ -28,6 +31,14 @@ public class JCApplication extends Application {
 	 * The one that as in charge the fragment switching and displays
 	 */
 	FragmentsSwitcherLegacy fragmentSwitcher;
+	/**
+	 * The baseActivity to manage top and bottom bar
+	 */
+	BaseActivityIntf baseActivity;
+	/**
+	 * The boolean to know if the ServiceUpdater is updating
+	 */
+	private Boolean isServiceUpdaterUpdating = false;
 
 	/******************************************************************************************/
 	/** Access Every Where **************************************************************************/
@@ -246,5 +257,45 @@ public class JCApplication extends Application {
 		}
 		fragmentSwitcher.showMain(recreationMode);
 		return fragmentSwitcher;
+	}
+
+	/******************************************************************************************/
+	/** Managing the base Activity **************************************************************************/
+	/******************************************************************************************/
+
+	/**
+	 * @param baseActivity
+	 *            the baseActivity to set
+	 */
+	public final void setBaseActivity(BaseActivityIntf baseActivity) {
+		this.baseActivity = baseActivity;
+		//if the ServiceUpdater is updating then update GUI
+		if(isServiceUpdaterUpdating) {
+			onDataUpdate();
+		}
+	}
+
+	/**
+	 * This method will update the JCertif header displaying the progressBar for updaterService
+	 * and hide the update icon
+	 * Is Called by the ServiceUpdater
+	 */
+	public final void onDataUpdate() {
+		isServiceUpdaterUpdating=true;
+		if (null != baseActivity) {
+			baseActivity.showRefreshingDataProgressBar(true);
+		}
+	}
+
+	/**
+	 * This method will update the JCertif header hiding the progressBar for updaterService
+	 * and show the update icon
+	 * Is Called by the ServiceUpdater
+	 */
+	public final void onDataUpdateOver() {
+		isServiceUpdaterUpdating=false;
+		if (null != baseActivity) {
+			baseActivity.showRefreshingDataProgressBar(false);
+		}
 	}
 }

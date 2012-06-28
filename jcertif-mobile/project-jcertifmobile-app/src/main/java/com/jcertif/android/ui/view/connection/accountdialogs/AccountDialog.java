@@ -312,7 +312,7 @@ public class AccountDialog implements RegistrationThreadCallBack {
 		//Hide the errorMessage
 		// Then build the parameters for the request
 		Bundle params = new Bundle();
-		// TODO should have parameters here
+		// Launch the thread
 		registrThread.execute(params);
 	}
 
@@ -336,7 +336,7 @@ public class AccountDialog implements RegistrationThreadCallBack {
 				&& (HttpTools.isValidHttpResponseCode(httpGetRespStatus))) {
 			// hide the dialog
 			createAccountSecondDialog.hide();
-			// TODO do something if the answer is not null but something like false
+			// Call back the parent giving it the user
 			parent.onRegisterCallBack(user);
 		} else {
 			TextView txvError=(TextView)createAccountSecondDialog.findViewById(R.id.txvRegistrationError);

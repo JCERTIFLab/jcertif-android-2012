@@ -11,6 +11,7 @@
  */
 package com.jcertif.android.ui.view.event.detail;
 
+import java.io.File;
 import java.sql.SQLException;
 
 import android.graphics.Bitmap;
@@ -26,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jcertif.android.JCApplication;
 import com.jcertif.android.dao.ormlight.EventProvider;
 import com.jcertif.android.dao.ormlight.SpeakerProvider;
 import com.jcertif.android.transverse.model.Event;
@@ -200,14 +202,16 @@ public class EventDetailFragment extends Fragment {
 			String[] splitedBio = splitBio(speaker.bio);			
 			spBio1.setText(splitedBio[0]);			
 			spBio2.setText(splitedBio[1]);
-			Bitmap speakerBitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath()
-					+ "/" + speaker.urlPhoto);
+			//load the picture
+			File filesDir = JCApplication.getInstance().getExternalFilesDir(null);
+			String pictureFolderName=getString(R.string.folder_name_spekaer_picture);
+			File pictureDir=new File(filesDir,pictureFolderName);
+			File filePicture=new File(pictureDir,speaker.urlPhoto);
+			Bitmap speakerBitmap = BitmapFactory.decodeFile(filePicture.getAbsolutePath());
 			i11.setImageBitmap(speakerBitmap);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			Log.d("SpeakerDisplayActivity", e.getMessage());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

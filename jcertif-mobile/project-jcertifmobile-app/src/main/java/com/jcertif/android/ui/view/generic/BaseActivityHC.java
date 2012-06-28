@@ -19,6 +19,15 @@ import android.app.Activity;
  * This class aims to:
  * <ul><li></li></ul>
  */
-public class BasicActivityHC extends Activity {
+public class BaseActivityHC extends Activity implements BaseActivityIntf{
+
+	/* (non-Javadoc)
+	 * @see com.jcertif.android.ui.view.generic.BaseActivityIntf#showRefreshingDataProgressBar(boolean)
+	 */
+	@Override
+	public void showRefreshingDataProgressBar(boolean show) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

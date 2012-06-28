@@ -10,6 +10,8 @@
  */
 package com.jcertif.android.braodcastreceiver;
 
+import java.util.Calendar;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +20,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.jcertif.android.JCApplication;
 import com.jcertif.android.service.androidservices.UpdaterService;
 import com.jcertif.android.ui.view.R;
 
@@ -46,7 +50,7 @@ public class BootAndWifiReceiver extends BroadcastReceiver {
 	 */
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Log.w("BootAndWifiReceiver", "Intet received :" + intent.getAction());
+		Log.w("BootAndWifiReceiver", "Intent received :" + intent.getAction());
 		// Here we are because we receive either the boot completed event
 		// either the connection changed event
 		// either the wifi state changed event
@@ -58,13 +62,15 @@ public class BootAndWifiReceiver extends BroadcastReceiver {
 			boolean isConnected = networkInfo.isConnected();
 			boolean isWifi = networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
 			if (isConnected && isWifi) {
-				Log.w("BootAndWifiReceiver", "isConnected && isWifi : true");
+				Log.w("BootAndWifiReceiver", "isConnected & isWifi : true");
 				// test if the update have been done 6h ago or not
 				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 				Long lastUpdateTime = prefs.getLong(context.getString(R.string.shLastUpdateTime), 0l);
 				Long now = System.currentTimeMillis();
 				Log.w("BootAndWifiReceiver", "lastUpdateTime"+lastUpdateTime+" && now : now"+now+" now - lastUpdateTime"+(now - lastUpdateTime));
-				if (minDelay < (now - lastUpdateTime)) {
+				makeALog(lastUpdateTime, now, "Before update (before the if)");
+				if (minDelay < (now - lastUpdateTime)) {					
+					
 					Log.e("BootAndWifiReceiver", "Launching update service");
 					// Launch the database update
 					Intent updateServiceIntent = new Intent(context, UpdaterService.class);
@@ -73,9 +79,19 @@ public class BootAndWifiReceiver extends BroadcastReceiver {
 					SharedPreferences.Editor editor = prefs.edit();
 					editor.putLong(context.getString(R.string.shLastUpdateTime), now);
 					editor.commit();
+					lastUpdateTime = prefs.getLong(context.getString(R.string.shLastUpdateTime), 0l);
+					makeALog(lastUpdateTime, now, "After update (before the if)");
 				}
 			}
 		}
 
+	}
+	
+	private void makeALog(Long lastUpdateTime, Long now,String prefixe) {
+		Calendar calLT=Calendar.getInstance();
+		calLT.setTimeInMillis(lastUpdateTime);
+		Calendar calN=Calendar.getInstance();
+		calN.setTimeInMillis(lastUpdateTime);
+		Log.e("BootAndWifiReceiver:makeALog", prefixe+" Delta"+(now-lastUpdateTime)+" lastUpdateTime "+calLT.toString()+", Now "+calN.toString());
 	}
 }

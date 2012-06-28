@@ -61,10 +61,7 @@ public class LauncherActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		Intent intent = new Intent(this, UpdaterService.class);
-		startService(intent);
-		
+		super.onCreate(savedInstanceState);		
 		//First launch
 		firstLaunchInit();
 		//Then do the rest
@@ -104,7 +101,7 @@ public class LauncherActivity extends Activity {
 			//Store the init			
 			Editor editor = preferences.edit();
 			// Store initialisation
-			editor.putBoolean(getString(R.string.initialisation), false);
+			editor.putBoolean(getString(R.string.initialisation), true);
 			//and commit
 			editor.commit();
 		}

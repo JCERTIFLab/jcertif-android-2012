@@ -11,6 +11,7 @@
  */
 package com.jcertif.android.ui.view.speaker.detail;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.jcertif.android.JCApplication;
 import com.jcertif.android.dao.ormlight.EventProvider;
 import com.jcertif.android.dao.ormlight.SpeakerProvider;
 import com.jcertif.android.transverse.model.Event;
@@ -203,9 +205,12 @@ public class SpeakerDetailFragment extends Fragment {
 
 			headerTitle.setText(speaker.firstName + " " + speaker.lastName + " (" + speaker.company + ")");
 			speakerName.setText(speaker.firstName + " " + speaker.lastName);
-
-			Bitmap speakerBitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath()
-					+ "/" + speaker.urlPhoto);
+			//load the picture
+			File filesDir = JCApplication.getInstance().getExternalFilesDir(null);
+			String pictureFolderName=getString(R.string.folder_name_spekaer_picture);
+			File pictureDir=new File(filesDir,pictureFolderName);
+			File filePicture=new File(pictureDir,speaker.urlPhoto);
+			Bitmap speakerBitmap = BitmapFactory.decodeFile(filePicture.getAbsolutePath());
 			i11.setImageBitmap(speakerBitmap);
 
 			String[] splitedBio = splitBio(speaker.bio);
@@ -215,10 +220,8 @@ public class SpeakerDetailFragment extends Fragment {
 			buildSpeakerEventLayout(speakerEventLayout, speakerEvents);
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			Log.d("SpeakerDisplayActivity", e.getMessage());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -79,8 +79,8 @@
     </string-array>
 
     <!-- Service And associatedIntents Constants -->
-    <string name="updateServiceNotificationMessage">L\'application JCertif mets à jour ses données par le wifi</string>
-    <string name="updateServiceStopMessage">L\'application JCertif ne met plus à jour ses données</string>
+    <string name="updateServiceNotificationMessage">L\'application JCertif mets à jour ses données</string>
+    <string name="updateServiceStopMessage">L\'application JCertif a fini la mise à jour des données</string>
     <string name="speakerUpdater">speakers Updater</string>
     <string name="eventUpdater">events Updater</string>
 

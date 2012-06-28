@@ -7,5 +7,6 @@
     <string name="url_suffixe_event">/event/list/2</string>
     <string name="url_suffixe_authentification">/user/connect/%1$s/%2$s/2</string>
     <string name="url_suffixe_register">/user/create</string>
+    <string name="folder_name_spekaer_picture">SpeakersPictures</string>
 
 </resources>

@@ -47,7 +47,6 @@ public class RegistrationThread extends BasicBackgroundThread {
 	 */
 	@Override
 	public void workingMethod(Handler handler) {
-		// TODO Yakhya Pas de parametre ? J'ai raté quelque chose ou il manque un truc ?
 		String responseString = null;
 		int responseStatus=STATUS_NOTSET;
 		String url = JCApplication.getInstance().getUrlFactory().getRegisterUrl();

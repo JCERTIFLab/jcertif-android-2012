@@ -1,5 +1,6 @@
 package com.jcertif.android.dao.ormlight;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -8,17 +9,16 @@ import java.sql.SQLException;
 import java.util.List;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.jcertif.android.JCApplication;
 import com.jcertif.android.transverse.model.Speaker;
+import com.jcertif.android.ui.view.R;
 
 /**
  * Provider for Speaker Do persistence and parsing stuff
@@ -61,6 +61,11 @@ public class SpeakerProvider {
 
 	Bitmap bmImg;
 
+	/**
+	 * Save the speaker picture
+	 * @param fileUrl
+	 * @param fileName
+	 */
 	void saveSpeakerPicture(String fileUrl, String fileName) {
 		URL myFileUrl = null;
 		try {
@@ -68,13 +73,17 @@ public class SpeakerProvider {
 			HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();
 			conn.setDoInput(true);
 			conn.connect();
-
 			InputStream is = conn.getInputStream();
-
 			bmImg = BitmapFactory.decodeStream(is);
-			// this.imView.setImageBitmap(bmImg);
-			String filepath = Environment.getExternalStorageDirectory().getAbsolutePath();
-			FileOutputStream fos = new FileOutputStream(filepath + "/" + fileName);
+			//save the picture
+			File filesDir = JCApplication.getInstance().getExternalFilesDir(null);
+			String pictureFolderName=JCApplication.getInstance().getString(R.string.folder_name_spekaer_picture);
+			File pictureDir=new File(filesDir,pictureFolderName);
+			if(!pictureDir.exists()) {
+				pictureDir.mkdir();
+			}
+			File filePicture=new File(pictureDir,fileName);
+			FileOutputStream fos = new FileOutputStream(filePicture);
 			bmImg.compress(CompressFormat.JPEG, 75, fos);
 			Log.i(SpeakerProvider.class.getName(), "Save of picture ok:" + fos.getFD().toString());
 			fos.flush();

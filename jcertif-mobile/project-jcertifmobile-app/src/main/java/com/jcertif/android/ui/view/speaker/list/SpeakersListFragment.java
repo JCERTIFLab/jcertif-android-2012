@@ -64,7 +64,6 @@ public class SpeakersListFragment extends ListFragment {
 			sp = new SpeakerProvider();
 			speakers = sp.findAll();
 		} catch (SQLException e) {
-			// TODO Manage exception in the exceptionManager
 			e.printStackTrace();
 		}
 		// set the adapter using SpeakerAdapter

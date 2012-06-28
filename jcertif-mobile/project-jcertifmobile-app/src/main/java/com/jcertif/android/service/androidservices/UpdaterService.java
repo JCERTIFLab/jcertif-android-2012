@@ -35,10 +35,13 @@ import java.util.List;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.jcertif.android.JCApplication;
 import com.jcertif.android.service.androidservices.events.EventsUpdater;
 import com.jcertif.android.service.androidservices.speakers.SpeakersUpdater;
 import com.jcertif.android.ui.view.R;
@@ -53,7 +56,10 @@ import com.jcertif.android.ui.view.R;
  *        UpdaterServiceElementIntf interface. Each of those element have in charge a specific
  *        update (session, speakers, events...)
  */
-public class UpdaterService extends Service {
+public class UpdaterService extends Service implements UpdaterServiceIntf {
+	/******************************************************************************************/
+	/** Attributes **************************************************************************/
+	/******************************************************************************************/
 
 	/**
 	 * The list of elements that have to update the data
@@ -66,6 +72,19 @@ public class UpdaterService extends Service {
 	protected List<Thread> backgroundThreads;
 
 	/**
+	 * Number of running updater services
+	 */
+	private int numberOfRunningService = 0;
+	/**
+	 * The Handler that catch the update ends messages
+	 */
+	private Handler handler;
+	/**
+	 * To know if the service is already running
+	 */
+	private boolean isServiceRunning = false;
+
+	/**
 	 * To use to notify the user that updates are runnning
 	 */
 	private NotificationManager mNM;
@@ -73,6 +92,10 @@ public class UpdaterService extends Service {
 	// Unique Identification Number for the Notification.
 	// We use it on Notification start, and to cancel it.
 	private int NOTIFICATION = R.string.updateServiceNotificationMessage;
+
+	/******************************************************************************************/
+	/** Lif Cycle Management **************************************************************************/
+	/******************************************************************************************/
 
 	/*
 	 * (non-Javadoc)
@@ -96,11 +119,23 @@ public class UpdaterService extends Service {
 		super.onCreate();
 		// Display a notification about us starting. We put an icon in the status bar.
 		mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
+		// handler definition
+		handler = new Handler() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see android.os.Handler#handleMessage(android.os.Message)
+			 */
+			@Override
+			public void handleMessage(Message msg) {
+				super.handleMessage(msg);
+				onElementUpdateOver();
+			}
+		};
 		// instantiate all the update services
 		updaters = new ArrayList<UpdaterServiceElementIntf>();
-		updaters.add(new SpeakersUpdater());
-		updaters.add(new EventsUpdater());
+		updaters.add(new SpeakersUpdater(handler));
+		updaters.add(new EventsUpdater(handler));
 		// create the Threads
 		backgroundThreads = new ArrayList<Thread>();
 		Thread backgroundThread;
@@ -133,24 +168,43 @@ public class UpdaterService extends Service {
 	 */
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.i("UpdaterService", "Received start id " + startId + ": " + intent);
-		showNotification();
-		// Launch the thread// start the thread
-		for (Thread backgroundThread : backgroundThreads) {
-			Log.i("UpdaterService", "RbackgroundThread" + startId + ": " + intent);
-			if (!backgroundThread.isAlive()) {
-				try {
-					backgroundThread.start();
-				} catch (IllegalThreadStateException e) {
-					// Thread already running
+		Log.i("UpdaterService " + hashCode(), "Received start id " + startId + ": " + intent);
+		if (!isServiceRunning) {
+			isServiceRunning = true;
+			// make a toast to tell the user that data are updating
+			Toast.makeText(JCApplication.getInstance(), R.string.updateServiceNotificationMessage, Toast.LENGTH_SHORT)
+					.show();
+			// and show notification
+			showNotification();
+			// reset the number of running services
+			numberOfRunningService = 0;
+			// Launch the thread// start the thread
+			for (Thread backgroundThread : backgroundThreads) {
+				Log.i("UpdaterService" + hashCode(), "RbackgroundThread" + startId + ": " + intent);
+				if (!backgroundThread.isAlive()) {
+					try {
+						backgroundThread.start();
+					} catch (IllegalThreadStateException e) {
+						// Thread already running
+					}
+					//Then manage the number of running services
+					numberOfRunningService++;
+					Log.w("UpdaterService" + hashCode() + ":onStartCommand", "numberOfRunningService: "
+							+ numberOfRunningService);
 				}
-			}
-		}
-		// When the threatment is finished call stopSelf... pas facile ça
 
-		// We want this service to continue running until it is explicitly
-		// stopped, so return sticky.
-		return START_STICKY;
+			}
+			// Tell the application the UpdaterService is on
+			((JCApplication) getApplication()).onDataUpdate();
+
+			// When the threatment is finished call stopSelf... pas facile ça
+
+			// We want this service to continue running until it is explicitly
+			// stopped, so return sticky.
+			return START_STICKY;
+		}
+		//if nothing has been done, just return the nothing has been done constant
+		return START_NOT_STICKY;
 	}
 
 	/*
@@ -162,12 +216,43 @@ public class UpdaterService extends Service {
 	public void onDestroy() {
 		// Cancel the persistent notification.
 		mNM.cancel(NOTIFICATION);
-		// Kill the thread
-
 		// Tell the user we stopped.
 		Toast.makeText(this, R.string.updateServiceStopMessage, Toast.LENGTH_SHORT).show();
 		super.onDestroy();
 	}
+
+	/******************************************************************************************/
+	/** Managing the update end **************************************************************************/
+	/******************************************************************************************/
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.jcertif.android.service.androidservices.UpdaterServiceIntf#onElementUpdateOver()
+	 */
+	public void onElementUpdateOver() {
+		//here we manage the end of the service
+		//when all the thread are stopped we have to stop the service
+		//As this method is called each time an UpdaterServiceElement has finished
+		//we just decrement the numberOfRunningService and when it reachs 0, we know the service is over
+		numberOfRunningService--;
+		Log.i("UpdaterService" + hashCode() + ":onElementUpdateOver", "numberOfRunningService: "
+				+ numberOfRunningService);
+		if (numberOfRunningService == 0) {
+			Log.i("UpdaterService" + hashCode() + ":onElementUpdateOver",
+					"((JCApplication) getApplication()).onDataUpdateOver() called ->" + numberOfRunningService);
+			// first the service is stopped:
+			isServiceRunning = false;
+			// tell the world the updates are over
+			// first the application
+			((JCApplication) getApplication()).onDataUpdateOver();
+			// then suicide
+			stopSelf();
+		}
+	}
+
+	/******************************************************************************************/
+	/** Managing notification **************************************************************************/
+	/******************************************************************************************/
 
 	/**
 	 * Show a notification while this service is running.

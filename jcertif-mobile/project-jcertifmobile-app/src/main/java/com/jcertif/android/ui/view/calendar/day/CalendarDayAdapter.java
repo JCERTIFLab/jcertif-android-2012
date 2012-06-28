@@ -153,7 +153,6 @@ public class CalendarDayAdapter {
 			ep = new EventProvider();
 			events = ep.getEventOfTheDay(dayToDisplay);
 		} catch (SQLException e) {
-			// TODO Manage exception in the exceptionManager
 			e.printStackTrace();
 		}
 	}
@@ -168,7 +167,6 @@ public class CalendarDayAdapter {
 			ep = new EventProvider();
 			events = ep.getEventOfTheDay(dayToDisplay);
 		} catch (SQLException e) {
-			// TODO Manage exception in the exceptionManager
 			e.printStackTrace();
 		}
 	}
@@ -344,7 +342,6 @@ public class CalendarDayAdapter {
 			}
 			sp = speakersProvider.findById(Integer.parseInt(event.speakersId));
 		} catch (SQLException e) {
-			// TODO manage exception
 			e.printStackTrace();
 		}
 		if (sp != null) {

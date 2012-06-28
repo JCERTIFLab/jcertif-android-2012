@@ -1,5 +1,6 @@
 package com.jcertif.android.ui.adapter;
 
+import java.io.File;
 import java.util.List;
 
 import android.app.Activity;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.jcertif.android.JCApplication;
 import com.jcertif.android.transverse.model.Speaker;
 import com.jcertif.android.ui.view.R;
 
@@ -82,8 +84,12 @@ public class SpeakerAdapter extends ArrayAdapter<Speaker> {
 		detail = holder.getDetail();
 		detail.setText(speaker.bio);
 		i11 = holder.getImage();
-		Bitmap speakerBitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath()
-				+ "/" + speaker.urlPhoto);
+		//load the picture
+		File filesDir = JCApplication.getInstance().getExternalFilesDir(null);
+		String pictureFolderName=getContext().getString(R.string.folder_name_spekaer_picture);
+		File pictureDir=new File(filesDir,pictureFolderName);
+		File filePicture=new File(pictureDir,speaker.urlPhoto);
+		Bitmap speakerBitmap = BitmapFactory.decodeFile(filePicture.getAbsolutePath());
 		i11.setImageBitmap(speakerBitmap);
 		speakLay=holder.getSpeakerLay();
 		switch (getItemViewType(position)) {

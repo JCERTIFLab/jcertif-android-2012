@@ -210,15 +210,15 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 						// Enregistre l'utilisateur comme valide
 						onUserValidated(user);
 					} else {
-						// TODO launch an exception, or do something else 
+						// Show the error to user
 						ShowAuthentFailedDialog();
 					}
 				}else {
+					// Show the error to user
 					ShowAuthentFailedDialog();
 				}
 
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			// TODO When the bypass of the Authent is not required for dev anymore uncomment
@@ -277,8 +277,6 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 		}
 		// Save the user in the application
 		onUserValidated(user);
-		// TODO Doit-on quand la regsitration est ok by-passé la connection ou pas???
-		// i.e. doit faire onConnectButtonClicked() ou displayMenuView ?o? ou rien ?
 	}
 
 	/******************************************************************************************/

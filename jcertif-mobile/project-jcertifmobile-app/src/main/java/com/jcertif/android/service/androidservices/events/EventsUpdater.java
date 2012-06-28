@@ -12,6 +12,7 @@ package com.jcertif.android.service.androidservices.events;
 
 import java.util.List;
 
+import android.os.Handler;
 import android.util.Log;
 
 import com.jcertif.android.JCApplication;
@@ -32,6 +33,19 @@ import com.jcertif.android.ui.view.R;
  *        </ul>
  */
 public class EventsUpdater implements UpdaterServiceElementIntf {
+	/**
+	 * The updaterService parent
+	 */
+	Handler parent;
+	
+
+	/**
+	 * @param parent
+	 */
+	public EventsUpdater(Handler parent) {
+		super();
+		this.parent = parent;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -51,10 +65,13 @@ public class EventsUpdater implements UpdaterServiceElementIntf {
 			List<Event> events = evc.findAll();
 			// Enregistrer chacun en BD
 			EventProvider evp = new EventProvider();
-			evp.saveEvents(events);
+			evp.saveEvents(events);			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			//The threatment is over, callBack the parent to tell it
+			parent.sendEmptyMessage(0);
+			Log.w("onUpdate Events", "onUpdate Events finished");
 		}
 	}
 

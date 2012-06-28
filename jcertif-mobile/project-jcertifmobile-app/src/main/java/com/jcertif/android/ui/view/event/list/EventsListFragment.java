@@ -70,7 +70,6 @@ public class EventsListFragment extends ListFragment {
 			ep = new EventProvider();
 			events = ep.getAllEvents();
 		} catch (SQLException e) {
-			// TODO Manage exception in the exceptionManager
 			e.printStackTrace();
 		}
 		// set the adapter using SpeakerAdapter
