@@ -46,8 +46,6 @@ import com.jcertif.android.transverse.model.Event;
  */
 public enum StaredEventsService {
 	instance;
-
-	// TODO pattern singleton
 	/**
 	 * The list of stared events
 	 */

@@ -212,7 +212,6 @@ public class StaredEventsDaoPrefs implements StaredEventsDaoIntf {
 	/******************************************************************************************/
 	/** Marshall/unsmarshall methods **************************************************************************/
 	/******************************************************************************************/
-	// TODO be sure it's the fucking token used by webservices when internet comes back
 	/**
 	 * The token to use to split the string
 	 */

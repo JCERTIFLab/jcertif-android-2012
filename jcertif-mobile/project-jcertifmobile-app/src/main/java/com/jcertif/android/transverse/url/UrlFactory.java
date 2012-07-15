@@ -138,7 +138,6 @@ public class UrlFactory {
 	 * @return the registerUrl
 	 */
 	public final String getRegisterUrl() {
-		// TODO add parameters to the url when known
 		Context ctx = jcApplication.getApplicationContext();
 		registerUrl = baseUrl + ctx.getString(R.string.url_suffixe_register);
 

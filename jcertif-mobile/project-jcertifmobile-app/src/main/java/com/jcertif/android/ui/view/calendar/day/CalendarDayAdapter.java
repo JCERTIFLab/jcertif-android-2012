@@ -160,7 +160,6 @@ public class CalendarDayAdapter {
 	 * Load the stared event in the events list
 	 */
 	private void loadStaredEvents() {
-		// TODO load stared events instead of all events
 		EventProvider ep;
 		try {
 			ep = new EventProvider();

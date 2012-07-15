@@ -571,7 +571,7 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 	 */
 	@Override
 	public void showInfo() {
-		// TODO Auto-generated method stub
+		// What has been to be displayed in this fragment ?????
 
 	}
 
