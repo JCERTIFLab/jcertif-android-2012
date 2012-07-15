@@ -5,8 +5,6 @@
  */
 package com.jcertif.android.ui.view.connection;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -21,12 +19,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.jcertif.android.JCApplication;
+import com.jcertif.android.R;
 import com.jcertif.android.com.parsing.jackson.service.UsersController;
 import com.jcertif.android.service.threadtraitements.authent.AuthentThreadCallBack;
 import com.jcertif.android.service.threadtraitements.authent.AuthentificationThread;
 import com.jcertif.android.transverse.model.User;
 import com.jcertif.android.transverse.tools.HttpTools;
-import com.jcertif.android.ui.view.R;
 import com.jcertif.android.ui.view.connection.accountdialogs.AccountDialog;
 import com.jcertif.android.ui.view.connection.accountdialogs.AccountDialogParentIntf;
 import com.jcertif.android.ui.view.main.MainActivityLegacy;

@@ -13,6 +13,7 @@ package com.jcertif.android.ui.view.calendar.day;
 import java.util.Calendar;
 import java.util.List;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -20,12 +21,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.jcertif.android.R;
+import com.jcertif.android.service.business.stardevents.StaredEventsService;
 import com.jcertif.android.transverse.model.Event;
-import com.jcertif.android.ui.view.R;
 import com.jcertif.android.ui.view.main.MainActivityLegacy;
 
 import de.akquinet.android.androlog.Log;
@@ -53,6 +56,14 @@ public class CalendarDayFragment extends Fragment {
 	 * The callBack
 	 */
 	CalendarDayCallBack callBack;
+	/**
+	 * The star
+	 */
+	Drawable star=null;
+	/**
+	 * The empty star
+	 */
+	Drawable emptyStar=null;
 
 	/******************************************************************************************/
 	/** LifeCycle management **************************************************************************/
@@ -67,6 +78,8 @@ public class CalendarDayFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		this.inflater = inflater;
+		star=(Drawable) getResources().getDrawable(R.drawable.star);
+		emptyStar=(Drawable) getResources().getDrawable(R.drawable.empty_star);
 		View view = inflater.inflate(R.layout.calendar, container, false);
 		// Add the listener to change the day
 		Button btnNext = (Button) view.findViewById(R.id.nextday);
@@ -191,6 +204,21 @@ public class CalendarDayFragment extends Fragment {
 					getCallBack().showSelectedEvent(event.id, false);
 				}
 			});
+			//manage the stared event status
+			final ImageView starView=((ImageView) evtCell.findViewById(R.id.star_cal));
+			if(StaredEventsService.instance.isStared(event.id)) {
+				starView.setBackgroundDrawable(star);
+			}else {
+				starView.setBackgroundDrawable(emptyStar);
+			}
+			//add the listener
+			starView.setOnClickListener(new OnClickListener() {			
+				@Override
+				public void onClick(View v) {
+					changeEventStartState(starView,event.id);
+				}
+			});
+			
 			// Build the relative layout parameter
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(180,
 					RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -263,6 +291,26 @@ public class CalendarDayFragment extends Fragment {
 		// make this link bidirectionnal
 		this.adapter.setCalendar(this);
 		// then update the gui
+	}
+	
+	/**
+	 * Change the state of the event from stared to unstared or from unstared to stared
+	 * @param imageView the holder that holds the view
+	 * @param eventId the event id of the event
+	 */
+	private void changeEventStartState(ImageView imageView,int eventId) {
+		StaredEventsService service= StaredEventsService.instance;
+		if(service.isStared(eventId)) {
+			//first change the stared status of the event
+			service.staredEventsStatusChanged(eventId, false);
+			//then update the gui
+			imageView.setBackgroundDrawable(emptyStar);
+		}else {
+			//first change the stared status of the event
+			service.staredEventsStatusChanged(eventId, true);
+			//then update the gui
+			imageView.setBackgroundDrawable(star);
+		}
 	}
 
 }

@@ -5,8 +5,15 @@
     <string name="url_base_picture">http://pics.jcertif.cloudbees.net/img/2012</string>
     <string name="url_suffixe_speaker">/speaker/list/2</string>
     <string name="url_suffixe_event">/event/list/2</string>
+    <!-- Param %1 name %2 password -->
     <string name="url_suffixe_authentification">/user/connect/%1$s/%2$s/2</string>
     <string name="url_suffixe_register">/user/create</string>
     <string name="folder_name_spekaer_picture">SpeakersPictures</string>
+    <!-- Ajouter un event : /api/event/addevent/IDEVENT/EMAIL/2 -->
+    <string name="url_add_stared_event">/event/addevent/%1$s/%2$s/2</string>
+    <!-- Supprimer un event : /api/event/removeevent/IDEVENT/EMAIL/2 -->
+    <string name="url_remove_stared_event">/event/removeevent/%1$s/%2$s/2</string>
+    <!-- Rechercher les events d'une personne : /api/event/user/EMAIL/2 -->
+    <string name="url_get_stared_event">/event/user/%1$s/2</string>
 
 </resources>

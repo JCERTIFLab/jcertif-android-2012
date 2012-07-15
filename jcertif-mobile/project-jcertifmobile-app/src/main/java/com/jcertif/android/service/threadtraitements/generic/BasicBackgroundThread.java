@@ -16,7 +16,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.jcertif.android.JCApplication;
-import com.jcertif.android.ui.view.R;
+import com.jcertif.android.R;
 
 /**
  * @author Mathias Seguy (Android2EE)

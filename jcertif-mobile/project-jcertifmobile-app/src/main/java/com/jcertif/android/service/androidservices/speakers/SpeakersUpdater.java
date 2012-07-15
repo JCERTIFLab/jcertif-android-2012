@@ -17,13 +17,13 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.jcertif.android.JCApplication;
+import com.jcertif.android.R;
 import com.jcertif.android.com.net.RestClient;
 import com.jcertif.android.com.net.RestClient.RequestMethod;
 import com.jcertif.android.com.parsing.jackson.service.SpeakersController;
 import com.jcertif.android.dao.ormlight.SpeakerProvider;
 import com.jcertif.android.service.androidservices.UpdaterServiceElementIntf;
 import com.jcertif.android.transverse.model.Speaker;
-import com.jcertif.android.ui.view.R;
 
 /**
  * @author Mathias Seguy (Android2EE)

@@ -42,13 +42,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.jcertif.android.JCApplication;
+import com.jcertif.android.R;
 import com.jcertif.android.service.threadtraitements.authent.AuthentificationThread;
 import com.jcertif.android.service.threadtraitements.registration.RegistrationThread;
 import com.jcertif.android.service.threadtraitements.registration.RegistrationThreadCallBack;
 import com.jcertif.android.transverse.model.User;
 import com.jcertif.android.transverse.tools.HttpTools;
-import com.jcertif.android.ui.view.R;
 
 /**
  * @author Mathias Seguy (Android2EE)

@@ -110,7 +110,6 @@ public class CalendarDayAdapter {
 		this.eventType = eventType;
 		leftId = new HashMap<Integer, Integer>();
 		leftLevel = new HashMap<Integer, Integer>();
-//		dayToEventPosition = new HashMap<Integer, Map<Event, RelativeCellPosition>>();
 		initData();
 	}
 
@@ -151,7 +150,7 @@ public class CalendarDayAdapter {
 		EventProvider ep;
 		try {
 			ep = new EventProvider();
-			events = ep.getEventOfTheDay(dayToDisplay);
+			events = ep.getEventsOfTheDay(dayToDisplay);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -165,7 +164,7 @@ public class CalendarDayAdapter {
 		EventProvider ep;
 		try {
 			ep = new EventProvider();
-			events = ep.getEventOfTheDay(dayToDisplay);
+			events = ep.getStaredEventsOfTheDay(dayToDisplay);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

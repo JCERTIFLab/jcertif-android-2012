@@ -10,7 +10,6 @@ package com.jcertif.android.ui.view.speaker.list;
 import java.sql.SQLException;
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -21,10 +20,10 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.jcertif.android.R;
 import com.jcertif.android.dao.ormlight.SpeakerProvider;
 import com.jcertif.android.transverse.model.Speaker;
 import com.jcertif.android.ui.adapter.SpeakerAdapter;
-import com.jcertif.android.ui.view.R;
 import com.jcertif.android.ui.view.main.MainActivityLegacy;
 
 import de.akquinet.android.androlog.Log;

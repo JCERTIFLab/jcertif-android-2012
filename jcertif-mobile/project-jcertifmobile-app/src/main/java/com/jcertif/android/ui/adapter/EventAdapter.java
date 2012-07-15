@@ -3,16 +3,20 @@ package com.jcertif.android.ui.adapter;
 import java.util.List;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.jcertif.android.R;
+import com.jcertif.android.service.business.stardevents.StaredEventsService;
 import com.jcertif.android.transverse.model.Event;
-import com.jcertif.android.ui.view.R;
 
 /**
  * from http://www.vogella.de/articles/AndroidListView/article.html
@@ -45,6 +49,14 @@ public class EventAdapter extends ArrayAdapter<Event> {
 	 * The background for odd rows
 	 */
 	GradientDrawable oddBackground = null;
+	/**
+	 * The star
+	 */
+	Drawable star=null;
+	/**
+	 * The empty star
+	 */
+	Drawable emptyStar=null;
 
 	public EventAdapter(Activity context, List<Event> events) {
 		super(context, R.layout.event_list_item, events);
@@ -52,6 +64,8 @@ public class EventAdapter extends ArrayAdapter<Event> {
 		mInflater = LayoutInflater.from(context);
 		evenBackground = (GradientDrawable) context.getResources().getDrawable(R.drawable.list_item);
 		oddBackground = (GradientDrawable) context.getResources().getDrawable(R.drawable.list_item_odd);
+		star=(Drawable) context.getResources().getDrawable(R.drawable.star);
+		emptyStar=(Drawable) context.getResources().getDrawable(R.drawable.empty_star);
 }
 
 	// static to save the reference to the outer class and to avoid access to
@@ -61,6 +75,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
 		public TextView time = null;
 		public TextView name = null;
 		public TextView description = null;
+		public ImageView star=null;
 		public LinearLayout eventLay=null;
 	}
 
@@ -68,7 +83,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// ViewHolder will buffer the assess to the individual fields of the row
 		// layout
-		Event event = getItem(position);
+		final Event event = getItem(position);
 
 		// Recycle existing view if passed as parameter
 		// This will save memory and time on Android
@@ -85,11 +100,12 @@ public class EventAdapter extends ArrayAdapter<Event> {
 			viewHolder.name = (TextView) rowView.findViewById(R.id.txtName);
 			viewHolder.description = (TextView) rowView.findViewById(R.id.txtDescription);
 			viewHolder.eventLay = (LinearLayout) rowView.findViewById(R.id.ev_list_layout);
+			viewHolder.star = (ImageView) rowView.findViewById(R.id.star_evt_list);
 			rowView.setTag(viewHolder);
 
 		}
 
-		ViewHolder holder = (ViewHolder) rowView.getTag();
+		final ViewHolder holder = (ViewHolder) rowView.getTag();
 		holder.name.setText(event.name);
 		holder.description.setText(getDescription(event.description));
 		holder.place.setText(event.room);
@@ -102,6 +118,19 @@ public class EventAdapter extends ArrayAdapter<Event> {
 			holder.eventLay.setBackgroundDrawable(oddBackground);
 			break;
 		}
+		//update the star according to the state of the event (stared or not)
+		if(StaredEventsService.instance.isStared(event.id)) {
+			holder.star.setBackgroundDrawable(star);
+		}else {
+			holder.star.setBackgroundDrawable(emptyStar);
+		}
+		//add the listener
+		holder.star.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				changeEventStartState(holder,event.id);
+			}
+		});
 		return rowView;
 	}
 	/*
@@ -124,6 +153,26 @@ public class EventAdapter extends ArrayAdapter<Event> {
 			return description;
 		}else {
 			return description.substring(0,MAX_DESC_LENGHT-1)+"...";
+		}
+	}
+	
+	/**
+	 * Change the state of the event from stared to unstared or from unstared to stared
+	 * @param holder the holder that holds the view
+	 * @param eventId the event id of the event
+	 */
+	private void changeEventStartState(ViewHolder holder,int eventId) {
+		StaredEventsService service= StaredEventsService.instance;
+		if(service.isStared(eventId)) {
+			//first change the stared status of the event
+			service.staredEventsStatusChanged(eventId, false);
+			//then update the gui
+			holder.star.setBackgroundDrawable(emptyStar);
+		}else {
+			//first change the stared status of the event
+			service.staredEventsStatusChanged(eventId, true);
+			//then update the gui
+			holder.star.setBackgroundDrawable(star);
 		}
 	}
 }

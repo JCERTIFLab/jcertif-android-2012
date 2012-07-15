@@ -16,23 +16,25 @@ import java.sql.SQLException;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jcertif.android.JCApplication;
+import com.jcertif.android.R;
 import com.jcertif.android.dao.ormlight.EventProvider;
 import com.jcertif.android.dao.ormlight.SpeakerProvider;
+import com.jcertif.android.service.business.stardevents.StaredEventsService;
 import com.jcertif.android.transverse.model.Event;
 import com.jcertif.android.transverse.model.Speaker;
-import com.jcertif.android.ui.view.R;
 import com.jcertif.android.ui.view.main.MainActivityLegacy;
 
 /**
@@ -65,6 +67,14 @@ public class EventDetailFragment extends Fragment {
 	 * The displayed event id 
 	 */
 	private int eventId = -1;
+	/**
+	 * The star
+	 */
+	Drawable star=null;
+	/**
+	 * The empty star
+	 */
+	Drawable emptyStar=null;
 	
 	/******************************************************************************************/
 	/** Constructors **************************************************************************/
@@ -83,6 +93,8 @@ public class EventDetailFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.w("EventDetailFragment onResume", "getView :" + getView());
+		star=(Drawable) getResources().getDrawable(R.drawable.star);
+		emptyStar=(Drawable) getResources().getDrawable(R.drawable.empty_star);
 		View view = inflater.inflate(R.layout.event_detail, container, false);
 		// insure the fragment not being destroyed when activity destroyed because else memory leaks
 				// is generated and null pointerExceptions too (when rotating the device)
@@ -171,7 +183,7 @@ public class EventDetailFragment extends Fragment {
 	private void updateScreen(View view) {
 		try {
 
-			Event event = findEvent();
+			final Event event = findEvent();
 			Speaker speaker = findSpeaker(event);
 			
 			TextView headerTitle = (TextView) getActivity().findViewById(R.id.header_title);
@@ -197,7 +209,22 @@ public class EventDetailFragment extends Fragment {
 			eventSubject.setText(event.subjects);
 			eventSummary.setText(event.summary);
 			
+			//update the star
+			final ImageView starView=(ImageView) view.findViewById(R.id.star_evt_det);
+			if(StaredEventsService.instance.isStared(event.id)) {
+				starView.setBackgroundDrawable(star);
+			}else {
+				starView.setBackgroundDrawable(emptyStar);
+			}
+			//add the listener
+			starView.setOnClickListener(new OnClickListener() {			
+				@Override
+				public void onClick(View v) {
+					changeEventStartState(starView,event.id);
+				}
+			});
 			
+			//manage the speaker			
 			spName.setText(speaker.firstName + " " + speaker.lastName);
 			String[] splitedBio = splitBio(speaker.bio);			
 			spBio1.setText(splitedBio[0]);			
@@ -269,5 +296,25 @@ public class EventDetailFragment extends Fragment {
 		}
 
 		return new String[] { part1.toString(), part2.toString() };
+	}
+	
+	/**
+	 * Change the state of the event from stared to unstared or from unstared to stared
+	 * @param imageView the holder that holds the view
+	 * @param eventId the event id of the event
+	 */
+	private void changeEventStartState(ImageView imageView,int eventId) {
+		StaredEventsService service= StaredEventsService.instance;
+		if(service.isStared(eventId)) {
+			//first change the stared status of the event
+			service.staredEventsStatusChanged(eventId, false);
+			//then update the gui
+			imageView.setBackgroundDrawable(emptyStar);
+		}else {
+			//first change the stared status of the event
+			service.staredEventsStatusChanged(eventId, true);
+			//then update the gui
+			imageView.setBackgroundDrawable(star);
+		}
 	}
 }

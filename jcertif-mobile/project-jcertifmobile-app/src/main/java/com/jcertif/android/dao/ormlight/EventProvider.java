@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.jcertif.android.JCApplication;
+import com.jcertif.android.service.business.stardevents.StaredEventsService;
 import com.jcertif.android.transverse.model.Event;
 
 /**
@@ -43,7 +44,7 @@ public class EventProvider {
 		}
 	}
 
-	public List<Event> getEventOfTheDay(Calendar day) throws SQLException {
+	public List<Event> getEventsOfTheDay(Calendar day) throws SQLException {
 		// TODO make a query
 		List<Event> events = getAllEvents();
 		List<Event> eventsRet = new ArrayList<Event>();
@@ -56,9 +57,27 @@ public class EventProvider {
 				eventsRet.add(event);
 
 			}
-			// Log.e("EventProvider:getEventOfTheDay","cal.D_MONTH)==day.D_MONTH) :"+cal.get(Calendar.DAY_OF_MONTH)+";"+day.get(Calendar.DAY_OF_MONTH));
-			// Log.e("EventProvider:getEventOfTheDay","cal._MONTH)==day._MONTH) :"+cal.get(Calendar.MONTH)+";"+day.get(Calendar.MONTH));
-			// Log.e("EventProvider:getEventOfTheDay","cal._YEAR)==day._YEAR) :"+cal.get(Calendar.YEAR)+";"+day.get(Calendar.YEAR));
+		}
+		Log.e("EventProvider:getEventOfTheDay", "returned elements :" + eventsRet.size());
+		return eventsRet;
+	}
+
+	public List<Event> getStaredEventsOfTheDay(Calendar day) throws SQLException {
+		// TODO make a query
+		List<Event> events = getAllEvents();
+		List<Event> eventsRet = new ArrayList<Event>();
+		StaredEventsService service = StaredEventsService.instance;
+		Calendar cal = Calendar.getInstance();
+		for (Event event : events) {
+			cal.setTime(event.startDate);
+			if (cal.get(Calendar.DAY_OF_MONTH) == day.get(Calendar.DAY_OF_MONTH)
+					&& cal.get(Calendar.MONTH) == day.get(Calendar.MONTH)
+					&& cal.get(Calendar.YEAR) == day.get(Calendar.YEAR)) {
+				if (service.isStared(event.id)) {
+					eventsRet.add(event);
+				}
+
+			}
 		}
 		Log.e("EventProvider:getEventOfTheDay", "returned elements :" + eventsRet.size());
 		return eventsRet;

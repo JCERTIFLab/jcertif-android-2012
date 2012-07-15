@@ -12,13 +12,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
-import android.os.Environment;
 import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
 import com.jcertif.android.JCApplication;
+import com.jcertif.android.R;
 import com.jcertif.android.transverse.model.Speaker;
-import com.jcertif.android.ui.view.R;
 
 /**
  * Provider for Speaker Do persistence and parsing stuff

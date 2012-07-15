@@ -20,11 +20,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.jcertif.android.JCApplication;
+import com.jcertif.android.R;
 import com.jcertif.android.service.androidservices.UpdaterService;
-import com.jcertif.android.ui.view.R;
 
 /**
  * @author Mathias Seguy (Android2EE)

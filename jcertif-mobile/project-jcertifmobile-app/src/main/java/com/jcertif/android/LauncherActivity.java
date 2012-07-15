@@ -37,7 +37,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import com.jcertif.android.service.androidservices.UpdaterService;
-import com.jcertif.android.ui.view.R;
 import com.jcertif.android.ui.view.connection.ConnectionActivityLegacy;
 import com.jcertif.android.ui.view.main.MainActivityLegacy;
 

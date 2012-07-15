@@ -23,7 +23,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 
-import com.jcertif.android.ui.view.R;
+import com.jcertif.android.R;
 import com.jcertif.android.ui.view.calendar.day.CalendarDayAdapter;
 import com.jcertif.android.ui.view.calendar.day.CalendarDayCallBack;
 import com.jcertif.android.ui.view.calendar.day.CalendarDayFragment;

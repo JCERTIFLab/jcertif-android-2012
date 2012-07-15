@@ -32,7 +32,7 @@ package com.jcertif.android.transverse.url;
 import android.content.Context;
 
 import com.jcertif.android.JCApplication;
-import com.jcertif.android.ui.view.R;
+import com.jcertif.android.R;
 
 /**
  * @author Mathias Seguy (Android2EE)
@@ -143,6 +143,34 @@ public class UrlFactory {
 		registerUrl = baseUrl + ctx.getString(R.string.url_suffixe_register);
 
 		return registerUrl;
+	}
+	
+	/**
+	 * @return the list of stared events of the user
+	 */
+	public final String getGetStaredEventsURL(String email) {
+		Context ctx = jcApplication.getApplicationContext();
+		return baseUrl
+				+ String.format(ctx.getString(R.string.url_get_stared_event), email);
+		
+	}
+	
+	/**
+	 * @return the list of stared events of the user
+	 */
+	public final String getAddStaredEventURL(String email,String eventId) {
+		Context ctx = jcApplication.getApplicationContext();
+		return baseUrl
+				+ String.format(ctx.getString(R.string.url_add_stared_event),eventId, email);
+	}
+	
+	/**
+	 * @return the list of stared events of the user
+	 */
+	public final String getRemoveStaredEventURL(String email,String eventId) {
+		Context ctx = jcApplication.getApplicationContext();
+		return baseUrl
+				+ String.format(ctx.getString(R.string.url_remove_stared_event),eventId, email);
 	}
 
 }

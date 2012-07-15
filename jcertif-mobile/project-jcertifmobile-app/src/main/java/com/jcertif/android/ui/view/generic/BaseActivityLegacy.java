@@ -22,10 +22,8 @@ import android.widget.Toast;
 
 import com.jcertif.android.JCApplication;
 import com.jcertif.android.LauncherActivity;
+import com.jcertif.android.R;
 import com.jcertif.android.service.androidservices.UpdaterService;
-import com.jcertif.android.ui.view.R;
-
-import de.akquinet.android.androlog.Log;
 
 /**
  * @author Mathias Seguy (Android2EE)

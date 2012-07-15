@@ -19,24 +19,26 @@ import java.util.List;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jcertif.android.JCApplication;
+import com.jcertif.android.R;
 import com.jcertif.android.dao.ormlight.EventProvider;
 import com.jcertif.android.dao.ormlight.SpeakerProvider;
+import com.jcertif.android.service.business.stardevents.StaredEventsService;
 import com.jcertif.android.transverse.model.Event;
 import com.jcertif.android.transverse.model.Speaker;
-import com.jcertif.android.ui.view.R;
 import com.jcertif.android.ui.view.main.MainActivityLegacy;
 
 /**
@@ -78,7 +80,14 @@ public class SpeakerDetailFragment extends Fragment {
 	 * The background for odd events rows
 	 */
 	GradientDrawable oddBackground = null;
-	
+	/**
+	 * The star
+	 */
+	Drawable star=null;
+	/**
+	 * The empty star
+	 */
+	Drawable emptyStar=null;
 	/******************************************************************************************/
 	/** Constructors **************************************************************************/
 	/******************************************************************************************/
@@ -101,6 +110,8 @@ public class SpeakerDetailFragment extends Fragment {
 		Log.w("SpeakerDetailFragment onResume", "getView :" + getView());
 		evenBackground = (GradientDrawable) getResources().getDrawable(R.drawable.list_item);
 		oddBackground = (GradientDrawable) getResources().getDrawable(R.drawable.list_item_odd);
+		star=(Drawable) getResources().getDrawable(R.drawable.star);
+		emptyStar=(Drawable) getResources().getDrawable(R.drawable.empty_star);
 		View view = inflater.inflate(R.layout.speaker_detail, container, false);
 		// insure the fragment not being destroyed when activity destroyed because else memory leaks
 				// is generated and null pointerExceptions too (when rotating the device)
@@ -196,7 +207,21 @@ public class SpeakerDetailFragment extends Fragment {
 			TextView speakerName = (TextView) view.findViewById(R.id.speakerName);
 			LinearLayout speakerEventLayout = (LinearLayout) view.findViewById(R.id.speakerEvents);
 			speakersProvider = new SpeakerProvider();
-
+			//update the star
+			final ImageView starView=(ImageView) view.findViewById(R.id.star_spe_det);
+			if(StaredEventsService.instance.isStaredSpeaker(speakerId)) {
+				starView.setBackgroundDrawable(star);
+			}else {
+				starView.setBackgroundDrawable(emptyStar);
+			}
+			//add the listener
+			starView.setOnClickListener(new OnClickListener() {			
+				@Override
+				public void onClick(View v) {
+					changeSpeakerStartState(starView,speakerId);
+				}
+			});
+			
 			// Searching speaker's event
 			List<Event> speakerEvents = findSpeakerEvents(speakerId);
 			Speaker speaker = speakersProvider.findById(speakerId);
@@ -264,7 +289,25 @@ public class SpeakerDetailFragment extends Fragment {
 	/******************************************************************************************/
 	/** Data management **************************************************************************/
 	/******************************************************************************************/
-	
+	/**
+	 * Change the state of the event from stared to unstared or from unstared to stared
+	 * @param imageView the holder that holds the view
+	 * @param eventId the event id of the event
+	 */
+	private void changeSpeakerStartState(ImageView imageView,int speakerId) {
+		StaredEventsService service= StaredEventsService.instance;
+		if(service.isStaredSpeaker(speakerId)) {
+			//first change the stared status of the event
+			service.removeStaredSpeaker(speakerId);
+			//then update the gui
+			imageView.setBackgroundDrawable(emptyStar);
+		}else {
+			//first change the stared status of the event
+			service.addStaredSpeaker(speakerId);
+			//then update the gui
+			imageView.setBackgroundDrawable(star);
+		}
+	}
 	/**
 	 * @param speakerId
 	 * @return

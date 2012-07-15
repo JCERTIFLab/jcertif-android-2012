@@ -174,7 +174,7 @@ public class RestClient
     //-------------------------------------------------------------------------
     private void executeRequest(HttpUriRequest request, String url)
     {
-    	Log.d(this.getClass().getSimpleName(), "Calling WS : " + request.getURI());
+    	Log.e(this.getClass().getSimpleName(), "Calling WS : " + request.getURI());
        
     	 HttpClient client = new DefaultHttpClient();
          //force JSON format

@@ -5,13 +5,10 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 
 import com.jcertif.android.transverse.model.User;
 import com.jcertif.android.transverse.url.UrlFactory;
-import com.jcertif.android.ui.view.R;
 import com.jcertif.android.ui.view.generic.BaseActivityIntf;
-import com.jcertif.android.ui.view.generic.BaseActivityLegacy;
 import com.jcertif.android.ui.view.main.FragmentsSwitcherLegacy;
 
 /**
@@ -241,6 +238,45 @@ public class JCApplication extends Application {
 		return preferences.getBoolean(hash + getString(R.string.shValidUser), false);
 	}
 
+	/**
+	 * @return the user key which is also the HashCode
+	 *         And is used as prefix key to store the user information in the ShardePrefs
+	 */
+	public String getUserKey() {
+		return Integer.toString(user.getUserKey());
+	}
+
+	/******************************************************************************************/
+	/** StaredEvents Updates Status **************************************************************************/
+	/******************************************************************************************/
+
+	/**
+	 * To know if the application has to update its list of stared events
+	 * (The Dao has been updated from the server but the application is not aware of that)
+	 */
+	Boolean staredEventsUpdated = false;
+
+	/**
+	 * @return true if the StaredEventsService has to update its starredEvents list
+	 */
+	public Boolean isStaredEventsUpdated() {
+		return staredEventsUpdated;
+	}
+
+	/**
+    * To be called by the StaredEventsService when it has finished to update its StaredEvents list
+    */
+	public void setStaredEventsUpdatesTookIntoAccount() {
+		staredEventsUpdated = false;
+	}
+
+	/**
+	 * To be called by the StaredEventsUpdater when it has retrieve the data from the server
+	 */
+	public void setStaredEventsUpdatedFromServer() {
+		staredEventsUpdated = true;
+	}
+
 	/******************************************************************************************/
 	/** Fragment Management **************************************************************************/
 	/******************************************************************************************/
@@ -269,8 +305,8 @@ public class JCApplication extends Application {
 	 */
 	public final void setBaseActivity(BaseActivityIntf baseActivity) {
 		this.baseActivity = baseActivity;
-		//if the ServiceUpdater is updating then update GUI
-		if(isServiceUpdaterUpdating) {
+		// if the ServiceUpdater is updating then update GUI
+		if (isServiceUpdaterUpdating) {
 			onDataUpdate();
 		}
 	}
@@ -281,7 +317,7 @@ public class JCApplication extends Application {
 	 * Is Called by the ServiceUpdater
 	 */
 	public final void onDataUpdate() {
-		isServiceUpdaterUpdating=true;
+		isServiceUpdaterUpdating = true;
 		if (null != baseActivity) {
 			baseActivity.showRefreshingDataProgressBar(true);
 		}
@@ -293,7 +329,7 @@ public class JCApplication extends Application {
 	 * Is Called by the ServiceUpdater
 	 */
 	public final void onDataUpdateOver() {
-		isServiceUpdaterUpdating=false;
+		isServiceUpdaterUpdating = false;
 		if (null != baseActivity) {
 			baseActivity.showRefreshingDataProgressBar(false);
 		}

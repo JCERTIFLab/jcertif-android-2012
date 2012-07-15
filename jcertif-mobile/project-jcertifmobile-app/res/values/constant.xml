@@ -22,6 +22,8 @@
     <string name="shType">type</string>
     <string name="shVille">ville</string>
     <string name="shLastUpdateTime">shLastUpdateTime</string>
+    <string name="shLocalStaredEvents">shLocalStaredEvents</string>
+    <string name="shServerStaredEvents">shServerStaredEvents</string>
 
     <!-- Service And associatedIntents Constants -->
     <string name="servAuthentIntentExtraName">response</string>

@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.jcertif.android.ui.view.R;
+import com.jcertif.android.R;
 import com.jcertif.android.ui.view.main.MainActivityLegacy;
 
 import de.akquinet.android.androlog.Log;

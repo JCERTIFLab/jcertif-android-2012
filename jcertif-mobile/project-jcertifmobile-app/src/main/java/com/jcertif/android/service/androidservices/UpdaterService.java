@@ -42,9 +42,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.jcertif.android.JCApplication;
+import com.jcertif.android.R;
 import com.jcertif.android.service.androidservices.events.EventsUpdater;
 import com.jcertif.android.service.androidservices.speakers.SpeakersUpdater;
-import com.jcertif.android.ui.view.R;
+import com.jcertif.android.service.androidservices.staredevents.StaredEventsUpdater;
 
 /**
  * @author Mathias Seguy (Android2EE)
@@ -136,6 +137,7 @@ public class UpdaterService extends Service implements UpdaterServiceIntf {
 		updaters = new ArrayList<UpdaterServiceElementIntf>();
 		updaters.add(new SpeakersUpdater(handler));
 		updaters.add(new EventsUpdater(handler));
+		updaters.add(new StaredEventsUpdater(handler));
 		// create the Threads
 		backgroundThreads = new ArrayList<Thread>();
 		Thread backgroundThread;

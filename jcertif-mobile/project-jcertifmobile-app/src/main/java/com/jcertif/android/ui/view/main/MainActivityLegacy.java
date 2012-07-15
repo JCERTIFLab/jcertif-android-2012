@@ -29,14 +29,11 @@
  */
 package com.jcertif.android.ui.view.main;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 
 import com.jcertif.android.JCApplication;
-import com.jcertif.android.ui.view.R;
+import com.jcertif.android.R;
 import com.jcertif.android.ui.view.generic.BaseActivityLegacy;
-import com.jcertif.android.ui.view.generic.BaseActivityHC;
 
 import de.akquinet.android.androlog.Log;
 

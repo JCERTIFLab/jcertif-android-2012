@@ -24,11 +24,10 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.jcertif.android.R;
 import com.jcertif.android.dao.ormlight.EventProvider;
 import com.jcertif.android.transverse.model.Event;
-import com.jcertif.android.transverse.model.Speaker;
 import com.jcertif.android.ui.adapter.EventAdapter;
-import com.jcertif.android.ui.view.R;
 import com.jcertif.android.ui.view.main.MainActivityLegacy;
 
 import de.akquinet.android.androlog.Log;
