@@ -7,8 +7,8 @@
 
     <gradient
         android:angle="270"
-        android:endColor="@color/deep_blue"
-        android:startColor="@color/black_translucent" />
+        android:endColor="@color/background_dark"
+        android:startColor="@color/background" />
 
     <corners android:radius="0dip" />
 

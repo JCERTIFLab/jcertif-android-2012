@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Colors To use -->
+    <!-- ****************** -->
+    <color name="red">#FFFF6633</color>
+    <color name="red_pure">#FFFA300C</color>
+    <color name="green">#FF45D929</color>
+    <color name="violet">#FFCCCCFF</color>
+    <color name="violet_bright">#FFD5D5FC</color>
+    <color name="violet_dark">#FF9F9FF4</color>
+    <color name="violet_trans">#77CCCCFF</color>
+    <color name="violet_bright_trans">#77D5D5FC</color>
+    <color name="violet_dark_trans">#779F9FF4</color>
+    <color name="yellow">#88ECEC0B</color>
+    <color name="blue">#880000FF</color>
+    <color name="deep_blue">#FF333399</color>
+    <color name="black">#FF000000</color>
+    <color name="black_translucent">#33000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="translucent">#00889988</color>
+
+    <!-- Referential colors -->
+    <!-- ****************** -->
+    <!-- Background -->
+    <color name="background">@color/violet</color>
+    <color name="btn_background">@color/blue</color>
+    <color name="btn_background_selected">@color/deep_blue</color>
+    <color name="edt_background">@color/violet_bright</color>
+    <color name="list_background">#990000FF</color>
+    <color name="list_odd_background">#FF92B535</color>
+    <!-- Foreground -->
+    <color name="text_frgd">#FFFFFFFF</color>
+    <color name="edt_frgd">#FF000000</color>
+    <color name="btn_frgd">#FFFFFFFF</color>
+    <color name="list_frgd">#FFFFFFFF</color>
+    <color name="list_odd_frgd">#FFFFFFFF</color>
+    <!-- Shape -->
+    <color name="button_border">@color/blue</color>
+    <color name="button_border_selected">@color/deep_blue</color>
+    <color name="shape_end_color">@color/violet_dark</color>
+    <color name="shape_start_color">@color/violet</color>
+    <color name="shape_stroke_color">#FF000000</color>
+    <!-- Shape for List -->
+    <color name="selector_stroke_list_color">#FFFF0000</color>
+    <color name="selector_list_background">#99FFFFFF</color>
+    <color name="shape_list_odd_end_color">@color/violet_bright_trans</color>
+    <color name="shape_list_odd_start_color">@color/blue</color>
+    <color name="shape_list_end_color">@color/violet_bright_trans</color>
+    <color name="shape_list_start_color">@color/deep_blue</color>
+
+</resources>

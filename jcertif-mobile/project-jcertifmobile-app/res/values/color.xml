@@ -18,35 +18,44 @@
     <color name="black">#FF000000</color>
     <color name="black_translucent">#33000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="gray_bright">#FFCBCBCB</color>
+    <color name="gray_dark">#FF707070</color>
+    <color name="white_trans">#88FFFFFF</color>
+    <color name="gray_bright_trans">#88CBCBCB</color>
+    <color name="gray_dark_trans">#88707070</color>
     <color name="translucent">#00889988</color>
 
     <!-- Referential colors -->
     <!-- ****************** -->
     <!-- Background -->
-    <color name="background">@color/violet</color>
-    <color name="btn_background">@color/blue</color>
-    <color name="btn_background_selected">@color/deep_blue</color>
-    <color name="edt_background">@color/violet_bright</color>
-    <color name="list_background">#990000FF</color>
-    <color name="list_odd_background">#FF92B535</color>
+    <color name="background">@color/white</color>
+    <color name="background_dark">@color/gray_bright</color>
+    <color name="btn_background">@color/gray_bright</color>
+    <color name="btn_background_selected">@color/gray_dark</color>
+    <color name="edt_background">@color/gray_bright</color>
+    <color name="list_background">@color/gray_bright</color>
+    <color name="list_odd_background">@color/gray_dark</color>
     <!-- Foreground -->
-    <color name="text_frgd">#FFFFFFFF</color>
-    <color name="edt_frgd">#FF000000</color>
-    <color name="btn_frgd">#FFFFFFFF</color>
-    <color name="list_frgd">#FFFFFFFF</color>
-    <color name="list_odd_frgd">#FFFFFFFF</color>
+    <color name="text_frgd">@color/black</color>
+    <color name="edt_frgd">@color/black</color>
+    <color name="btn_frgd">@color/black</color>
+    <color name="list_frgd">@color/black</color>
+    <color name="list_odd_frgd">@color/black</color>
     <!-- Shape -->
-    <color name="button_border">@color/blue</color>
-    <color name="button_border_selected">@color/deep_blue</color>
-    <color name="shape_end_color">@color/violet_dark</color>
-    <color name="shape_start_color">@color/violet</color>
-    <color name="shape_stroke_color">#FF000000</color>
+    <color name="button_border">@color/gray_bright</color>
+    <color name="button_border_selected">@color/gray_bright</color>
+    <color name="shape_end_color">@color/gray_bright</color>
+    <color name="shape_start_color">@color/white</color>
+    <color name="shape_stroke_color">@color/gray_dark</color>
     <!-- Shape for List -->
     <color name="selector_stroke_list_color">#FFFF0000</color>
     <color name="selector_list_background">#99FFFFFF</color>
-    <color name="shape_list_odd_end_color">@color/violet_bright_trans</color>
-    <color name="shape_list_odd_start_color">@color/blue</color>
-    <color name="shape_list_end_color">@color/violet_bright_trans</color>
-    <color name="shape_list_start_color">@color/deep_blue</color>
+    <color name="shape_list_odd_end_color">@color/gray_bright_trans</color>
+    <color name="shape_list_odd_start_color">@color/white_trans</color>
+    <color name="shape_list_end_color">@color/gray_bright_trans</color>
+    <color name="shape_list_start_color">@color/gray_dark_trans</color>
+    <!-- Title Color -->
+    <color name="title_shadow_color">@color/gray_dark</color>
+    <color name="title_text_color">@color/black</color>
 
 </resources>

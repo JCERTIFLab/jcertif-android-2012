@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/calendar_hour_cell"
+    style="@style/txv_style_small"
     android:layout_width="wrap_content"
     android:layout_height="30dip"
     android:layout_alignParentLeft="true"

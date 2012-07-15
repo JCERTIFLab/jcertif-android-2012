@@ -42,7 +42,7 @@
     <!-- Style for TextView displaying errors -->
     <!-- ************************ -->
     <style name="error_message_style" parent="txv_style">
-        <item name="android:background">@color/violet_bright</item>
+        <item name="android:background">@color/background_dark</item>
         <item name="android:textColor">@color/red</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -64,10 +64,10 @@
         <item name="android:shadowDx">1.0</item>
         <item name="android:shadowDy">2.0</item>
         <item name="android:shadowRadius">5.0</item>
-        <item name="android:shadowColor">@color/deep_blue</item>
+        <item name="android:shadowColor">@color/title_shadow_color</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/textSizeXLarge</item>
-        <item name="android:textColor">@color/violet_bright</item>
+        <item name="android:textColor">@color/title_text_color</item>
     </style>
 
     <!-- Style for EditText -->

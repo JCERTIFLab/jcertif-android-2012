@@ -33,7 +33,7 @@
 
     <!-- Shape dimensions -->
     <dimen name="corner_button_Size">15dp</dimen>
-    <dimen name="stroke_buttonSize">8dp</dimen>
+    <dimen name="stroke_buttonSize">3dp</dimen>
     <dimen name="shape_stroke_Size">1dp</dimen>
     <dimen name="shape_corner_Size">10dp</dimen>
 
