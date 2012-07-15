@@ -260,7 +260,7 @@ public class UpdaterService extends Service implements UpdaterServiceIntf {
 	 * Show a notification while this service is running.
 	 */
 	private void showNotification() {
-		// TODO MSE mettre en place la notification, le PendingIntent doit la stopper
+		// TODO  mettre en place la notification, le PendingIntent doit la stopper
 		// NotificationManager mNM = (NotificationManager)
 		// getSystemService(Context.NOTIFICATION_SERVICE);
 		// // In this sample, we'll use the same text for the ticker and the expanded notification

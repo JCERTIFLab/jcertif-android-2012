@@ -156,7 +156,7 @@ public class AccountDialog implements RegistrationThreadCallBack {
 
 		// Manage the cancel button
 		createAccountFirstDialog.setCancelable(true);
-		// TODO MSE Ne sert a rien a vérifier quand ca marche puis a detruire
+		// TODO Ne sert a rien a vérifier quand ca marche puis a detruire
 		Button btnCancel = (Button) createAccountFirstDialog.findViewById(R.id.btnCancel);
 		btnCancel.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -229,7 +229,7 @@ public class AccountDialog implements RegistrationThreadCallBack {
 
 		// Manage the cancel button
 		createAccountSecondDialog.setCancelable(true);
-		// TODO MSE Ne sert a rien a vérifier quand ca marche puis a detruire
+		// TODO Ne sert a rien a vérifier quand ca marche puis a detruire
 		Button btnCancel = (Button) createAccountSecondDialog.findViewById(R.id.btnCancel);
 		btnCancel.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
