@@ -4,9 +4,7 @@
     android:layout_height="fill_parent"
     android:background="@color/background"
     android:gravity="center"
-    android:orientation="vertical" >
-
-    <include layout="@layout/jcertif_header" />
+    android:orientation="vertical" ><include layout="@layout/jcertif_header" />
 
     <LinearLayout
         android:id="@+id/mainfragment"

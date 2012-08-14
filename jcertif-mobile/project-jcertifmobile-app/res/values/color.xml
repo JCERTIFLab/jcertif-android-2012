@@ -22,6 +22,7 @@
     <color name="gray_dark">#FF707070</color>
     <color name="white_trans">#88FFFFFF</color>
     <color name="gray_bright_trans">#88CBCBCB</color>
+    <color name="gray_bright_lesstrans">#BBCBCBCB</color>
     <color name="gray_dark_trans">#88707070</color>
     <color name="translucent">#00889988</color>
 
@@ -30,6 +31,8 @@
     <!-- Background -->
     <color name="background">@color/white</color>
     <color name="background_dark">@color/gray_bright</color>
+    <color name="background_toast">@color/gray_bright_trans</color>
+    <color name="background_toast_lesstrans">@color/gray_bright_lesstrans</color>
     <color name="btn_background">@color/gray_bright</color>
     <color name="btn_background_selected">@color/gray_dark</color>
     <color name="edt_background">@color/gray_bright</color>

@@ -4,6 +4,7 @@
     <!-- Error Message -->
     <string name="alertDialogTitle">JCertif Mobile Erreur</string>
     <string name="authenticationErrorMessage">Authentication failed !</string>
+    <string name="SyncroNoUserErrorMessage">La synchronisation des évènements favoris est impossible: pas d\'utilisateur enregistré</string>
     <!-- Error Message -->
     <string name="registrationErrorMessage">Registration failed (%1$d)!</string>
     <!-- CONNEXION activity errors -->

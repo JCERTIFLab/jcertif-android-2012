@@ -22,6 +22,7 @@ import com.jcertif.android.com.net.RestClient;
 import com.jcertif.android.com.net.RestClient.RequestMethod;
 import com.jcertif.android.com.parsing.jackson.service.SpeakersController;
 import com.jcertif.android.dao.ormlight.SpeakerProvider;
+import com.jcertif.android.service.androidservices.UpdaterService;
 import com.jcertif.android.service.androidservices.UpdaterServiceElementIntf;
 import com.jcertif.android.transverse.model.Speaker;
 
@@ -71,7 +72,7 @@ public class SpeakersUpdater implements UpdaterServiceElementIntf {
 			e.printStackTrace();
 		}finally {
 			//The threatment is over, callBack the parent to tell it
-			parent.sendEmptyMessage(0);
+			parent.sendEmptyMessage(UpdaterService.TREATMENT_OVER);
 			Log.w("onUpdate Speaker", "onUpdate Speaker finished");
 		}
 		

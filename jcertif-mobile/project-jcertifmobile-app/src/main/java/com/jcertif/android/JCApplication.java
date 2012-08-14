@@ -1,5 +1,6 @@
 package com.jcertif.android;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import com.jcertif.android.transverse.model.User;
 import com.jcertif.android.transverse.url.UrlFactory;
 import com.jcertif.android.ui.view.generic.BaseActivityIntf;
+import com.jcertif.android.ui.view.main.FragmentsSwitcherHC;
 import com.jcertif.android.ui.view.main.FragmentsSwitcherLegacy;
 
 /**
@@ -28,6 +30,10 @@ public class JCApplication extends Application {
 	 * The one that as in charge the fragment switching and displays
 	 */
 	FragmentsSwitcherLegacy fragmentSwitcher;
+	/**
+	 * The one that as in charge the fragment switching and displays
+	 */
+	FragmentsSwitcherHC fragmentSwitcherHC;
 	/**
 	 * The baseActivity to manage top and bottom bar
 	 */
@@ -293,6 +299,20 @@ public class JCApplication extends Application {
 		}
 		fragmentSwitcher.showMain(recreationMode);
 		return fragmentSwitcher;
+	}
+	/**
+	 * @return the fragmentSwitcher
+	 */
+	public final FragmentsSwitcherHC initialise(Activity activity, Boolean twoFragmentsVisible,
+			Boolean recreationMode) {
+		if (fragmentSwitcherHC == null) {
+			fragmentSwitcherHC = new FragmentsSwitcherHC(activity, twoFragmentsVisible);
+		} else {
+			fragmentSwitcherHC.setMainActivity(activity);
+			fragmentSwitcherHC.setTwoFragmentsVisible(twoFragmentsVisible);
+		}
+		fragmentSwitcherHC.showMain(recreationMode);
+		return fragmentSwitcherHC;
 	}
 
 	/******************************************************************************************/

@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.jcertif.android.JCApplication;
@@ -107,7 +108,7 @@ public class SpeakerDetailFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		Log.w("SpeakerDetailFragment onResume", "getView :" + getView());
+		Log.w("SpeakerDetailFragment onCreateView", "getView :" + getView());
 		evenBackground = (GradientDrawable) getResources().getDrawable(R.drawable.list_item);
 		oddBackground = (GradientDrawable) getResources().getDrawable(R.drawable.list_item_odd);
 		star=(Drawable) getResources().getDrawable(R.drawable.star);
@@ -128,7 +129,7 @@ public class SpeakerDetailFragment extends Fragment {
 	public void onResume() {
 		Log.w("SpeakerDetailFragment onResume", "getView :" + getView());
 		View view = getView();
-		Log.w("SpeakerDetailFragment onCreateView", "speakerId :" + speakerId);
+		Log.w("SpeakerDetailFragment onResume", "speakerId :" + speakerId);
 		if (speakerId != -1) {
 			updateScreen(view);
 		}
@@ -198,6 +199,7 @@ public class SpeakerDetailFragment extends Fragment {
 	 * @param view
 	 */
 	private void updateScreen(View view) {
+		Log.w("SpeakerDetailFragment:updateScreen","begins viewupdate");
 		try {
 
 			ImageView i11 = (ImageView) view.findViewById(R.id.speakerImg);
@@ -206,6 +208,7 @@ public class SpeakerDetailFragment extends Fragment {
 			TextView headerTitle = (TextView) getActivity().findViewById(R.id.header_title);
 			TextView speakerName = (TextView) view.findViewById(R.id.speakerName);
 			LinearLayout speakerEventLayout = (LinearLayout) view.findViewById(R.id.speakerEvents);
+			speakerEventLayout.removeAllViewsInLayout();
 			speakersProvider = new SpeakerProvider();
 			//update the star
 			final ImageView starView=(ImageView) view.findViewById(R.id.star_spe_det);
@@ -241,14 +244,17 @@ public class SpeakerDetailFragment extends Fragment {
 			String[] splitedBio = splitBio(speaker.bio);
 			speakerBioPart1.setText(splitedBio[0]);
 			speakerBioPart2.setText(splitedBio[1]);
-
+			
 			buildSpeakerEventLayout(speakerEventLayout, speakerEvents);
-
+			//and set the scroll to the top:
+			ScrollView scv=(ScrollView) view.findViewById(R.id.scrollView);
+			scv.fullScroll(ScrollView.FOCUS_UP);
 		} catch (SQLException e) {
 			Log.d("SpeakerDisplayActivity", e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		Log.w("SpeakerDetailFragment:updateScreen","ends viewupdate");
 	}
 
 	
@@ -258,6 +264,7 @@ public class SpeakerDetailFragment extends Fragment {
 	private void buildSpeakerEventLayout(LinearLayout speakerEventLayout, List<Event> speakerEvents) {
 		int i=0;
 		for (final Event ev : speakerEvents) {
+			Log.w("SpeakerDetailFragment:buildSpeakerEventLayout"," a new events "+ev.id);
 			LinearLayout newLayout = new LinearLayout(getActivity());
 			View detailEventView = getActivity().getLayoutInflater().inflate(R.layout.speaker_event_detail, newLayout);
 			TextView nameView = (TextView) detailEventView.findViewById(R.id.eventName);

@@ -13,7 +13,7 @@
 
         <TextView
             android:id="@+id/calendar_evtStartTime"
-            style="@style/txv_style_small"
+            style="@style/txv_style_xsmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
@@ -29,28 +29,28 @@
 
     <TextView
         android:id="@+id/calendar_evtSpeakerName"
-        style="@style/txv_style_small"
+        style="@style/txv_style_xsmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Spekaer Name" />
 
     <TextView
         android:id="@+id/calendar_evtRoom"
-        style="@style/txv_style_small"
+        style="@style/txv_style_xsmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Room" />
 
     <TextView
         android:id="@+id/calendar_evtName"
-        style="@style/txv_style_small"
+        style="@style/txv_style_xsmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Conf Name" />
 
     <TextView
         android:id="@+id/calendar_evtSubject"
-        style="@style/txv_style_small"
+        style="@style/txv_style_xsmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Subject" />

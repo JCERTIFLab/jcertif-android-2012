@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/violet"
+    android:background="@color/background"
     android:gravity="center"
     android:orientation="vertical" >
 
@@ -12,8 +12,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:weightSum="1.0" >
+        android:orientation="horizontal" >
 
         <TextView
             android:id="@+id/isLandscape"
@@ -24,16 +23,18 @@
 
         <LinearLayout
             android:id="@+id/mainfragment"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="0.6" >
+            android:layout_weight="1.0"
+            android:gravity="fill" >
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/secondfragment"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="0.4" >
+            android:layout_weight="1.0"
+            android:gravity="fill" >
         </LinearLayout>
     </LinearLayout>
 

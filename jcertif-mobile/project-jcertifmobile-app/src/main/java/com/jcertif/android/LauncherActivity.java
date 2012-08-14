@@ -37,7 +37,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import com.jcertif.android.service.androidservices.UpdaterService;
+import com.jcertif.android.ui.view.connection.ConnectionActivityHC;
 import com.jcertif.android.ui.view.connection.ConnectionActivityLegacy;
+import com.jcertif.android.ui.view.main.MainActivityHC;
 import com.jcertif.android.ui.view.main.MainActivityLegacy;
 
 import de.akquinet.android.androlog.Log;
@@ -53,11 +55,7 @@ import de.akquinet.android.androlog.Log;
  *        It also launch the first load of the database when the application is first runs
  */
 public class LauncherActivity extends Activity {
-	/**
-	 * The HoneyComb version level
-	 */
-	private static boolean shinyNewAPIS = android.os.Build.VERSION.SDK_INT >= 11;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);		
@@ -65,20 +63,25 @@ public class LauncherActivity extends Activity {
 		firstLaunchInit();
 		//Then do the rest
 		Intent startActivityIntent = null;
-
+		//find the version :
+		boolean postHC=getResources().getBoolean(R.bool.postHC);
 		// First test if the user exists
 		if (((JCApplication) getApplication()).isDefaultValidUser()) {
 			// if the user is valid, launch the mainActivity
 			// TODO Update MainActivity to call it here using Legacy or HC
-			if (!shinyNewAPIS) {
-				startActivityIntent = new Intent(this, MainActivityLegacy.class);
+			if (postHC) {
+				startActivityIntent = new Intent(this, MainActivityHC.class);
 			} else {
-				startActivityIntent = new Intent(this, MainActivityLegacy.class);
+				startActivityIntent = new Intent(this, MainActivityLegacy.class);				
 			}
 		} else {
 			// else if there is no user, launch the Connection Activity
-			//It doens't need HC compatibility
-			startActivityIntent = new Intent(this, ConnectionActivityLegacy.class);
+			if (postHC) {
+				startActivityIntent = new Intent(this, ConnectionActivityHC.class);
+			} else {
+				startActivityIntent = new Intent(this, ConnectionActivityLegacy.class);
+			}
+			
 		}
 		startActivity(startActivityIntent);
 		finish();

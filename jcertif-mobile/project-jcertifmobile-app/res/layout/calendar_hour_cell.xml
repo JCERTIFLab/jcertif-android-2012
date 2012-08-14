@@ -3,6 +3,7 @@
     android:id="@+id/calendar_hour_cell"
     style="@style/txv_style_small"
     android:layout_width="wrap_content"
-    android:layout_height="30dip"
+    android:layout_height="@dimen/calendar_cell_height"
     android:layout_alignParentLeft="true"
-    android:background="@drawable/calendar_hour_shape" />
+    android:background="@drawable/calendar_hour_shape"
+    android:gravity="center" />

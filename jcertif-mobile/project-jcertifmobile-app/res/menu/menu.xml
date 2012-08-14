@@ -2,19 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/submenu1"
-        android:orderInCategory="3"
-        android:title="@string/menu_actions">
-        <menu>
-            <item
-                android:id="@+id/menu_forceupdate"
-                android:orderInCategory="0"
-                android:title="@string/menu_forceupdate"/>
-            <item
-                android:id="@+id/menu_disconnect_user"
-                android:orderInCategory="3"
-                android:title="@string/menu_disconnect_user"/>
-        </menu>
-    </item>
+        android:id="@+id/menu_search"
+        android:icon="@drawable/action_search"
+        android:showAsAction="always"
+        android:title="@string/menu_search"/>
+    <item
+        android:id="@+id/menu_forceupdate"
+        android:icon="@drawable/navigation_refresh"
+        android:showAsAction="always|withText"
+        android:title="@string/menu_forceupdate"/>
+    <item
+        android:id="@+id/menu_disconnect_user"
+        android:icon="@drawable/ic_action_disconnect"
+        android:showAsAction="always"
+        android:title="@string/menu_disconnect_user"/>
+    <item
+        android:id="@+id/menu_connect_user"
+        android:icon="@drawable/ic_action_connect"
+        android:showAsAction="always"
+        android:title="@string/menu_connect_user"/>
 
 </menu>

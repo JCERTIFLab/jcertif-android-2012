@@ -5,15 +5,23 @@
  */
 package com.jcertif.android.ui.view.connection;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,6 +35,7 @@ import com.jcertif.android.transverse.model.User;
 import com.jcertif.android.transverse.tools.HttpTools;
 import com.jcertif.android.ui.view.connection.accountdialogs.AccountDialog;
 import com.jcertif.android.ui.view.connection.accountdialogs.AccountDialogParentIntf;
+import com.jcertif.android.ui.view.main.MainActivityHC;
 import com.jcertif.android.ui.view.main.MainActivityLegacy;
 
 import de.akquinet.android.androlog.Log;
@@ -50,6 +59,18 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 	 * The boolean to know if the authThread is running or not
 	 */
 	private boolean isAuthThreadRunning = false;
+	/**
+	 * The HoneyComb version level
+	 */
+	boolean postHC;
+	/**
+	 * The map that links valid email with their password
+	 */
+	Map<String, String> emailPassword;
+	/**
+	 * To know when we are updating password
+	 */
+	boolean updatingPassword = false;
 
 	/******************************************************************************************/
 	/** LifeCycle Methods **************************************************************************/
@@ -60,6 +81,7 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.connection);
+		postHC = getResources().getBoolean(R.bool.postHC);
 		accountDialog = new AccountDialog(this, this);
 		// Restore the Authentification thread
 		Object lastNonConf = getLastNonConfigurationInstance();
@@ -76,6 +98,20 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 		// Define header title
 		TextView headerTitle = (TextView) findViewById(R.id.header_title);
 		headerTitle.setText(R.string.connexion_htitle);
+		// if postHC hide the Header
+		if (postHC) {
+			findViewById(R.id.titleLayout).setVisibility(View.GONE);
+		}
+		// SharedPreferences preferences =
+		// PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		//
+		// Editor editor = preferences.edit();
+		// // to reload the email/password of the last connected person
+		// editor.putString(getString(R.string.shValidEmailsList), "");
+		// editor.commit();
+		// create the AutoCompleteTextView
+		manageAutoCompleteEmail();
+
 	}
 
 	/*
@@ -131,6 +167,13 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 				onConnectButtonClicked();
 			}
 		});
+		// Instantiate the btnSkip's listener
+		Button btnSkip = (Button) findViewById(R.id.btnSkip);
+		btnSkip.setOnClickListener(new OnClickListener() {
+			public void onClick(View view) {
+				onSkipButtonClicked();
+			}
+		});
 		// Instantiate the btnQuit's listener
 		Button btnQuit = (Button) findViewById(R.id.btnQuit);
 		btnQuit.setOnClickListener(new OnClickListener() {
@@ -139,6 +182,94 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 			}
 		});
 
+	}
+
+	/**
+	 * Manage the autocomplete to display to the user its email after 3 letters
+	 * This method also manage the associated password (it will be autocomplete after 3 letters
+	 * also)
+	 */
+	private void manageAutoCompleteEmail() {
+		// find the component
+		AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.edtEmail);
+		// retrieve the emails list
+		// Get preferences
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		// Load the valid emails list
+		String rawEmailsPasswordList = preferences.getString(getString(R.string.shValidEmailsList), "");
+		String[] emailsPasswordsList = rawEmailsPasswordList.split(";");
+		String[] emailsList;
+		emailPassword = new HashMap<String, String>(emailsPasswordsList.length);
+		if (rawEmailsPasswordList.length() != 0) {
+			emailsList = new String[emailsPasswordsList.length];
+			String current;
+			String[] currentEmailPass = new String[2];
+			for (int i = 0; i < emailsPasswordsList.length; i++) {
+				current = emailsPasswordsList[i];
+				if (current.contains(",")) {
+					currentEmailPass = current.split(",");
+					emailsList[i] = currentEmailPass[0];
+					emailPassword.put(currentEmailPass[0], currentEmailPass[1]);
+				}
+			}
+		} else {
+			// just give something to the arrayAdapter
+			emailsList = new String[1];
+			emailsList[0] = " ";
+		}
+		// Define the Adapter (Context, ListView Ressource, The items to display)
+		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,
+				emailsList);
+		autoCompleteTextView.setAdapter(arrayAdapter);
+		manageEdtPassword();
+	}
+
+	/**
+	 * This method manage the EdtPassword, if the email is known, the user has just to give the
+	 * three first letter of its pass word to have an autocomplete
+	 */
+	private void manageEdtPassword() {
+		final EditText edtPassword = (EditText) findViewById(R.id.edtPassword);
+		edtPassword.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				if (start > 2) {
+					autocompletePassWord(s);
+				}
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+			}
+		});
+	}
+
+	/**
+	 * AutoComplete the Password field if the first three letters are the 3 letters of the expected
+	 * password
+	 * 
+	 * @param s
+	 *            the value of the editText password
+	 */
+	private void autocompletePassWord(CharSequence s) {
+		if (!updatingPassword) {
+			String currentEmail = ((EditText) findViewById(R.id.edtEmail)).getText().toString();
+			String associatedPassword = emailPassword.get(currentEmail);
+			if (null != associatedPassword) {
+				if (s.charAt(0) == associatedPassword.charAt(0) && s.charAt(1) == associatedPassword.charAt(1)
+						&& s.charAt(2) == associatedPassword.charAt(2)) {
+					((EditText) findViewById(R.id.edtPassword)).setText(associatedPassword);
+					updatingPassword = true;
+					findViewById(R.id.btnConnect).performClick();
+				}
+			}
+		} else {
+			updatingPassword = false;
+		}
 	}
 
 	/******************************************************************************************/
@@ -177,6 +308,14 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 		}
 	}
 
+	/**
+	 * Skip login and display main activity
+	 */
+	private void onSkipButtonClicked() {
+		// go to the next activity
+		displayMainView();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -204,16 +343,17 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 				Boolean initOk = userCont.init();
 				if (initOk) {
 					User user = userCont.get();
-					if (null!=user) {
+					if (null != user) {
 						// Enregistre l'utilisateur comme valide
 						onUserValidated(user);
-						// TODO When the bypass of the Authent is not required for dev anymore uncomment
+						// TODO When the bypass of the Authent is not required for dev anymore
+						// uncomment
 						// displayMenuView();
 					} else {
 						// Show the error to user
 						ShowAuthentFailedDialog();
 					}
-				}else {
+				} else {
 					// Show the error to user
 					ShowAuthentFailedDialog();
 				}
@@ -221,7 +361,7 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 		} else {
 			ShowAuthentFailedDialog();
 		}
@@ -247,8 +387,14 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 	 * Display the Menu View
 	 */
 	private void displayMainView() {
-		Intent intentView = new Intent(getApplicationContext(), MainActivityLegacy.class);
-		startActivityForResult(intentView, 0);
+		Intent startActivityIntent;
+		// launch the Activity according to the version
+		if (postHC) {
+			startActivityIntent = new Intent(this, MainActivityHC.class);
+		} else {
+			startActivityIntent = new Intent(this, MainActivityLegacy.class);
+		}
+		startActivity(startActivityIntent);
 	}
 
 	/******************************************************************************************/
@@ -333,12 +479,28 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 	 *            The user to store
 	 */
 	private void onUserValidated(User user) {
-		// find email
-		final EditText edtEmail = (EditText) this.findViewById(R.id.edtEmail);
-		final String email = edtEmail.getText().toString();
-		// find password
-		final EditText edtPassword = (EditText) this.findViewById(R.id.edtPassword);
-		final String password = edtPassword.getText().toString();
+		// Add that user to the list of valid email for the autoComplete
+		// if he is not already in it
+		if (!emailPassword.containsKey(user.email)) {
+			// Get preferences
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+			// Load the valid emails list and update it with the current email
+			StringBuilder rawEmailsPass = new StringBuilder(preferences.getString(
+					getString(R.string.shValidEmailsList), ""));
+			rawEmailsPass.append(user.email);
+			rawEmailsPass.append(",");
+			// find the password and add it
+			EditText edtPassword = (EditText) findViewById(R.id.edtPassword);
+			rawEmailsPass.append(edtPassword.getText().toString());
+			rawEmailsPass.append(";");
+
+			// Store the new value
+			Editor editor = preferences.edit();
+			// to reload the email/password of the last connected person
+			editor.putString(getString(R.string.shValidEmailsList), rawEmailsPass.toString());
+			// editor.putString(getString(R.string.shValidEmailsList), "");
+			editor.commit();
+		}
 		// Update the Application current user
 		// The user will be stored in the SharedPreference also
 		((JCApplication) getApplication()).setUser(user);

@@ -1,7 +1,9 @@
 package com.jcertif.android.ui.adapter;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -10,8 +12,8 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,7 +23,6 @@ import com.jcertif.android.JCApplication;
 import com.jcertif.android.R;
 import com.jcertif.android.service.business.stardevents.StaredEventsService;
 import com.jcertif.android.transverse.model.Speaker;
-import com.jcertif.android.ui.adapter.EventAdapter.ViewHolder;
 
 /**
  * This adaptateur is responsible of how to display items in speaker's list
@@ -59,6 +60,7 @@ public class SpeakerAdapter extends ArrayAdapter<Speaker> {
 	 * The empty star
 	 */
 	Drawable emptyStar = null;
+	private Map<String, Bitmap> nameToPicture = null;
 
 	/******************************************************************************************/
 	/** Constructors **************************************************************************/
@@ -72,6 +74,7 @@ public class SpeakerAdapter extends ArrayAdapter<Speaker> {
 		oddBackground = (GradientDrawable) context.getResources().getDrawable(R.drawable.list_item);
 		star = (Drawable) context.getResources().getDrawable(R.drawable.star);
 		emptyStar = (Drawable) context.getResources().getDrawable(R.drawable.empty_star);
+		nameToPicture = new HashMap<String, Bitmap>();
 	}
 
 	/*
@@ -103,12 +106,19 @@ public class SpeakerAdapter extends ArrayAdapter<Speaker> {
 		detail.setText(speaker.bio);
 		i11 = holder.getImage();
 		// load the picture
-		File filesDir = JCApplication.getInstance().getExternalFilesDir(null);
-		String pictureFolderName = getContext().getString(R.string.folder_name_spekaer_picture);
-		File pictureDir = new File(filesDir, pictureFolderName);
-		File filePicture = new File(pictureDir, speaker.urlPhoto);
-		Bitmap speakerBitmap = BitmapFactory.decodeFile(filePicture.getAbsolutePath());
-		i11.setImageBitmap(speakerBitmap);
+		if (null != speaker.urlPhoto) {
+			if (null == nameToPicture.get(speaker.urlPhoto)) {
+				File filesDir = JCApplication.getInstance().getExternalFilesDir(null);
+				String pictureFolderName = getContext().getString(R.string.folder_name_spekaer_picture);
+				File pictureDir = new File(filesDir, pictureFolderName);
+				File filePicture = new File(pictureDir, speaker.urlPhoto);
+				Bitmap speakerBitmap = BitmapFactory.decodeFile(filePicture.getAbsolutePath());
+				i11.setImageBitmap(speakerBitmap);
+				nameToPicture.put(speaker.urlPhoto, speakerBitmap);
+			} else {
+				i11.setImageBitmap(nameToPicture.get(speaker.urlPhoto));
+			}
+		}
 		speakLay = holder.getSpeakerLay();
 		switch (getItemViewType(position)) {
 		case TYPE_ITEM:
@@ -144,25 +154,30 @@ public class SpeakerAdapter extends ArrayAdapter<Speaker> {
 	public int getItemViewType(int position) {
 		return (position % 2 == 0) ? TYPE_ITEM : TYPE_ITEM_ODD;
 	}
+
 	/**
 	 * Change the state of the event from stared to unstared or from unstared to stared
-	 * @param imageView the holder that holds the view
-	 * @param eventId the event id of the event
+	 * 
+	 * @param imageView
+	 *            the holder that holds the view
+	 * @param eventId
+	 *            the event id of the event
 	 */
-	private void changeSpeakerStartState(ViewHolder holder,int speakerId) {
-		StaredEventsService service= StaredEventsService.instance;
-		if(service.isStaredSpeaker(speakerId)) {
-			//first change the stared status of the event
+	private void changeSpeakerStartState(ViewHolder holder, int speakerId) {
+		StaredEventsService service = StaredEventsService.instance;
+		if (service.isStaredSpeaker(speakerId)) {
+			// first change the stared status of the event
 			service.removeStaredSpeaker(speakerId);
-			//then update the gui
+			// then update the gui
 			holder.star.setBackgroundDrawable(emptyStar);
-		}else {
-			//first change the stared status of the event
+		} else {
+			// first change the stared status of the event
 			service.addStaredSpeaker(speakerId);
-			//then update the gui
+			// then update the gui
 			holder.star.setBackgroundDrawable(star);
 		}
 	}
+
 	/**
 	 * @author mouhamed_diouf
 	 * @goals

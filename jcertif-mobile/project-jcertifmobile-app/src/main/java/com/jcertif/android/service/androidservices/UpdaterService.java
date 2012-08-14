@@ -34,11 +34,16 @@ import java.util.List;
 
 import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jcertif.android.JCApplication;
@@ -93,6 +98,19 @@ public class UpdaterService extends Service implements UpdaterServiceIntf {
 	// Unique Identification Number for the Notification.
 	// We use it on Notification start, and to cancel it.
 	private int NOTIFICATION = R.string.updateServiceNotificationMessage;
+	
+	/******************************************************************************************/
+	/** Constant **************************************************************************/
+	/******************************************************************************************/
+
+	/**
+	 * This constant is used by the handler and the threads to know if the treatment is over
+	 */
+	public static int TREATMENT_OVER=0;
+	/**
+	 * This constant is used by the handler and the StaredEventsUpdater to know if the treatment failed because there is no user registred
+	 */
+	public static int STAR_SYNCRO_NOUSER=1;
 
 	/******************************************************************************************/
 	/** Lif Cycle Management **************************************************************************/
@@ -130,7 +148,13 @@ public class UpdaterService extends Service implements UpdaterServiceIntf {
 			@Override
 			public void handleMessage(Message msg) {
 				super.handleMessage(msg);
-				onElementUpdateOver();
+				if (msg.what == TREATMENT_OVER) {
+					onElementUpdateOver();
+				} else if (msg.what == STAR_SYNCRO_NOUSER) {
+					// Called by StardeEventsUpdater when no user registred
+					showErrorMessageSyncStars();
+					onElementUpdateOver();
+				}
 			}
 		};
 		// instantiate all the update services
@@ -154,6 +178,7 @@ public class UpdaterService extends Service implements UpdaterServiceIntf {
 						updater.onUpdate();
 					} catch (Throwable t) {
 						// just end the background thread
+						onElementUpdateOver();
 					}
 				}
 			});
@@ -174,8 +199,8 @@ public class UpdaterService extends Service implements UpdaterServiceIntf {
 		if (!isServiceRunning) {
 			isServiceRunning = true;
 			// make a toast to tell the user that data are updating
-			Toast.makeText(JCApplication.getInstance(), R.string.updateServiceNotificationMessage, Toast.LENGTH_SHORT)
-					.show();
+			makeToastUpdate(true);
+
 			// and show notification
 			showNotification();
 			// reset the number of running services
@@ -189,7 +214,7 @@ public class UpdaterService extends Service implements UpdaterServiceIntf {
 					} catch (IllegalThreadStateException e) {
 						// Thread already running
 					}
-					//Then manage the number of running services
+					// Then manage the number of running services
 					numberOfRunningService++;
 					Log.w("UpdaterService" + hashCode() + ":onStartCommand", "numberOfRunningService: "
 							+ numberOfRunningService);
@@ -205,7 +230,7 @@ public class UpdaterService extends Service implements UpdaterServiceIntf {
 			// stopped, so return sticky.
 			return START_STICKY;
 		}
-		//if nothing has been done, just return the nothing has been done constant
+		// if nothing has been done, just return the nothing has been done constant
 		return START_NOT_STICKY;
 	}
 
@@ -219,8 +244,77 @@ public class UpdaterService extends Service implements UpdaterServiceIntf {
 		// Cancel the persistent notification.
 		mNM.cancel(NOTIFICATION);
 		// Tell the user we stopped.
-		Toast.makeText(this, R.string.updateServiceStopMessage, Toast.LENGTH_SHORT).show();
+		makeToastUpdate(false);
 		super.onDestroy();
+	}
+
+	public void makeToastUpdate(boolean beginUpdate) {
+		Context ctx = JCApplication.getInstance().getApplicationContext();
+		// if (null == toast) {
+
+		// Call the Layout Inflater to build the View object from an Xml description
+		LayoutInflater inflater = LayoutInflater.from(ctx);
+		// Build the view using the file R.layout.toast_layout using the R.id.toast_layout_root
+		// element as the root view
+		View layout = inflater.inflate(R.layout.toast_update, null);
+
+		// This work too and duplicate the view in the Toast
+		// View layout = inflater.inflate(R.layout.main,null);
+
+		// then create the Toast
+		Toast toast = new Toast(this);
+		// Define the gravity can be all the gravity constant and can be associated using |
+		// (exemple: Gravity.TOP|Gravity.LEFT)
+		// the xOffset and yOffSet moves the Toast (in pixel)
+		toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+		// define the time duration of the Toast
+		toast.setDuration(Toast.LENGTH_LONG);
+		// Set the layout of the toast
+		toast.setView(layout);
+		// }
+		TextView message = (TextView) toast.getView().findViewById(R.id.text_toast_update);
+		if (beginUpdate) {
+			message.setText(ctx.getString(R.string.updateServiceNotificationMessage));
+		} else {
+			message.setText(ctx.getString(R.string.updateServiceStopMessage));
+		}
+		// And display it
+		toast.show();
+	}
+
+	/**
+	 * There is no user registred
+	 * It display the error message: There is no user registered, StarredEvent can not be
+	 * synchronized
+	 */
+	private void showErrorMessageSyncStars() {
+		Context ctx = JCApplication.getInstance().getApplicationContext();
+
+		// Call the Layout Inflater to build the View object from an Xml description
+		LayoutInflater inflater = LayoutInflater.from(ctx);
+		// Build the view using the file R.layout.toast_layout using the R.id.toast_layout_root
+		// element as the root view
+		View layout = inflater.inflate(R.layout.toast_syncro_starredevents_error, null);
+
+		// This work too and duplicate the view in the Toast
+		// View layout = inflater.inflate(R.layout.main,null);
+
+		// then create the Toast
+
+		Toast toast = new Toast(ctx);
+
+		// Define the gravity can be all the gravity constant and can be associated using |
+		// (exemple: Gravity.TOP|Gravity.LEFT)
+		// the xOffset and yOffSet moves the Toast (in pixel)
+		// toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+		// define the time duration of the Toast
+		toast.setDuration(Toast.LENGTH_LONG);
+		// Set the layout of the toast
+		toast.setView(layout);
+		// }
+		// And display it
+		toast.show();
+
 	}
 
 	/******************************************************************************************/
@@ -232,10 +326,11 @@ public class UpdaterService extends Service implements UpdaterServiceIntf {
 	 * @see com.jcertif.android.service.androidservices.UpdaterServiceIntf#onElementUpdateOver()
 	 */
 	public void onElementUpdateOver() {
-		//here we manage the end of the service
-		//when all the thread are stopped we have to stop the service
-		//As this method is called each time an UpdaterServiceElement has finished
-		//we just decrement the numberOfRunningService and when it reachs 0, we know the service is over
+		// here we manage the end of the service
+		// when all the thread are stopped we have to stop the service
+		// As this method is called each time an UpdaterServiceElement has finished
+		// we just decrement the numberOfRunningService and when it reachs 0, we know the service is
+		// over
 		numberOfRunningService--;
 		Log.i("UpdaterService" + hashCode() + ":onElementUpdateOver", "numberOfRunningService: "
 				+ numberOfRunningService);
@@ -260,7 +355,7 @@ public class UpdaterService extends Service implements UpdaterServiceIntf {
 	 * Show a notification while this service is running.
 	 */
 	private void showNotification() {
-		// TODO  mettre en place la notification, le PendingIntent doit la stopper
+		// TODO mettre en place la notification, le PendingIntent doit la stopper
 		// NotificationManager mNM = (NotificationManager)
 		// getSystemService(Context.NOTIFICATION_SERVICE);
 		// // In this sample, we'll use the same text for the ticker and the expanded notification

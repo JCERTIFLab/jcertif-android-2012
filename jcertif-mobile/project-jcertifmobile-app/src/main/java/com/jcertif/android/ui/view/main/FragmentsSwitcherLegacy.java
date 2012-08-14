@@ -31,6 +31,8 @@ import com.jcertif.android.ui.view.event.detail.EventDetailCallBack;
 import com.jcertif.android.ui.view.event.detail.EventDetailFragment;
 import com.jcertif.android.ui.view.event.list.EventsListCallBack;
 import com.jcertif.android.ui.view.event.list.EventsListFragment;
+import com.jcertif.android.ui.view.info.InfoFragmentHC;
+import com.jcertif.android.ui.view.info.InfoFragmentLegacy;
 import com.jcertif.android.ui.view.main.fragment.MainFragment;
 import com.jcertif.android.ui.view.main.fragment.MainFragmentCallBack;
 import com.jcertif.android.ui.view.speaker.detail.SpeakerDetailCallBack;
@@ -105,6 +107,13 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 	 * The agenda fragment TAG
 	 */
 	private final String agendaFragmentTag = "agendaFragmentTag";
+	/**
+	 * The info fragment TAG
+	 */
+	private final String infoFragmentTag = "infoFragmentTag";
+	/**
+	 * 
+	 */
 	Boolean displayLeaf = false;
 
 	/******************************************************************************************/
@@ -178,7 +187,8 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 			}
 		}
 		// then set the animation, add the fragment and commit
-		fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
+		fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out,
+				R.anim.anim_push_right_in, R.anim.anim_push_right_out);
 		fTransaction.add(R.id.mainfragment, mainFragment, mainFragmentTag);
 		fTransaction.commit();
 		// As we are in the main menu and there is not second fragment to display
@@ -200,7 +210,8 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 		FragmentManager fm = mainActivity.getSupportFragmentManager();
 		EventsListFragment eventsListFragment = (EventsListFragment) fm.findFragmentByTag(eventsListFragmentTag);
 		FragmentTransaction fTransaction = fm.beginTransaction();
-		fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
+		fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out,
+				R.anim.anim_push_right_in, R.anim.anim_push_right_out);
 		if (eventsListFragment == null) {
 			eventsListFragment = new EventsListFragment();
 		}
@@ -240,7 +251,8 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 
 			EventDetailFragment eventFragment2 = (EventDetailFragment) fm.findFragmentByTag(eventFragment2Tag);
 			FragmentTransaction fTransaction = fm.beginTransaction();
-			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
+			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out,
+					R.anim.anim_push_right_in, R.anim.anim_push_right_out);
 			// Ensure the first fragment is the event list if the event is selected from events list
 			if (fromEvent) {
 				EventsListFragment eventsListFragment = (EventsListFragment) fm
@@ -272,13 +284,11 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 					fTransaction.replace(R.id.secondfragment, eventFragment2, eventFragment2Tag);
 				}
 
-				if (fromEvent) {
-					// Add only one level of backstack for the speaker detail
-					// so if the last back stack entry is R.string.speaker_htitle do nothing
-					if (!fm.getBackStackEntryAt(fm.getBackStackEntryCount() - 1).getName()
-							.equals(mainActivity.getString(R.string.speaker_htitle))) {
-						fTransaction.addToBackStack(mainActivity.getString(R.string.speaker_htitle));
-					}
+				// Add only one level of backstack for the speaker detail
+				// so if the last back stack entry is R.string.speaker_htitle do nothing
+				if (!fm.getBackStackEntryAt(fm.getBackStackEntryCount() - 1).getName()
+						.equals(mainActivity.getString(R.string.speaker_htitle))) {
+					fTransaction.addToBackStack(mainActivity.getString(R.string.speaker_htitle));
 				} else {
 					fTransaction.addToBackStack(mainActivity.getString(R.string.session_htitle));
 				}
@@ -302,7 +312,8 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 				firstCall = true;
 			}
 			// add the fragment
-			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
+			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out,
+					R.anim.anim_push_right_in, R.anim.anim_push_right_out);
 			// if (fromEvent) {
 			// fTransaction.remove(eventsListFragment);
 			// } else {
@@ -337,7 +348,8 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 			// So add the speakers fragment
 
 			FragmentTransaction fTransaction = fm.beginTransaction();
-			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
+			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out,
+					R.anim.anim_push_right_in, R.anim.anim_push_right_out);
 			// the speakersListFragment has to be created
 			if (speakersListFragment == null) {
 				speakersListFragment = new SpeakersListFragment();
@@ -353,7 +365,8 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 			if (speakersListFragment == null) {
 				speakersListFragment = new SpeakersListFragment();
 			}
-			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
+			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out,
+					R.anim.anim_push_right_in, R.anim.anim_push_right_out);
 			fTransaction.replace(R.id.mainfragment, speakersListFragment, speakersListFragmentTag);
 			fTransaction.addToBackStack(mainActivity.getString(R.string.main_htitle));
 			fTransaction.commit();
@@ -381,7 +394,8 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 			// Prepare the fragment transaction
 			SpeakerDetailFragment speakerFragment2 = (SpeakerDetailFragment) fm.findFragmentByTag(speakerFragment2Tag);
 			FragmentTransaction fTransaction = fm.beginTransaction();
-			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
+			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out,
+					R.anim.anim_push_right_in, R.anim.anim_push_right_out);
 			// Ensure the first fragment is the speakers list:
 			if (speakersListFragment == null) {
 				speakersListFragment = new SpeakersListFragment();
@@ -429,7 +443,8 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 				firstCall = true;
 			}
 			// add the fragment
-			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
+			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out,
+					R.anim.anim_push_right_in, R.anim.anim_push_right_out);
 			fTransaction.remove(speakersListFragment);
 			fTransaction.add(R.id.mainfragment, speakerFragment1, speakerFragment1Tag);
 			fTransaction.addToBackStack(mainActivity.getString(R.string.speaker_htitle));
@@ -451,8 +466,7 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 		displayLeaf = false;
 		Log.i("FragmentsSwitcherLegacy:showCalendar", "twoFragmentsVisible :" + twoFragmentsVisible);
 		FragmentManager fm = mainActivity.getSupportFragmentManager();
-		CalendarDayFragment calendarDayFragment = (CalendarDayFragment) fm
-				.findFragmentByTag(calendarMainFragmentTag);
+		CalendarDayFragment calendarDayFragment = (CalendarDayFragment) fm.findFragmentByTag(calendarMainFragmentTag);
 		if (twoFragmentsVisible) {
 			// hide the second fragment because we displays the list of speakers without any
 			// speakers selected
@@ -460,10 +474,11 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 			// So add the speakers fragment
 
 			FragmentTransaction fTransaction = fm.beginTransaction();
-			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
+			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out,
+					R.anim.anim_push_right_in, R.anim.anim_push_right_out);
 			// the speakersListFragment has to be created
 			if (calendarDayFragment == null) {
-				//instanciate the fragment
+				// instanciate the fragment
 				calendarDayFragment = getCalendarDayFragment();
 			}
 			fTransaction.replace(R.id.mainfragment, calendarDayFragment, calendarMainFragmentTag);
@@ -475,18 +490,18 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 			FragmentTransaction fTransaction = fm.beginTransaction();
 			// the speakersListFragment has to be created
 			if (calendarDayFragment == null) {
-				//instanciate the fragment
+				// instanciate the fragment
 				calendarDayFragment = getCalendarDayFragment();
 			}
-			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
+			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out,
+					R.anim.anim_push_right_in, R.anim.anim_push_right_out);
 			fTransaction.replace(R.id.mainfragment, calendarDayFragment, calendarMainFragmentTag);
 			fTransaction.addToBackStack(mainActivity.getString(R.string.calendar_htitle));
 			fTransaction.commit();
 		}
-		
-		
+
 	}
-	
+
 	/**
 	 * @return the calendar day fragment to use
 	 */
@@ -495,7 +510,7 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 		day.set(Calendar.YEAR, 2012);
 		day.set(Calendar.MONTH, 8);
 		day.set(Calendar.DAY_OF_MONTH, 3);
-		CalendarDayFragment calendarDay  = new CalendarDayFragment();
+		CalendarDayFragment calendarDay = new CalendarDayFragment();
 		// define the adapter
 		CalendarDayAdapter adapter = new CalendarDayAdapter(CalendarDayAdapter.ALL_EVENTS, day);
 		// and link them
@@ -513,8 +528,7 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 		displayLeaf = false;
 		Log.i("FragmentsSwitcherLegacy:showCalendar", "twoFragmentsVisible :" + twoFragmentsVisible);
 		FragmentManager fm = mainActivity.getSupportFragmentManager();
-		CalendarDayFragment calendarDayFragment = (CalendarDayFragment) fm
-				.findFragmentByTag(agendaFragmentTag);
+		CalendarDayFragment calendarDayFragment = (CalendarDayFragment) fm.findFragmentByTag(agendaFragmentTag);
 		if (twoFragmentsVisible) {
 			// hide the second fragment because we displays the list of speakers without any
 			// speakers selected
@@ -522,10 +536,11 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 			// So add the speakers fragment
 
 			FragmentTransaction fTransaction = fm.beginTransaction();
-			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
+			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out,
+					R.anim.anim_push_right_in, R.anim.anim_push_right_out);
 			// the speakersListFragment has to be created
 			if (calendarDayFragment == null) {
-				//instanciate the fragment
+				// instanciate the fragment
 				calendarDayFragment = getAgendaFragment();
 			}
 			fTransaction.replace(R.id.mainfragment, calendarDayFragment, agendaFragmentTag);
@@ -537,17 +552,18 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 			FragmentTransaction fTransaction = fm.beginTransaction();
 			// the speakersListFragment has to be created
 			if (calendarDayFragment == null) {
-				//instanciate the fragment
+				// instanciate the fragment
 				calendarDayFragment = getAgendaFragment();
 			}
-			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out);
+			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out,
+					R.anim.anim_push_right_in, R.anim.anim_push_right_out);
 			fTransaction.replace(R.id.mainfragment, calendarDayFragment, agendaFragmentTag);
 			fTransaction.addToBackStack(mainActivity.getString(R.string.agenda_htitle));
 			fTransaction.commit();
 		}
 
 	}
-	
+
 	/**
 	 * @return the calendar day fragment to use
 	 */
@@ -556,7 +572,7 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 		day.set(Calendar.YEAR, 2012);
 		day.set(Calendar.MONTH, 8);
 		day.set(Calendar.DAY_OF_MONTH, 3);
-		CalendarDayFragment calendarDay  = new CalendarDayFragment();
+		CalendarDayFragment calendarDay = new CalendarDayFragment();
 		// define the adapter
 		CalendarDayAdapter adapter = new CalendarDayAdapter(CalendarDayAdapter.STARED_EVENTS, day);
 		// and link them
@@ -571,7 +587,39 @@ public class FragmentsSwitcherLegacy implements MainFragmentCallBack, SpeakersLi
 	 */
 	@Override
 	public void showInfo() {
-		// What has been to be displayed in this fragment ?????
+		displayLeaf = false;
+		Log.i("FragmentsSwitcherLegacy:showInfo", "twoFragmentsVisible :" + twoFragmentsVisible);
+		FragmentManager fm = mainActivity.getSupportFragmentManager();
+		InfoFragmentLegacy infoFragment = (InfoFragmentLegacy) fm.findFragmentByTag(infoFragmentTag);
+		if (twoFragmentsVisible) {
+			// hide the second fragment because we displays the info
+			setSecondFragmentVisible(false);
+			// So add the info fragment
+
+			FragmentTransaction fTransaction = fm.beginTransaction();
+			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out,
+					R.anim.anim_push_left_in, R.anim.anim_push_left_out);
+			// the speakersListFragment has to be created
+			if (infoFragment == null) {
+				infoFragment = new InfoFragmentLegacy();
+			}
+			fTransaction.replace(R.id.mainfragment, infoFragment, infoFragmentTag);
+			fTransaction.addToBackStack(mainActivity.getString(R.string.main_htitle));
+			fTransaction.commit();
+
+		} else {
+			// So add the speaker fragment
+			FragmentTransaction fTransaction = fm.beginTransaction();
+			// the speakersListFragment has to be created
+			if (infoFragment == null) {
+				infoFragment = new InfoFragmentLegacy();
+			}
+			fTransaction.setCustomAnimations(R.anim.anim_push_left_in, R.anim.anim_push_left_out,
+					R.anim.anim_push_left_in, R.anim.anim_push_left_out);
+			fTransaction.replace(R.id.mainfragment, infoFragment, infoFragmentTag);
+			fTransaction.addToBackStack(mainActivity.getString(R.string.main_htitle));
+			fTransaction.commit();
+		}
 
 	}
 

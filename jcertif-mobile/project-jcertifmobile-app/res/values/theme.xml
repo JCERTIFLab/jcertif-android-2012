@@ -4,7 +4,7 @@
     <!-- Style for Button -->
     <!-- ************************ -->
 
-    <style name="root_style">
+    <style name="root_style" parent="root_theme">
         <item name="android:paddingLeft">@dimen/paddingLeft</item>
         <item name="android:paddingRight">@dimen/paddingRight</item>
         <item name="android:paddingTop">@dimen/paddingTop</item>
@@ -37,6 +37,12 @@
     <!-- ************************ -->
     <style name="txv_style_small" parent="txv_style_nvm">
         <item name="android:textSize">@dimen/textSizeSmall</item>
+    </style>
+
+    <!-- Style for TextView No Vertical Margin No Vertical Padding -->
+    <!-- ************************ -->
+    <style name="txv_style_xsmall" parent="txv_style_nvm">
+        <item name="android:textSize">@dimen/textSizeXSmall</item>
     </style>
 
     <!-- Style for TextView displaying errors -->

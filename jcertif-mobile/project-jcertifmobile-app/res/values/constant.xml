@@ -24,6 +24,7 @@
     <string name="shLastUpdateTime">shLastUpdateTime</string>
     <string name="shLocalStaredEvents">shLocalStaredEvents</string>
     <string name="shServerStaredEvents">shServerStaredEvents</string>
+    <string name="shValidEmailsList">validEmailsList</string>
 
     <!-- Service And associatedIntents Constants -->
     <string name="servAuthentIntentExtraName">response</string>

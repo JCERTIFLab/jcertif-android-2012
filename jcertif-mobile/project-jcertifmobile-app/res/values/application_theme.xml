@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Light.JCertif" parent="android:style/Theme.Holo.Light">
+        <item name="android:dropDownItemStyle">@style/Widget.DropDownItemLight</item>
+    </style>
+
+    <style name="Theme.Light.JCertif.preHC" parent="android:style/Theme.NoTitleBar">
+        <item name="android:dropDownItemStyle">@style/Widget.DropDownItemLight</item>
+    </style>
+
+    <style name="Widget.DropDownItemLight" parent="@android:style/Widget.DropDownItem">
+        <item name="android:textColor">@color/deep_blue</item>
+        <item name="android:textSize">@dimen/textSize</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+</resources>

@@ -5,9 +5,9 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:maxSdkVersion="15"
+        android:maxSdkVersion="16"
         android:minSdkVersion="8"
-        android:targetSdkVersion="10" />
+        android:targetSdkVersion="16" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" >
     </uses-permission>
@@ -36,32 +36,18 @@
         <!-- Connection Activities -->
         <activity
             android:name="com.jcertif.android.ui.view.connection.ConnectionActivityHC"
-            android:theme="@android:style/Theme.NoTitleBar" />
+            android:theme="@style/Theme.Light.JCertif" />
         <activity
             android:name="com.jcertif.android.ui.view.connection.ConnectionActivityLegacy"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <!-- Main Activities -->
+            android:theme="@style/Theme.Light.JCertif.preHC" />
+
+        <!-- Main Activities android:style/Theme.Holo.Light -->
         <activity
             android:name="com.jcertif.android.ui.view.main.MainActivityHC"
-            android:theme="@android:style/Theme.NoTitleBar" />
+            android:theme="@style/Theme.Light.JCertif" />
         <activity
             android:name="com.jcertif.android.ui.view.main.MainActivityLegacy"
-            android:theme="@android:style/Theme.NoTitleBar" />
-
-        <!-- Other activities -->
-        <!-- <activity -->
-        <!-- android:name="SpeakersListActivity" -->
-        <!-- android:theme="@android:style/Theme.NoTitleBar" /> -->
-        <!-- <activity -->
-        <!-- android:name="SpeakerActivity" -->
-        <!-- android:theme="@android:style/Theme.NoTitleBar" /> -->
-        <!-- <activity -->
-        <!-- android:name="SessionDetailActivity" -->
-        <!-- android:theme="@android:style/Theme.NoTitleBar" /> -->
-        <!-- <activity -->
-        <!-- android:name=".MainActivity" -->
-        <!-- android:theme="@android:style/Theme.NoTitleBar" /> -->
-
+            android:theme="@style/Theme.Light.JCertif.preHC" />
 
         <!-- Service -->
         <!-- <service android:name="com.jcertif.android.service.androidservices.JCertifLocalService" /> -->

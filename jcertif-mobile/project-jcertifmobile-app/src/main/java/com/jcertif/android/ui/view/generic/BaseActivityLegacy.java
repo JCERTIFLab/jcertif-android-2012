@@ -43,7 +43,14 @@ public class BaseActivityLegacy extends FragmentActivity implements BaseActivity
 	 * the search button in the JCertifHeader panel
 	 */
 	ImageButton btnSearch = null;
-
+	/**
+	 * The connect button in the JCertifHeader panel
+	 */
+	ImageButton btnConnect = null;
+	/**
+	 * the disconnect button in the JCertifHeader panel
+	 */
+	ImageButton btnDisconnect = null;
 	/******************************************************************************************/
 	/** Constructors **************************************************************************/
 	/******************************************************************************************/
@@ -82,6 +89,30 @@ public class BaseActivityLegacy extends FragmentActivity implements BaseActivity
 					search();
 				}
 			});
+		}
+		if (null == btnDisconnect) {
+			btnDisconnect = ((ImageButton) findViewById(R.id.btn_disconnect_button));
+			btnDisconnect.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					disconnect();
+				}
+			});
+		}
+		if (null == btnConnect) {
+			btnConnect = ((ImageButton) findViewById(R.id.btn_connect_button));
+			btnConnect.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					connect();
+				}
+			});
+		}
+		// see what icon connect or disconnect to display
+		if (((JCApplication) getApplication()).getUser().getEmail().length() == 0) {
+			btnDisconnect.setVisibility(View.GONE);
+		} else {
+			btnConnect.setVisibility(View.GONE);
 		}
 	}
 
@@ -130,6 +161,26 @@ public class BaseActivityLegacy extends FragmentActivity implements BaseActivity
 		Toast.makeText(this, "La recherche n'est pas encore implémentée :o)", Toast.LENGTH_SHORT).show();
 
 	}
+	/**
+	 * Disconnect
+	 */
+	public void disconnect() {
+		// reset user
+		((JCApplication) getApplication()).clearDefaultUser();
+		// restart
+		connect();
+	}
+
+	/**
+	 * Restart
+	 */
+	public void connect() {
+		// restart
+		Intent startActivityIntent = new Intent(this, LauncherActivity.class);
+		startActivity(startActivityIntent);
+		finish();
+	}
+
 
 	/******************************************************************************************/
 	/** Menu Management **************************************************************************/
@@ -150,8 +201,13 @@ public class BaseActivityLegacy extends FragmentActivity implements BaseActivity
 		// instanciation du menu via le fichier XML
 		new MenuInflater(getApplication()).inflate(R.menu.menu, menu);
 		// the menu et menu sont le même objet
+		// see what icon connect or disconnect to display
+		if (((JCApplication) getApplication()).getUser().getEmail().length() == 0) {
+			menu.findItem(R.id.menu_disconnect_user).setVisible(false);
+		} else {
+			menu.findItem(R.id.menu_connect_user).setVisible(false);
+		}
 		theMenu = menu;
-
 		// Création du menu comme avant
 		return (super.onCreateOptionsMenu(menu));
 	}
@@ -169,10 +225,9 @@ public class BaseActivityLegacy extends FragmentActivity implements BaseActivity
 		case R.id.menu_disconnect_user:
 			// reset user
 			((JCApplication) getApplication()).clearDefaultUser();
+		case R.id.menu_connect_user:
 			// restart
-			Intent startActivityIntent = new Intent(this, LauncherActivity.class);
-			startActivity(startActivityIntent);
-			finish();
+			connect();
 			return true;
 		default:
 			// Pour le ventiler sur les fragments

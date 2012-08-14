@@ -1,82 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/titleLayout"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/background"
-    android:orientation="vertical" >
+<merge xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/titleLayout"
         android:layout_width="fill_parent"
-        android:layout_height="60dp"
-        android:gravity="left"
-        android:orientation="horizontal" >
-
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_width="70dp"
-            android:layout_height="60dp"
-            android:src="@drawable/logo" />
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="60dp"
-            android:gravity="center"
-            android:orientation="vertical" >
+            android:gravity="left"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="70dp"
+                android:layout_height="60dp"
+                android:src="@drawable/logo" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="40dp"
+                android:layout_height="60dp"
                 android:gravity="center"
-                android:orientation="horizontal" >
+                android:orientation="vertical" >
 
-                <TextView
-                    android:id="@+id/header_title"
-                    style="@style/txv_banner_title"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="fill_parent"
                     android:layout_height="40dp"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_weight="1.0"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:orientation="horizontal" >
 
-                <ImageButton
-                    android:id="@+id/btn_search_button"
-                    style="@style/txv_banner_title"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginTop="0dp"
-                    android:background="@drawable/action_search"
-                    android:gravity="center" />
+                    <TextView
+                        android:id="@+id/header_title"
+                        style="@style/txv_banner_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginTop="0dp"
+                        android:layout_weight="1.0"
+                        android:gravity="center" />
 
-                <ImageButton
-                    android:id="@+id/btn_refresh_button"
-                    style="@style/txv_banner_title"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginTop="0dp"
-                    android:background="@drawable/navigation_refresh"
-                    android:gravity="center" />
+                    <ImageButton
+                        android:id="@+id/btn_search_button"
+                        style="@style/txv_banner_title"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginTop="0dp"
+                        android:background="@drawable/action_search"
+                        android:gravity="center" />
 
-                <ProgressBar
-                    android:id="@+id/pgb_refresh_inprogress"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:indeterminate="true"
-                    android:indeterminateBehavior="cycle"
-                    android:indeterminateOnly="true"
-                    android:visibility="gone" >
-                </ProgressBar>
+                    <ImageButton
+                        android:id="@+id/btn_refresh_button"
+                        style="@style/txv_banner_title"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginTop="0dp"
+                        android:background="@drawable/navigation_refresh"
+                        android:gravity="center" />
+
+                    <ProgressBar
+                        android:id="@+id/pgb_refresh_inprogress"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:indeterminate="true"
+                        android:indeterminateBehavior="cycle"
+                        android:indeterminateOnly="true"
+                        android:visibility="gone" >
+                    </ProgressBar>
+
+                    <ImageButton
+                        android:id="@+id/btn_connect_button"
+                        style="@style/txv_banner_title"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginTop="0dp"
+                        android:background="@drawable/ic_action_connect"
+                        android:gravity="center" />
+
+                    <ImageButton
+                        android:id="@+id/btn_disconnect_button"
+                        style="@style/txv_banner_title"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginTop="0dp"
+                        android:background="@drawable/ic_action_disconnect"
+                        android:gravity="center" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/header_bottom"
+                    android:layout_width="fill_parent"
+                    android:layout_height="20dp"
+                    android:src="@drawable/header_bottom" />
             </LinearLayout>
-
-            <ImageView
-                android:id="@+id/header_bottom"
-                android:layout_width="fill_parent"
-                android:layout_height="20dp"
-                android:src="@drawable/header_bottom" />
         </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
+</merge>

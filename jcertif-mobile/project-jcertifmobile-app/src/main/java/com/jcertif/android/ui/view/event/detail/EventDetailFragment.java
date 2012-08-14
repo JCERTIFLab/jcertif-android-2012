@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.jcertif.android.JCApplication;
@@ -236,6 +237,9 @@ public class EventDetailFragment extends Fragment {
 			File filePicture=new File(pictureDir,speaker.urlPhoto);
 			Bitmap speakerBitmap = BitmapFactory.decodeFile(filePicture.getAbsolutePath());
 			i11.setImageBitmap(speakerBitmap);
+			//and set the scroll to the top:
+			ScrollView scv=(ScrollView) view.findViewById(R.id.scrollViewEvent);
+			scv.fullScroll(ScrollView.FOCUS_UP);
 		} catch (SQLException e) {
 			Log.d("SpeakerDisplayActivity", e.getMessage());
 		} catch (Exception e) {

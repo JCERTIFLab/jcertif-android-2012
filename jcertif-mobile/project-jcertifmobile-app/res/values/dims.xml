@@ -18,6 +18,7 @@
     <dimen name="paddingBottom">5dp</dimen>
 
     <!-- Text Size -->
+    <dimen name="textSizeXSmall">10sp</dimen>
     <dimen name="textSizeSmall">12sp</dimen>
     <dimen name="textSize">15sp</dimen>
     <dimen name="textSizeLarge">17sp</dimen>
@@ -36,5 +37,9 @@
     <dimen name="stroke_buttonSize">3dp</dimen>
     <dimen name="shape_stroke_Size">1dp</dimen>
     <dimen name="shape_corner_Size">10dp</dimen>
+
+    <!-- Calendar Cell Size 180*30 pour hdpi -->
+    <dimen name="calendar_cell_width">100dp</dimen>
+    <dimen name="calendar_cell_height">30dp</dimen>
 
 </resources>

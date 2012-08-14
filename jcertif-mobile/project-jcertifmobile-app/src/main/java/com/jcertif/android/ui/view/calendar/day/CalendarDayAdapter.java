@@ -18,14 +18,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import android.util.Log;
 
 import com.jcertif.android.dao.ormlight.EventProvider;
 import com.jcertif.android.dao.ormlight.SpeakerProvider;
 import com.jcertif.android.transverse.model.Event;
-import com.jcertif.android.transverse.model.Periode;
 import com.jcertif.android.transverse.model.Speaker;
 
 /**
@@ -70,6 +68,10 @@ public class CalendarDayAdapter {
 	 * the calendar
 	 */
 	CalendarDayFragment calendar;
+	/**
+	 * the calendar
+	 */
+	CalendarDayFragmentHC calendarHC;
 	/**
 	 * The day to display
 	 */
@@ -134,6 +136,7 @@ public class CalendarDayAdapter {
 			loadStaredEvents();
 		}
 		Collections.sort(events);
+				
 		// then build the data
 		buildData();
 	}
@@ -173,7 +176,7 @@ public class CalendarDayAdapter {
 	 * The map that link a Day with the map that links the event and their position in the relative
 	 * layout
 	 */
-//	Map<Integer, Map<Event, RelativeCellPosition>> dayToEventPosition;
+	// Map<Integer, Map<Event, RelativeCellPosition>> dayToEventPosition;
 	/**
 	 * The event to position map of the dayToDisplay
 	 */
@@ -183,50 +186,48 @@ public class CalendarDayAdapter {
 	 * This method build the map that link an event with its relative position in the layout
 	 */
 	private void buildData() {
-		Log.e("CalendarDayAdapter:buildData", "buildData of "+dayToDisplay.get(Calendar.DAY_OF_MONTH));
-//		if (null == dayToEventPosition.get(dayToDisplay.get(Calendar.DAY_OF_MONTH))) {
-			Log.e("CalendarDayAdapter:buildData", "null == dayToEventPosition.get(dayToDisplay)");
-			// then build the map
-			currentEventToPosition = new HashMap<Event, RelativeCellPosition>();
-			// then for each event find its top, bottom and left alignment
-			RelativeCellPosition rcp;
-			for (final Event event : events) {				
-				// build the relative position of the event
-				rcp = new RelativeCellPosition();
-				rcp.top = getCellId(event.startDate);
-				rcp.bottom = getPreviousCellId(event.endDate);
-				rcp.leftCell = getLevelRightOf(event);
-				Log.e("CalendarDayAdapter:buildData", "buildData of the "+event.id+" top: "+rcp.top+" bottom:"+rcp.bottom+" left:"+rcp.leftCell);
-				// add it to the map
-				currentEventToPosition.put(event, rcp);
-			}
-			// add the map of the day to the dayToEventPosition
-//			dayToEventPosition.put(dayToDisplay.get(Calendar.DAY_OF_MONTH), eventToPosition);
-//		}
-//		Log.e("CalendarDayAdapter:buildData", "buildData returns "+dayToEventPosition.get(dayToDisplay.get(Calendar.DAY_OF_MONTH)).size()+" done");
-		// update the currentMap
-//		currentEventToPosition = dayToEventPosition.get(dayToDisplay.get(Calendar.DAY_OF_MONTH));
-
+		Log.e("CalendarDayAdapter:buildData", "buildData of " + dayToDisplay.get(Calendar.DAY_OF_MONTH));
+		Log.e("CalendarDayAdapter:buildData", "null == dayToEventPosition.get(dayToDisplay)");
+		// then build the map
+		currentEventToPosition = new HashMap<Event, RelativeCellPosition>();
+		// then for each event find its top, bottom and left alignment
+		RelativeCellPosition rcp;
+		for (final Event event : events) {
+			// build the relative position of the event
+			rcp = new RelativeCellPosition();
+			rcp.top = getCellId(event.startDate);
+			rcp.bottom = getPreviousCellId(event.endDate);
+			rcp.leftCell = getLevelRightOf(event);
+			Log.e("CalendarDayAdapter:buildData", "buildData of the " + event.id + " top: " + rcp.top + " bottom:"
+					+ rcp.bottom + " left:" + rcp.leftCell);
+			// add it to the map
+			currentEventToPosition.put(event, rcp);
+		}
 	}
 
 	/**
 	 * Return the cell id to align on top for the event
+	 * 
 	 * @param event
 	 * @return the cell id to align on top for the event
 	 */
 	public int getTopAlign(Event event) {
 		return currentEventToPosition.get(event).top;
 	}
+
 	/**
-	 *  Return the cell id to align on bottom for the event
+	 * Return the cell id to align on bottom for the event
+	 * 
 	 * @param event
 	 * @return the cell id to align on bottom for the event
 	 */
 	public int getBottomAlign(Event event) {
 		return currentEventToPosition.get(event).bottom;
 	}
+
 	/**
-	 *  Return the cell id to align on left for the event
+	 * Return the cell id to align on left for the event
+	 * 
 	 * @param event
 	 * @return the cell id to align on left for the event
 	 */
@@ -463,6 +464,22 @@ public class CalendarDayAdapter {
 	 */
 	final void setCalendar(CalendarDayFragment calendar) {
 		this.calendar = calendar;
+	}
+
+	/**
+	 * @return the calendarHC
+	 */
+	public final CalendarDayFragmentHC getCalendarHC() {
+		return calendarHC;
+	}
+
+	/**
+	 * @param calendarHC the calendarHC to set
+	 *  This method is package (not public, neither private, neither protected)
+	 *            To be called only by CalendarDayFragment
+	 */
+	 final void setCalendarHC(CalendarDayFragmentHC calendarHC) {
+		this.calendarHC = calendarHC;
 	}
 
 	/**

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Root Theme -->
+    <!-- ************************ -->
+
+    <style name="root_theme" parent="@android:style/Theme"></style>
+
+</resources>

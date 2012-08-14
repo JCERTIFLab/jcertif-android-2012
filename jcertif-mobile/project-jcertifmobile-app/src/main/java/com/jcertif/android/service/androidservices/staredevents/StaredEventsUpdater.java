@@ -17,8 +17,14 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jcertif.android.JCApplication;
 import com.jcertif.android.R;
@@ -26,6 +32,7 @@ import com.jcertif.android.com.net.RestClient;
 import com.jcertif.android.com.net.RestClient.RequestMethod;
 import com.jcertif.android.dao.StaredEventsDaoFactory;
 import com.jcertif.android.dao.intf.StaredEventsDaoIntf;
+import com.jcertif.android.service.androidservices.UpdaterService;
 import com.jcertif.android.service.androidservices.UpdaterServiceElementIntf;
 
 /**
@@ -33,8 +40,10 @@ import com.jcertif.android.service.androidservices.UpdaterServiceElementIntf;
  * @goals
  *        This class aims to:
  *        <ul>
- *        <li></li>
+ *        <li>Synchronize the starred events between the server and the device</li>
  *        </ul>
+ *        StarredEvents are not synchronized on runtime,
+ *        They are synchronized only when a global synchronization occurs
  */
 public class StaredEventsUpdater implements UpdaterServiceElementIntf {
 	/**
@@ -66,36 +75,42 @@ public class StaredEventsUpdater implements UpdaterServiceElementIntf {
 		// find the Dao
 		StaredEventsDaoIntf dao = StaredEventsDaoFactory.getDao();
 		Log.w("onUpdate StaredEvents", "onUpdate StaredEvents called");
-		Log.w("onUpdate StaredEvents", "onUpdate email=" + email);
-		// Demander la liste des speakers (chaque speaker est complet)
-		try {
-			// find the delta between the local and the server list
-			// that occurs since the last update
-			List<Integer> serverKnowStaredEvt = dao.getServerKnownStaredEvents();
-			List<Integer> localStaredEvt = dao.getStaredEvents();
-			List<Integer> eventsToAdd = findEventToAdd(localStaredEvt, serverKnowStaredEvt);
-			List<Integer> eventsToRemove = findEventToRemove(localStaredEvt, serverKnowStaredEvt);
-			// add elements to add
-			for (Integer eventToAdd : eventsToAdd) {
-				addStaredEvents(email, eventToAdd.toString());
-			}
-			// remove elements to remove
-			for (Integer eventsToRem : eventsToRemove) {
-				removeStaredEvents(email, eventsToRem.toString());
-			}
-			// retrieve the server list and store elements in prefs
-			String serverEvtsList = getStaredEventsList(email);
-			// and stored it as local and server stared List (this is the trick)
-			String listStaredEvents=fromJson(serverEvtsList);
-			dao.setServerStaredEvents(listStaredEvents);
-			
+		Log.w("onUpdate StaredEvents", "onUpdate email=" + email+" email.lenght="+email.length());
+		if (email.length() != 0) {
+			// Demander la liste des speakers (chaque speaker est complet)
+			try {
+				// find the delta between the local and the server list
+				// that occurs since the last update
+				List<Integer> serverKnowStaredEvt = dao.getServerKnownStaredEvents();
+				List<Integer> localStaredEvt = dao.getStaredEvents();
+				List<Integer> eventsToAdd = findEventToAdd(localStaredEvt, serverKnowStaredEvt);
+				List<Integer> eventsToRemove = findEventToRemove(localStaredEvt, serverKnowStaredEvt);
+				// add elements to add
+				for (Integer eventToAdd : eventsToAdd) {
+					addStaredEvents(email, eventToAdd.toString());
+				}
+				// remove elements to remove
+				for (Integer eventsToRem : eventsToRemove) {
+					removeStaredEvents(email, eventsToRem.toString());
+				}
+				// retrieve the server list and store elements in prefs
+				String serverEvtsList = getStaredEventsList(email);
+				// and stored it as local and server stared List (this is the trick)
+				String listStaredEvents = fromJson(serverEvtsList);
+				dao.setServerStaredEvents(listStaredEvents);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			// The threatment is over, callBack the parent to tell it
-			parent.sendEmptyMessage(0);
-			Log.w("onUpdate StaredEvents", "onUpdate StaredEvents finished");
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				// The treatment is over, callBack the parent to tell it
+				parent.sendEmptyMessage(UpdaterService.TREATMENT_OVER);
+				Log.w("onUpdate StaredEvents", "onUpdate StaredEvents finished");
+			}
+		} else {
+			
+			// The treatment is over in error, callBack the parent to tell it, 
+			parent.sendEmptyMessage(UpdaterService.STAR_SYNCRO_NOUSER);
+			Log.e("onUpdate StaredEvents", "onUpdate StaredEvents finished with error : no user registred");
 		}
 
 	}
@@ -109,6 +124,8 @@ public class StaredEventsUpdater implements UpdaterServiceElementIntf {
 	public String getName() {
 		return JCApplication.getInstance().getApplicationContext().getString(R.string.staredEventsUpdater);
 	}
+
+	
 
 	/******************************************************************************************/
 	/** Delta mthods **************************************************************************/
@@ -181,7 +198,7 @@ public class StaredEventsUpdater implements UpdaterServiceElementIntf {
 		try {
 			client.Execute(RequestMethod.GET);
 			responseString = client.getResponse();
-			Log.i(this.getClass().getSimpleName()+"addStaredEvents : ", responseString);
+			Log.i(this.getClass().getSimpleName() + "addStaredEvents : ", responseString);
 		} catch (Exception e) {
 			Log.e(this.getClass().getSimpleName(), "LocalServiceBinder : json " + responseString);
 			throw e;
@@ -201,7 +218,7 @@ public class StaredEventsUpdater implements UpdaterServiceElementIntf {
 		try {
 			client.Execute(RequestMethod.GET);
 			responseString = client.getResponse();
-			Log.e(this.getClass().getSimpleName()+"removeStaredEvents: ", responseString);
+			Log.e(this.getClass().getSimpleName() + "removeStaredEvents: ", responseString);
 		} catch (Exception e) {
 			Log.d(this.getClass().getSimpleName(), "LocalServiceBinder : json " + responseString);
 			throw e;
@@ -216,7 +233,7 @@ public class StaredEventsUpdater implements UpdaterServiceElementIntf {
 	private String fromJson(String json) {
 		try {
 			JSONObject jsonobj = new JSONObject(json);
-			String ret=jsonobj.getString("value");
+			String ret = jsonobj.getString("value");
 			Log.e(this.getClass().getSimpleName() + "fromJson", "return string:" + jsonobj.getString("value"));
 			return ret;
 		} catch (JSONException e) {

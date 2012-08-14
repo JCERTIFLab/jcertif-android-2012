@@ -59,11 +59,11 @@ public class CalendarDayFragment extends Fragment {
 	/**
 	 * The star
 	 */
-	Drawable star=null;
+	Drawable star = null;
 	/**
 	 * The empty star
 	 */
-	Drawable emptyStar=null;
+	Drawable emptyStar = null;
 
 	/******************************************************************************************/
 	/** LifeCycle management **************************************************************************/
@@ -78,8 +78,8 @@ public class CalendarDayFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		this.inflater = inflater;
-		star=(Drawable) getResources().getDrawable(R.drawable.star);
-		emptyStar=(Drawable) getResources().getDrawable(R.drawable.empty_star);
+		star = (Drawable) getResources().getDrawable(R.drawable.star);
+		emptyStar = (Drawable) getResources().getDrawable(R.drawable.empty_star);
 		View view = inflater.inflate(R.layout.calendar, container, false);
 		// Add the listener to change the day
 		Button btnNext = (Button) view.findViewById(R.id.nextday);
@@ -119,7 +119,15 @@ public class CalendarDayFragment extends Fragment {
 	public void onResume() {
 		// Define header title
 		TextView headerTitle = (TextView) getActivity().findViewById(R.id.header_title);
-		headerTitle.setText(R.string.calendar_htitle);
+		
+		if(adapter.eventType==CalendarDayAdapter.ALL_EVENTS) {
+			headerTitle.setText(R.string.calendar_htitle);
+		}else if(adapter.eventType==CalendarDayAdapter.STARED_EVENTS) {
+			headerTitle.setText(R.string.agenda_htitle);
+		}else {
+			//neutral choice
+			headerTitle.setText(R.string.calendar_htitle);
+		}
 		// ensure the panel is displayed using the whole space
 		// update the current shown fragment
 		updateGui();
@@ -181,9 +189,9 @@ public class CalendarDayFragment extends Fragment {
 		// Now browse the time
 		while (time.get(Calendar.HOUR_OF_DAY) <= CalendarDayAdapter.LAST_HOUR_OF_DAY) {
 			// Ajouter les heures dans le panel principal
-			hourCellId = createHourCell(layout, time, lastHourCellId, isFirstCell,false);
+			hourCellId = createHourCell(layout, time, lastHourCellId, isFirstCell, false);
 			// Ajouter des heures dans le layout des heures
-			createHourCell(layoutHour, time, lastHourCellId, isFirstCell,true);			
+			createHourCell(layoutHour, time, lastHourCellId, isFirstCell, true);
 			lastHourCellId = hourCellId;
 			isFirstCell = false;
 			// increment the time
@@ -204,23 +212,24 @@ public class CalendarDayFragment extends Fragment {
 					getCallBack().showSelectedEvent(event.id, false);
 				}
 			});
-			//manage the stared event status
-			final ImageView starView=((ImageView) evtCell.findViewById(R.id.star_cal));
-			if(StaredEventsService.instance.isStared(event.id)) {
+			// manage the stared event status
+			final ImageView starView = ((ImageView) evtCell.findViewById(R.id.star_cal));
+			if (StaredEventsService.instance.isStared(event.id)) {
 				starView.setBackgroundDrawable(star);
-			}else {
+			} else {
 				starView.setBackgroundDrawable(emptyStar);
 			}
-			//add the listener
-			starView.setOnClickListener(new OnClickListener() {			
+			// add the listener
+			starView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					changeEventStartState(starView,event.id);
+					changeEventStartState(starView, event.id);
 				}
 			});
-			
+
 			// Build the relative layout parameter
-			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(180,
+			float dimWidth = getActivity().getResources().getDimension(R.dimen.calendar_cell_width);
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams((int) dimWidth,
 					RelativeLayout.LayoutParams.WRAP_CONTENT);
 			params.addRule(RelativeLayout.ALIGN_TOP, adapter.getTopAlign(event));
 			params.addRule(RelativeLayout.ALIGN_BOTTOM, adapter.getBottomAlign(event));
@@ -239,22 +248,22 @@ public class CalendarDayFragment extends Fragment {
 	 * @param isFirstCell
 	 * @return
 	 */
-	public int createHourCell(RelativeLayout layout, Calendar time, int lastHourCellId, Boolean isFirstCell,Boolean visible) {
+	public int createHourCell(RelativeLayout layout, Calendar time, int lastHourCellId, Boolean isFirstCell,
+			Boolean visible) {
 		TextView hourCell;
 		int hourCellId;
 		hourCell = (TextView) inflater.inflate(R.layout.calendar_hour_cell, null);
 		hourCellId = adapter.getCellId(time);
 		hourCell.setId(hourCellId);
-		
+
 		// Build the relative layout parameter
 		RelativeLayout.LayoutParams params;
-		if(!visible) {
-			params= new RelativeLayout.LayoutParams(1,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		float dimHeight = getActivity().getResources().getDimension(R.dimen.calendar_cell_height);
+		if (!visible) {
+			params = new RelativeLayout.LayoutParams(1,(int) dimHeight);
 			hourCell.setText("");
-		}else {
-			params= new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-					RelativeLayout.LayoutParams.WRAP_CONTENT);
+		} else {			
+			params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,(int) dimHeight);
 			hourCell.setText(adapter.formatDate(time));
 		}
 		if (isFirstCell) {
@@ -264,7 +273,7 @@ public class CalendarDayFragment extends Fragment {
 			// align to previous
 			params.addRule(RelativeLayout.BELOW, lastHourCellId);
 		}
-		
+
 		layout.addView(hourCell, params);
 		return hourCellId;
 	}
@@ -292,23 +301,26 @@ public class CalendarDayFragment extends Fragment {
 		this.adapter.setCalendar(this);
 		// then update the gui
 	}
-	
+
 	/**
 	 * Change the state of the event from stared to unstared or from unstared to stared
-	 * @param imageView the holder that holds the view
-	 * @param eventId the event id of the event
+	 * 
+	 * @param imageView
+	 *            the holder that holds the view
+	 * @param eventId
+	 *            the event id of the event
 	 */
-	private void changeEventStartState(ImageView imageView,int eventId) {
-		StaredEventsService service= StaredEventsService.instance;
-		if(service.isStared(eventId)) {
-			//first change the stared status of the event
+	private void changeEventStartState(ImageView imageView, int eventId) {
+		StaredEventsService service = StaredEventsService.instance;
+		if (service.isStared(eventId)) {
+			// first change the stared status of the event
 			service.staredEventsStatusChanged(eventId, false);
-			//then update the gui
+			// then update the gui
 			imageView.setBackgroundDrawable(emptyStar);
-		}else {
-			//first change the stared status of the event
+		} else {
+			// first change the stared status of the event
 			service.staredEventsStatusChanged(eventId, true);
-			//then update the gui
+			// then update the gui
 			imageView.setBackgroundDrawable(star);
 		}
 	}
