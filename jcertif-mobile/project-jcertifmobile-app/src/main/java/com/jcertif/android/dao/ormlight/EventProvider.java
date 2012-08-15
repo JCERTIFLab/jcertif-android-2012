@@ -50,7 +50,7 @@ public class EventProvider {
 		List<Event> eventsRet = new ArrayList<Event>();
 		Calendar cal = Calendar.getInstance();
 		for (Event event : events) {
-			cal.setTime(event.startDate);
+			cal.setTime(event.getStartDate());
 			if (cal.get(Calendar.DAY_OF_MONTH) == day.get(Calendar.DAY_OF_MONTH)
 					&& cal.get(Calendar.MONTH) == day.get(Calendar.MONTH)
 					&& cal.get(Calendar.YEAR) == day.get(Calendar.YEAR)) {
@@ -69,7 +69,7 @@ public class EventProvider {
 		StaredEventsService service = StaredEventsService.instance;
 		Calendar cal = Calendar.getInstance();
 		for (Event event : events) {
-			cal.setTime(event.startDate);
+			cal.setTime(event.getStartDate());
 			if (cal.get(Calendar.DAY_OF_MONTH) == day.get(Calendar.DAY_OF_MONTH)
 					&& cal.get(Calendar.MONTH) == day.get(Calendar.MONTH)
 					&& cal.get(Calendar.YEAR) == day.get(Calendar.YEAR)) {

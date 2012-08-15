@@ -277,9 +277,9 @@ public class SpeakerDetailFragmentHC extends Fragment {
 			TextView roomView = (TextView) detailEventView.findViewById(R.id.eventRoom);
 			roomView.setText(ev.room);
 			TextView dateView = (TextView) detailEventView.findViewById(R.id.eventDate);
-			dateView.setText(new SimpleDateFormat("EEE").format(ev.startDate) + " "
-					+ new SimpleDateFormat("HH:mm").format(ev.startDate) + " à "
-					+ new SimpleDateFormat("HH:mm").format(ev.endDate));
+			dateView.setText(new SimpleDateFormat("EEE").format(ev.getStartDate()) + " "
+					+ new SimpleDateFormat("HH:mm").format(ev.getStartDate()) + " à "
+					+ new SimpleDateFormat("HH:mm").format(ev.getEndDate()));
 
 			if (i % 2 == 0) {
 				newLayout.setBackgroundDrawable(evenBackground);

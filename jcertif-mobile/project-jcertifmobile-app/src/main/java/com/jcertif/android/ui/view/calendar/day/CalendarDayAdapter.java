@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import android.util.Log;
 
@@ -195,8 +196,8 @@ public class CalendarDayAdapter {
 		for (final Event event : events) {
 			// build the relative position of the event
 			rcp = new RelativeCellPosition();
-			rcp.top = getCellId(event.startDate);
-			rcp.bottom = getPreviousCellId(event.endDate);
+			rcp.top = getCellId(event.getStartDate());
+			rcp.bottom = getPreviousCellId(event.getEndDate());
 			rcp.leftCell = getLevelRightOf(event);
 			Log.e("CalendarDayAdapter:buildData", "buildData of the " + event.id + " top: " + rcp.top + " bottom:"
 					+ rcp.bottom + " left:" + rcp.leftCell);
@@ -241,7 +242,7 @@ public class CalendarDayAdapter {
 
 	public String getStartHour(Event event) {
 		Calendar cal = Calendar.getInstance();
-		cal.setTime(event.startDate);
+		cal.setTime(event.getStartDate());
 		return formatDate(cal);
 	}
 
@@ -405,7 +406,7 @@ public class CalendarDayAdapter {
 			}
 		} else {
 			Log.e("CalendarDayAdapter:getLevelRightOf", "leftCellId == null");
-			leftCellId = getCellId(event.startDate);
+			leftCellId = getCellId(event.getStartDate());
 			// the update all the leftLevel and leftId reference
 			for (Integer leftCell : leftCells) {
 				leftLevel.put(leftCell, 1);
@@ -429,9 +430,9 @@ public class CalendarDayAdapter {
 		List<Integer> ret = new ArrayList<Integer>();
 		// retrouve le debut et la fin
 		Calendar stratCal = Calendar.getInstance();
-		stratCal.setTime(event.startDate);
+		stratCal.setTime(event.getStartDate());
 		Calendar endCal = Calendar.getInstance();
-		endCal.setTime(event.endDate);
+		endCal.setTime(event.getEndDate());
 		// construit la liste de toutes le identifiants de cellules hourCellId entre le debut et la
 		// fin
 		while (stratCal.get(Calendar.HOUR_OF_DAY) * 100 + stratCal.get(Calendar.MINUTE) < endCal

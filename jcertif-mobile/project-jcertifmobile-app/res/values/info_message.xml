@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="infomessage">Venez partager votre expérience Java Android avec des centaines de développeurs et l\'ensemble des acteurs de l\'industrie des TIC lors de cette conférence pas comme les autres !\r\n
-JCertif est un fabuleux mélange de sessions techniques, d\'ateliers gratuits de formation, d\'expérience humaine avec une petite dose d\'aventure.\r\n
-Quelques points importants :\r\n
-Contenu :\r\n
-Langue: 2/3 en Français et 1/3 en Anglais\r\n
-5 themes clés : Java SE, Java EE et Architecture | Le Web et le Cloud | Android, Java ME, et le Web Mobile | Autres langages supportés par la JVM : Groovy, Scala, Clojure | Outils et méthodes de développement Agile\r\n
-Participants :\r\n
-Plus de 1000 personnes sont attendues\r\n
-Organisation :
-Hall d\'exposition de plus de 400 m2\r\n
-JCertif University : 5 jours complets de formation Java-Android dans 7 salles équipées\r\n
-JCertif Conference: 2 jours de présentation et démonstration dans 2 grandes salles de 500 et 200 places.\r\n
+    <string name="infomessage"><b>La JCertif Africa 2012</b>\r\n\r\nVenez partager votre expérience Java Android avec des centaines de développeurs et l\'ensemble des acteurs de l\'industrie des TIC lors de cette conférence pas comme les autres !\r\n\r\n\r\n
+JCertif est un fabuleux mélange de sessions techniques, d\'ateliers gratuits de formation, d\'expérience humaine avec une petite dose d\'aventure.\r\n\r\n
+Quelques points importants :\r\n<b>Contenu :</b>\r\n
+Langue: 2/3 en Français et 1/3 en Anglais\r\n\r\n
+5 themes clés : \r\n\tJava SE, Java EE et Architecture \r\n\t Le Web et le Cloud \r\n\t Android, Java ME, et le Web Mobile \r\n\t Autres langages supportés par la JVM : Groovy, Scala, Clojure \r\n\t Outils et méthodes de développement Agile\r\n
+\r\n<b>Participants :</b>\r\n
+Plus de 1000 personnes sont attendues\r\n\r\n<b>Organisation :</b>\r\nHall d\'exposition de plus de 400 m2\r\n\r\n<b>JCertif University :</b> 5 jours complets de formation Java-Android dans 7 salles équipées\r\n\r\n<b>JCertif Conference:</b> 2 jours de présentation et démonstration dans 2 grandes salles de 500 et 200 places.\r\n
 \r\n
 \r\n
 Astuce: Installez votre espace de travail avant de venir :o)</string>

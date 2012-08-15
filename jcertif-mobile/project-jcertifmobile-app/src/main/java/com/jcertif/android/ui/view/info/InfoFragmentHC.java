@@ -77,8 +77,11 @@ public class InfoFragmentHC extends Fragment {
 		// Define header title
 		getActivity().getActionBar().setTitle(getResources().getString(R.string.info_htitle));
 		// ensure the panel is displayed using the whole space
+		if(null==parent) {
+			parent = (MainFragmentCallBack) ((MainActivityHC) getActivity()).getFragmentSwitcher();
+			
+		}
 		parent.fillSpace(true);
-
 		// update the current shown fragment
 		super.onResume();
 	}

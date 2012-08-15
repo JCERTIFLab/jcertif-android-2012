@@ -218,8 +218,8 @@ public class EventDetailFragmentHC extends Fragment {
 			eventTitle.setText(event.name);
 			eventDetail.setText(event.description);
 
-			eventDebut.setText(DateFormat.format("dd/MMM hh:mm", event.startDate));
-			eventFin.setText(DateFormat.format("dd/MMM hh:mm", event.endDate));
+			eventDebut.setText(DateFormat.format("dd/MMM hh:mm", event.getStartDate()));
+			eventFin.setText(DateFormat.format("dd/MMM hh:mm", event.getEndDate()));
 			eventRoom.setText(event.room);
 			eventSubject.setText(event.subjects);
 			eventSummary.setText(event.summary);
