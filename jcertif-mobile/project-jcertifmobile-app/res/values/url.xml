@@ -4,7 +4,7 @@
     <!-- <string name="url_base">http://facade.jcertif.cloudbees.net/api</string> -->
     <!-- <string name="url_base_picture">http://pics.jcertif.cloudbees.net/img/2012</string> -->
     <string name="url_base">http://68.169.48.10:8080/jcertif-facade/api</string>
-    <string name="url_base_picture">http://68.169.48.10:8080/jcertif-pics</string>
+    <string name="url_base_picture">http://68.169.48.10:8080/jcertif-pics/img/2012</string>
     <string name="url_suffixe_speaker">/speaker/list/2</string>
     <string name="url_suffixe_event">/event/list/2</string>
     <!-- Param %1 name %2 password -->

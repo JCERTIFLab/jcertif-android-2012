@@ -66,9 +66,11 @@ public class SpeakerProvider {
 	 * @param fileName
 	 */
 	void saveSpeakerPicture(String fileUrl, String fileName) {
+		Log.i("SpeakerProvider:saveSpeakerPicture", "Called");
 		URL myFileUrl = null;
 		try {
 			myFileUrl = new URL(fileUrl + "/" + fileName);
+			Log.i("SpeakerProvider:saveSpeakerPicture", "trying to get "+fileUrl + "/" + fileName);
 			HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();
 			conn.setDoInput(true);
 			conn.connect();
