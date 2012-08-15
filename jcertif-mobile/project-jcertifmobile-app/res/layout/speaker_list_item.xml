@@ -39,7 +39,7 @@
 
         <TextView
             android:id="@+id/detail"
-            style="@style/txv_style"
+            style="@style/txv_style_small"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:ellipsize="end"

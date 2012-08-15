@@ -39,20 +39,20 @@
 
             <TextView
                 android:id="@+id/txtPlace"
-                style="@style/txv_style"
+                style="@style/txv_style_small"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/txtTime"
-                style="@style/txv_style"
+                style="@style/txv_style_small"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/txtDescription"
-            style="@style/txv_style"
+            style="@style/txv_style_small"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="left" />
