@@ -102,13 +102,6 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 		if (postHC) {
 			findViewById(R.id.titleLayout).setVisibility(View.GONE);
 		}
-		// SharedPreferences preferences =
-		// PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		//
-		// Editor editor = preferences.edit();
-		// // to reload the email/password of the last connected person
-		// editor.putString(getString(R.string.shValidEmailsList), "");
-		// editor.commit();
 		// create the AutoCompleteTextView
 		manageAutoCompleteEmail();
 

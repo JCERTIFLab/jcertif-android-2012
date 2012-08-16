@@ -61,7 +61,7 @@ public class StaredEventsDaoPrefs implements StaredEventsDaoIntf {
 		String userKey = app.getUserKey();
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(app.getApplicationContext());
 		String evtList = preferences.getString(userKey + app.getString(R.string.shLocalStaredEvents), "-1");
-		Log.e("StaredEventsDaoPrefs:getStaredEvents", evtList);
+		Log.e("StaredEventsDaoPrefs:getStaredEvents","From user"+userKey+" gives : "+ evtList);
 		if (evtList.length() == 0 || "-1".equals(evtList)) {
 			return new ArrayList<Integer>();
 		} else {

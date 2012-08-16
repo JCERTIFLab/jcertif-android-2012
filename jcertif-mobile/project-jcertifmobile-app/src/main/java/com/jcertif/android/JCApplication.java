@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 import com.jcertif.android.transverse.model.User;
 import com.jcertif.android.transverse.url.UrlFactory;
@@ -115,6 +116,8 @@ public class JCApplication extends Application {
 		editor.putString(getString(R.string.shhash), "0");
 		//and release the current user
 		this.user= new User();
+		//and define the starred events user has changed
+		staredEventsUpdated=true;
 		// And commit
 		editor.commit();
 	}
@@ -184,6 +187,8 @@ public class JCApplication extends Application {
 	 *            The user to store
 	 */
 	private void saveUser() {
+		//The user has changed reset its staredEvents
+		staredEventsUpdated=true;
 		// Get preferences
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		Editor editor = preferences.edit();
@@ -210,6 +215,7 @@ public class JCApplication extends Application {
 		editor.putBoolean(hash + getString(R.string.shValidUser), true);
 		// and store the hashcode of the last user connected
 		// to reload the email/password of the last connected person
+		Log.e("JCApplication:saveUser","The new user hashCode "+Integer.toString(hash));
 		editor.putString(getString(R.string.shhash), Integer.toString(hash));
 		// And commit
 		editor.commit();
