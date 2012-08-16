@@ -311,7 +311,7 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 	/**
 	 * Skip login and display main activity
 	 */
-	private void onSkipButtonClicked() {
+	private void onSkipButtonClicked() {		
 		// go to the next activity
 		displayMainView();
 	}
@@ -346,9 +346,8 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 					if (null != user) {
 						// Enregistre l'utilisateur comme valide
 						onUserValidated(user);
-						// TODO When the bypass of the Authent is not required for dev anymore
-						// uncomment
-						// displayMenuView();
+						//and open application
+						 displayMainView();
 					} else {
 						// Show the error to user
 						ShowAuthentFailedDialog();
@@ -365,8 +364,6 @@ public class ConnectionActivityLegacy extends Activity implements AccountDialogP
 		} else {
 			ShowAuthentFailedDialog();
 		}
-		// TODO to replace in the if when authent is finished to be coded
-		displayMainView();
 	}
 
 	/**

@@ -54,17 +54,17 @@ public enum StaredEventsService {
 	 * The Dao to store and retreive elements
 	 */
 	private StaredEventsDaoIntf seDao;
-	
+
 	/**
 	 * Synchronize the list with the one of the Dao if needed
 	 */
 	public void synchronize() {
-		if(JCApplication.getInstance().isStaredEventsUpdated()) {
+		if (JCApplication.getInstance().isStaredEventsUpdated()) {
 			seDao = StaredEventsDaoFactory.getDao();
 			staredEvents = seDao.getStaredEvents();
 			JCApplication.getInstance().setStaredEventsUpdatesTookIntoAccount();
 		}
-		
+
 	}
 
 	/**
@@ -135,28 +135,35 @@ public enum StaredEventsService {
 		staredEvents.addAll(eventsId);
 		return seDao.addToStaredElements(eventsId);
 	}
-	
+
 	/**
-	 * 
 	 * @param speakerId
 	 * @return true if all the events of the speaker is starred
 	 */
 	public boolean isStaredSpeaker(int speakerId) {
 		synchronize();
-		boolean ret=true;
-		for(Integer eventId:getEventsId(speakerId)) {
-			ret=ret&&isStared(eventId);
-			//a few optimisation
-			if(ret==false) {
-				break;
+		boolean ret = true;
+		List<Integer> evtId = getEventsId(speakerId);
+		if (evtId.size() != 0) {
+			for (Integer eventId : evtId) {
+				ret = ret && isStared(eventId);
+				// a few optimisation
+				if (ret == false) {
+					break;
+				}
 			}
+		} else {
+			//if no speach, then cannot be stared
+			ret = false;
 		}
 		return ret;
 	}
 
 	/**
 	 * Add all the events of a speaker as star elements
-	 * @param speakerId the speaker id
+	 * 
+	 * @param speakerId
+	 *            the speaker id
 	 * @return if the operation succeeds
 	 */
 	public boolean addStaredSpeaker(int speakerId) {
@@ -166,7 +173,9 @@ public enum StaredEventsService {
 
 	/**
 	 * Remove all the events of a speaker as star elements
-	 * @param speakerId the speaker id
+	 * 
+	 * @param speakerId
+	 *            the speaker id
 	 * @return if the operation succeeds
 	 */
 	public boolean removeStaredSpeaker(int speakerId) {
@@ -176,7 +185,9 @@ public enum StaredEventsService {
 
 	/**
 	 * Retrieve all the events of a speaker
-	 * @param speakerId the id of the speaker
+	 * 
+	 * @param speakerId
+	 *            the id of the speaker
 	 * @return that list
 	 */
 	private List<Integer> getEventsId(int speakerId) {
@@ -198,6 +209,6 @@ public enum StaredEventsService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return  new ArrayList<Integer>();
+		return new ArrayList<Integer>();
 	}
 }

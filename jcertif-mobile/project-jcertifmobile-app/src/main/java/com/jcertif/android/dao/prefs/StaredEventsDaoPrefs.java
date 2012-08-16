@@ -58,27 +58,29 @@ public class StaredEventsDaoPrefs implements StaredEventsDaoIntf {
 	@Override
 	public List<Integer> getStaredEvents() {
 		JCApplication app = JCApplication.getInstance();
-		String userKey=app.getUserKey();
+		String userKey = app.getUserKey();
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(app.getApplicationContext());
-		String evtList = preferences.getString(userKey+app.getString(R.string.shLocalStaredEvents), "-1");
+		String evtList = preferences.getString(userKey + app.getString(R.string.shLocalStaredEvents), "-1");
 		Log.e("StaredEventsDaoPrefs:getStaredEvents", evtList);
-		if (evtList.length()==0 || "-1".equals(evtList)) {
+		if (evtList.length() == 0 || "-1".equals(evtList)) {
 			return new ArrayList<Integer>();
 		} else {
 			// unmarshall the value
 			return fromStringToList(evtList);
 		}
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.jcertif.android.dao.intf.StaredEventsDaoIntf#getServerKnownStaredEvents()
 	 */
 	@Override
-	public List<Integer> getServerKnownStaredEvents(){
+	public List<Integer> getServerKnownStaredEvents() {
 		JCApplication app = JCApplication.getInstance();
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(app.getApplicationContext());
-		String userKey=app.getUserKey();
-		String evtList = preferences.getString(userKey+app.getString(R.string.shServerStaredEvents), "-1");
+		String userKey = app.getUserKey();
+		String evtList = preferences.getString(userKey + app.getString(R.string.shServerStaredEvents), "-1");
 		Log.e("StaredEventsDaoPrefs:getServerKnownStaredEvents", evtList);
 		if ("-1".equals(evtList)) {
 			return new ArrayList<Integer>();
@@ -87,23 +89,26 @@ public class StaredEventsDaoPrefs implements StaredEventsDaoIntf {
 			return fromStringToList(evtList);
 		}
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.jcertif.android.dao.intf.StaredEventsDaoIntf#setServerStaredEvents(java.lang.String)
 	 */
 	@Override
 	public Boolean setServerStaredEvents(String staredEventsList) {
 		JCApplication app = JCApplication.getInstance();
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(app.getApplicationContext());
-		String userKey=app.getUserKey();
+		String userKey = app.getUserKey();
 		SharedPreferences.Editor editor = preferences.edit();
 		Log.e("StaredEventsDaoPrefs:setServerStaredEvents", staredEventsList);
-		editor.putString(userKey+app.getString(R.string.shServerStaredEvents), staredEventsList);
-		//and the trick, as this method is only called by the updater and as the updater has just done the add and remove operation
-		//the server list and the local list are equal:
-		editor.putString(userKey+app.getString(R.string.shLocalStaredEvents), staredEventsList);
-		Boolean commitOk= editor.commit();
-		//then be sure the application known an update occurs
+		editor.putString(userKey + app.getString(R.string.shServerStaredEvents), staredEventsList);
+		// and the trick, as this method is only called by the updater and as the updater has just
+		// done the add and remove operation
+		// the server list and the local list are equal:
+		editor.putString(userKey + app.getString(R.string.shLocalStaredEvents), staredEventsList);
+		Boolean commitOk = editor.commit();
+		// then be sure the application known an update occurs
 		JCApplication.getInstance().setStaredEventsUpdatedFromServer();
 		//
 		return commitOk;
@@ -117,10 +122,10 @@ public class StaredEventsDaoPrefs implements StaredEventsDaoIntf {
 	public Boolean setStaredEvents(List<Integer> staredEvts) {
 		JCApplication app = JCApplication.getInstance();
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(app.getApplicationContext());
-		String userKey=app.getUserKey();
+		String userKey = app.getUserKey();
 		SharedPreferences.Editor editor = preferences.edit();
 		Log.e("StaredEventsDaoPrefs:setStaredEvents", fromListToString(staredEvts));
-		editor.putString(userKey+app.getString(R.string.shLocalStaredEvents), fromListToString(staredEvts));
+		editor.putString(userKey + app.getString(R.string.shLocalStaredEvents), fromListToString(staredEvts));
 		return editor.commit();
 	}
 
@@ -174,16 +179,27 @@ public class StaredEventsDaoPrefs implements StaredEventsDaoIntf {
 	@Override
 	public boolean removeFromStaredElements(List<Integer> eventsId) {
 		boolean ret = false;
+
 		// update the current list of stared elements
 		List<Integer> stEvents = getStaredEvents();
+		// for debug
+		// int stEventsSize = stEvents.size();
+		// StringBuffer removedElts=new StringBuffer();
 		for (Integer evtToRemove : eventsId) {
 			if (stEvents.contains(evtToRemove)) {
 				// first remove the element
 				stEvents.remove(evtToRemove);
+				// for debug
+				// removedElts.append(evtToRemove);
+				// removedElts.append(",");
 			}
 		}
 		// then persist the information
 		ret = setStaredEvents(stEvents);
+		// for debug
+		// Log.e("StaredEventsDaoPrefs:removeFromStaredElements", "stEvents init: " + stEventsSize
+		// + " stEventsToRemove : " + eventsId.size() + " stEvents final: " + stEvents.size()+
+		// "removed : "+removedElts.toString());
 		// first retrieve the list of stared element
 		return ret;
 	}
@@ -198,13 +214,23 @@ public class StaredEventsDaoPrefs implements StaredEventsDaoIntf {
 		boolean ret = false;
 		// update the current list of stared elements
 		List<Integer> stEvents = getStaredEvents();
+		// for debug
+		// int stEventsSize = stEvents.size();
+		// StringBuffer addedElts=new StringBuffer();
 		for (Integer evtToAdd : eventsId) {
 			if (!stEvents.contains(evtToAdd)) {
 				// first add the element
 				stEvents.add(evtToAdd);
+				// for debug
+				// addedElts.append(evtToAdd);
+				// addedElts.append(",");
 			}
 		}// then persist the information
 		ret = setStaredEvents(stEvents);
+		// for debug
+		// Log.e("StaredEventsDaoPrefs:addToStaredElements", "stEvents init: " + stEventsSize
+		// + " stEventsToRemove : " + eventsId.size() + " stEvents final: " + stEvents.size()+
+		// "added : "+addedElts.toString());
 		// first retrieve the list of stared element
 		return ret;
 	}
@@ -227,13 +253,13 @@ public class StaredEventsDaoPrefs implements StaredEventsDaoIntf {
 		// instanciate the list
 		List<Integer> retList = new ArrayList<Integer>(splittedString.length);
 		// build the list
-		
+
 		for (int i = 0; i < splittedString.length; i++) {
-			Log.e("StaredEventsDaoPrefs:fromStringToList", "element["+i+"]"+splittedString[i]);
-			try{
-			retList.add(Integer.decode(splittedString[i]));
-			}catch(NumberFormatException e) {
-				Log.e("StaredEventsDaoPrefs:fromStringToList", "NumberFormatException with"+splittedString[i]);
+			Log.i("StaredEventsDaoPrefs:fromStringToList", "element[" + i + "]" + splittedString[i]);
+			try {
+				retList.add(Integer.decode(splittedString[i]));
+			} catch (NumberFormatException e) {
+				Log.e("StaredEventsDaoPrefs:fromStringToList", "NumberFormatException with" + splittedString[i]);
 			}
 		}
 		// return

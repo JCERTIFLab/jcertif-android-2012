@@ -113,6 +113,8 @@ public class JCApplication extends Application {
 		Editor editor = preferences.edit();
 		// to reload the email/password of the last connected person
 		editor.putString(getString(R.string.shhash), "0");
+		//and release the current user
+		this.user= new User();
 		// And commit
 		editor.commit();
 	}

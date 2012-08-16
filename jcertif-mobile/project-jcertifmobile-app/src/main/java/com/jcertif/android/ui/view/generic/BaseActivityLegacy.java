@@ -24,6 +24,7 @@ import com.jcertif.android.JCApplication;
 import com.jcertif.android.LauncherActivity;
 import com.jcertif.android.R;
 import com.jcertif.android.service.androidservices.UpdaterService;
+import com.jcertif.android.transverse.model.User;
 
 /**
  * @author Mathias Seguy (Android2EE)
@@ -51,6 +52,7 @@ public class BaseActivityLegacy extends FragmentActivity implements BaseActivity
 	 * the disconnect button in the JCertifHeader panel
 	 */
 	ImageButton btnDisconnect = null;
+
 	/******************************************************************************************/
 	/** Constructors **************************************************************************/
 	/******************************************************************************************/
@@ -109,7 +111,9 @@ public class BaseActivityLegacy extends FragmentActivity implements BaseActivity
 			});
 		}
 		// see what icon connect or disconnect to display
-		if (((JCApplication) getApplication()).getUser().getEmail().length() == 0) {
+		// see what icon connect or disconnect to display
+		User user = ((JCApplication) getApplication()).getUser();
+		if (null == user || null == user.getEmail() || user.getEmail().length() == 0) {
 			btnDisconnect.setVisibility(View.GONE);
 		} else {
 			btnConnect.setVisibility(View.GONE);
@@ -161,6 +165,7 @@ public class BaseActivityLegacy extends FragmentActivity implements BaseActivity
 		Toast.makeText(this, "La recherche n'est pas encore implémentée :o)", Toast.LENGTH_SHORT).show();
 
 	}
+
 	/**
 	 * Disconnect
 	 */
@@ -180,7 +185,6 @@ public class BaseActivityLegacy extends FragmentActivity implements BaseActivity
 		startActivity(startActivityIntent);
 		finish();
 	}
-
 
 	/******************************************************************************************/
 	/** Menu Management **************************************************************************/
@@ -202,7 +206,8 @@ public class BaseActivityLegacy extends FragmentActivity implements BaseActivity
 		new MenuInflater(getApplication()).inflate(R.menu.menu, menu);
 		// the menu et menu sont le même objet
 		// see what icon connect or disconnect to display
-		if (((JCApplication) getApplication()).getUser().getEmail().length() == 0) {
+		User user = ((JCApplication) getApplication()).getUser();
+		if (null == user || null == user.getEmail() || user.getEmail().length() == 0) {
 			menu.findItem(R.id.menu_disconnect_user).setVisible(false);
 		} else {
 			menu.findItem(R.id.menu_connect_user).setVisible(false);

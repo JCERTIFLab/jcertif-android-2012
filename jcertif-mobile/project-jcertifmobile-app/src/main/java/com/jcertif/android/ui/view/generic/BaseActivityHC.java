@@ -28,6 +28,7 @@ import com.jcertif.android.JCApplication;
 import com.jcertif.android.LauncherActivity;
 import com.jcertif.android.R;
 import com.jcertif.android.service.androidservices.UpdaterService;
+import com.jcertif.android.transverse.model.User;
 
 /**
  * @author Mathias Seguy (Android2EE)
@@ -73,7 +74,7 @@ public class BaseActivityHC extends Activity implements BaseActivityIntf {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		//change the action bar logo
+		// change the action bar logo
 		getActionBar().setLogo(getResources().getDrawable(R.drawable.logo));
 		getActionBar().setTitle(getResources().getString(R.string.main_htitle));
 		// Then register this in the JCertifMobil Application object
@@ -116,7 +117,8 @@ public class BaseActivityHC extends Activity implements BaseActivityIntf {
 			});
 		}
 		// see what icon connect or disconnect to display
-		if (((JCApplication) getApplication()).getUser().getEmail().length() == 0) {
+		User user = ((JCApplication) getApplication()).getUser();
+		if (null == user || null == user.getEmail() || user.getEmail().length() == 0) {
 			btnDisconnect.setVisibility(View.GONE);
 		} else {
 			btnConnect.setVisibility(View.GONE);
@@ -152,7 +154,8 @@ public class BaseActivityHC extends Activity implements BaseActivityIntf {
 	@Override
 	public void showRefreshingDataProgressBar(boolean show) {
 		if (show) {
-			theMenu.findItem(R.id.menu_forceupdate).setIcon(getResources().getDrawable(R.drawable.ic_action_refreshing_data));
+			theMenu.findItem(R.id.menu_forceupdate).setIcon(
+					getResources().getDrawable(R.drawable.ic_action_refreshing_data));
 		} else {
 			theMenu.findItem(R.id.menu_forceupdate).setIcon(getResources().getDrawable(R.drawable.navigation_refresh));
 		}
@@ -195,6 +198,7 @@ public class BaseActivityHC extends Activity implements BaseActivityIntf {
 	 * the Menu of the activity
 	 */
 	private Menu theMenu = null;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -205,14 +209,16 @@ public class BaseActivityHC extends Activity implements BaseActivityIntf {
 		// instanciation du menu via le fichier XML
 		new MenuInflater(getApplication()).inflate(R.menu.menu, menu);
 		// see what icon connect or disconnect to display
-		if (((JCApplication) getApplication()).getUser().getEmail().length() == 0) {
+		// see what icon connect or disconnect to display
+		User user = ((JCApplication) getApplication()).getUser();
+		if (null == user || null == user.getEmail() || user.getEmail().length() == 0) {
 			menu.findItem(R.id.menu_disconnect_user).setVisible(false);
 		} else {
 			menu.findItem(R.id.menu_connect_user).setVisible(false);
 		}
 		// the menu et menu sont le même objet
 		theMenu = menu;
-		
+
 		// Création du menu comme avant
 		return (super.onCreateOptionsMenu(menu));
 	}
