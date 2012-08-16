@@ -35,7 +35,18 @@ public class EventProvider {
 	public Event getEventById(Integer eventId) throws SQLException {
 		return mEventDao.queryForId(eventId);
 	}
-
+	
+	public void deleteAllAndSaveAllEvents(List<Event> events) throws SQLException {
+		//delete theml all
+		mEventDao.delete(mEventDao.queryForAll());
+		//create them all
+		if (null != events) {
+			for (Event event : events) {
+				mEventDao.createOrUpdate(event);
+			}
+		}
+	}
+	
 	public void saveEvents(List<Event> events) throws SQLException {
 		if (null != events) {
 			for (Event event : events) {

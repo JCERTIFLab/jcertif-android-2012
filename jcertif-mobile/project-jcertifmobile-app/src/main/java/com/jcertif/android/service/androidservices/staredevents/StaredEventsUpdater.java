@@ -85,6 +85,9 @@ public class StaredEventsUpdater implements UpdaterServiceElementIntf {
 				List<Integer> localStaredEvt = dao.getStaredEvents();
 				List<Integer> eventsToAdd = findEventToAdd(localStaredEvt, serverKnowStaredEvt);
 				List<Integer> eventsToRemove = findEventToRemove(localStaredEvt, serverKnowStaredEvt);
+//				Log.e("StaredEventsUpdater:onUpdate", "serverKnowStaredEvt " +serverKnowStaredEvt.size()+
+//						", localStaredEvt " +localStaredEvt.size()+"=>eventsToAdd " +eventsToAdd.size()
+//						+"=>eventsToRemoved " +eventsToRemove.size());
 				// add elements to add
 				for (Integer eventToAdd : eventsToAdd) {
 					addStaredEvents(email, eventToAdd.toString());
@@ -95,6 +98,7 @@ public class StaredEventsUpdater implements UpdaterServiceElementIntf {
 				}
 				// retrieve the server list and store elements in prefs
 				String serverEvtsList = getStaredEventsList(email);
+//				Log.e("StaredEventsUpdater:onUpdate", "Returned serverEvtsList " +serverEvtsList);
 				// and stored it as local and server stared List (this is the trick)
 				String listStaredEvents = fromJson(serverEvtsList);
 				dao.setServerStaredEvents(listStaredEvents);

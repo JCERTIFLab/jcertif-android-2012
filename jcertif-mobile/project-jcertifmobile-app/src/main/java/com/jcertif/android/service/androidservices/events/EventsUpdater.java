@@ -66,7 +66,7 @@ public class EventsUpdater implements UpdaterServiceElementIntf {
 			List<Event> events = evc.findAll();
 			// Enregistrer chacun en BD
 			EventProvider evp = new EventProvider();
-			evp.saveEvents(events);			
+			evp.deleteAllAndSaveAllEvents(events);			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {

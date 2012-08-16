@@ -33,7 +33,7 @@ public class SpeakerProvider {
 	private Dao<Speaker, Integer> mSpeakerDao;
 
 	public SpeakerProvider() throws SQLException {
-		mContext =  JCApplication.getInstance().getApplicationContext();
+		mContext = JCApplication.getInstance().getApplicationContext();
 		mDbHelper = new DatabaseHelper(mContext);
 		mSpeakerDao = mDbHelper.getSpeakerDao();
 	}
@@ -50,11 +50,27 @@ public class SpeakerProvider {
 		return mSpeakerDao.queryForId(speakerId);
 	}
 
+	public void deleteAllAndsaveAll(List<Speaker> speakers) throws SQLException {
+		// To avoid bad cache of data removeAll and createAll is needed
+		// Remove data first:
+		mSpeakerDao.delete(mSpeakerDao.queryForAll());
+		// then create them again
+		if (null != speakers) {
+			for (Speaker speaker : speakers) {
+				mSpeakerDao.createOrUpdate(speaker);
+				String urlPictureSpeaker = JCApplication.getInstance().getUrlFactory().getBasePictureUrl();
+				saveSpeakerPicture(urlPictureSpeaker, speaker.urlPhoto);
+			}
+		}
+	}
+
 	public void saveAll(List<Speaker> speakers) throws SQLException {
-		for (Speaker speaker : speakers) {
-			mSpeakerDao.createOrUpdate(speaker);
-			String urlPictureSpeaker = JCApplication.getInstance().getUrlFactory().getBasePictureUrl();
-			saveSpeakerPicture(urlPictureSpeaker, speaker.urlPhoto);
+		if (null != speakers) {
+			for (Speaker speaker : speakers) {
+				mSpeakerDao.createOrUpdate(speaker);
+				String urlPictureSpeaker = JCApplication.getInstance().getUrlFactory().getBasePictureUrl();
+				saveSpeakerPicture(urlPictureSpeaker, speaker.urlPhoto);
+			}
 		}
 	}
 
@@ -62,6 +78,7 @@ public class SpeakerProvider {
 
 	/**
 	 * Save the speaker picture
+	 * 
 	 * @param fileUrl
 	 * @param fileName
 	 */
@@ -70,20 +87,20 @@ public class SpeakerProvider {
 		URL myFileUrl = null;
 		try {
 			myFileUrl = new URL(fileUrl + "/" + fileName);
-			Log.i("SpeakerProvider:saveSpeakerPicture", "trying to get "+fileUrl + "/" + fileName);
+			Log.i("SpeakerProvider:saveSpeakerPicture", "trying to get " + fileUrl + "/" + fileName);
 			HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();
 			conn.setDoInput(true);
 			conn.connect();
 			InputStream is = conn.getInputStream();
 			bmImg = BitmapFactory.decodeStream(is);
-			//save the picture
+			// save the picture
 			File filesDir = JCApplication.getInstance().getExternalFilesDir(null);
-			String pictureFolderName=JCApplication.getInstance().getString(R.string.folder_name_spekaer_picture);
-			File pictureDir=new File(filesDir,pictureFolderName);
-			if(!pictureDir.exists()) {
+			String pictureFolderName = JCApplication.getInstance().getString(R.string.folder_name_spekaer_picture);
+			File pictureDir = new File(filesDir, pictureFolderName);
+			if (!pictureDir.exists()) {
 				pictureDir.mkdir();
 			}
-			File filePicture=new File(pictureDir,fileName);
+			File filePicture = new File(pictureDir, fileName);
 			FileOutputStream fos = new FileOutputStream(filePicture);
 			bmImg.compress(CompressFormat.JPEG, 75, fos);
 			Log.i(SpeakerProvider.class.getName(), "Save of picture ok:" + fos.getFD().toString());

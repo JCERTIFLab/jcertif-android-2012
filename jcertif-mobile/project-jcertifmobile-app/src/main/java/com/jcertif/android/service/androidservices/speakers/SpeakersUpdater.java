@@ -67,7 +67,7 @@ public class SpeakersUpdater implements UpdaterServiceElementIntf {
 			List<Speaker> speakers = spc.findAll();
 			// Enregistrer chacun en BD
 			SpeakerProvider spp = new SpeakerProvider();
-			spp.saveAll(speakers);
+			spp.deleteAllAndsaveAll(speakers);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
