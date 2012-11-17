@@ -1,3 +1,5 @@
+<img src="https://github.com/JCERTIFLab/jcertif-static-resources/raw/master/img/bandeau_rouge_2012.png" />
+<br/>
 JCertif Lab est une plateforme collaborative dédiée au développement des applications Open Source pour encourager l'innovation à travers des projets de développement d'applications Web, Mobiles et d'entreprises.
 
 JCertif Android Application
